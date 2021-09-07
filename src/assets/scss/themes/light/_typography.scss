@@ -1,0 +1,55 @@
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'STIX Two Text', serif;
+}
+
+h1 {
+  @include typoStyle(64, 64, 0);
+}
+h2 {
+  @include typoStyle(56, 56, 0);
+}
+h3 {
+  @include typoStyle(40, 50, 0.5);
+}
+h4 {
+  @include typoStyle(30, 36, 0.3);
+}
+h5 {
+  @include typoStyle(28, 32, 0.3);
+}
+h6 {
+  @include typoStyle(25, 32, 0.3);
+}
+p.headline {
+  @include typoStyle(20, 26, 0.2);
+}
+
+.par-1, p {
+  @include typoStyle(21, 32, -0.1);
+  font-family: 'Lora', serif;
+}
+.par-2 {
+  @include typoStyle(18, 26, 0);
+}
+.par-3 {
+  @include typoStyle(17, 24, 0);
+}
+.par-4 {
+  @include typoStyle(16, 22, 0);
+}
+.par-5 {
+  @include typoStyle(14, 20, 0);
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-1, .btn-2, btn-3, .btn-4 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+}
+
+.italic {
+  font-style: italic;
+}
+.medium {
+  font-weight: 550;
+}

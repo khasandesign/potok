@@ -1,0 +1,6 @@
+@mixin anim-click() {
+  transform: scale(0.98);
+}
+.anim-click:active {
+  @include anim-click;
+}

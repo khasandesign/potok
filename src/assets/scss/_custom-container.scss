@@ -1,0 +1,15 @@
+@media (min-width: 1200px) {
+  .container{
+    max-width: 1464px!important;
+    .row > * {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 0 24px;
+  }
+}

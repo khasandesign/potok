@@ -1,4 +1,4 @@
-# bootstrap-setup
+# Potok
 
 ## Project setup
 ```

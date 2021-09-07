@@ -1,0 +1,21 @@
+// TIP: Import scss files like it is done in bootstrap scss folder, if you are making changes on bootstrap base
+
+// Global variables around scss files
+$unit: px;
+$border-radius: 8px;
+
+// Mixins
+@import 'mixins';
+
+// Connecting bootstrap
+@import '~bootstrap';
+
+// Connecting common used variables
+@import 'variables';
+
+
+// Connecting scss files
+@import 'themes/light/typography';
+@import 'themes/light/colors';
+@import 'custom-container';
+@import 'buttons';

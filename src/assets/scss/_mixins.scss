@@ -1,0 +1,8 @@
+// Assign necessary typography styles
+@mixin typoStyle($font-size, $line-height, $letter-spacing) {
+  font-size: $font-size + $unit;
+  line-height: $line-height + $unit;
+  letter-spacing: $letter-spacing + $unit;
+}
+
+@import 'microanimation';
