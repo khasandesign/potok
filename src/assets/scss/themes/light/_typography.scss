@@ -1,27 +1,54 @@
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'STIX Two Text', serif;
+.italic {
+  font-style: italic;
+}
+.regular {
+  font-weight: 350;
+}
+.medium {
+  font-weight: 450;
+}
+.semibold {
+  font-weight: 500;
+}
+.bold {
+  font-weight: 550;
+}
+.mono {
+  font-family: 'Roboto Mono', monospace;
 }
 
-h1 {
+h1, h2, h3, h4, h5, h6, .h-1, .h-2, .h-3, .h-4, .h-5, .h-6, p.headline {
+  font-family: 'STIX Two Text', serif;
+  @extend .semibold;
+}
+
+p:not(.headline), input:not(.h1):not(.h2):not(.h3):not(.h4):not(.h5):not(.h6), textarea:not(.h1):not(.h2):not(.h3):not(.h4):not(.h5):not(.h6) {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, .h-1 {
   @include typoStyle(64, 64, 0);
 }
-h2 {
+h2, .h-2 {
   @include typoStyle(56, 56, 0);
 }
-h3 {
+h3, .h-3 {
   @include typoStyle(40, 50, 0.5);
+  margin-bottom: 16px;
 }
-h4 {
+h4, .h-4 {
   @include typoStyle(30, 36, 0.3);
 }
-h5 {
+h5, .h-5 {
   @include typoStyle(28, 32, 0.3);
 }
-h6 {
+h6, .h-6 {
   @include typoStyle(25, 32, 0.3);
 }
 p.headline {
   @include typoStyle(20, 26, 0.2);
+  margin-bottom: 12px;
 }
 
 .par-1, p {
@@ -30,26 +57,38 @@ p.headline {
 }
 .par-2 {
   @include typoStyle(18, 26, 0);
+  font-family: 'Lora', serif;
 }
 .par-3 {
   @include typoStyle(17, 24, 0);
+    font-family: 'Lora', serif;
 }
 .par-4 {
   @include typoStyle(16, 22, 0);
+    font-family: 'Lora', serif;
 }
 .par-5 {
   @include typoStyle(14, 20, 0);
   font-family: 'Inter', sans-serif;
 }
 
-.btn-1, .btn-2, btn-3, .btn-4 {
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
+.btn-1 {
+  @include typoStyle(19, 32, 0);
+}
+.btn-2 {
+  @include typoStyle(17, 24, 0);
+}
+.btn-3 {
+  @include typoStyle(16, 24, 0);
+}
+.btn-4 {
+  @include typoStyle(13, 20, 0);
+}
+.btn-5 {
+  @include typoStyle(12, 18, 0);
 }
 
-.italic {
-  font-style: italic;
-}
-.medium {
-  font-weight: 550;
+.btn-1, .btn-2, btn-3, .btn-4, .btn-5 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
 }

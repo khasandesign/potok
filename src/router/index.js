@@ -4,6 +4,11 @@ import home from "../views/home";
 import flow from "../views/flow";
 import profile from "../views/profile";
 import createFlow from "../views/createFlow";
+import errorPage from "../views/errorPage";
+import signIn from "../views/signIn";
+import mobileApp from "../views/mobileApp";
+import search from "../views/search";
+import store from '../store/'
 
 const routes = [
   {
@@ -14,7 +19,7 @@ const routes = [
     path: '/',
     component: home,
     meta: {
-      title: '1332'
+      permission: 'user'
     }
   },
   {
@@ -29,11 +34,40 @@ const routes = [
     path: '/create-flow', // This page include all steps of creating a flow
     component: createFlow
   },
+  {
+    path: '/sign-in',
+    component: signIn
+  },
+  {
+    path: '/search',
+    component: search
+  },
+  {
+    path: '/mobile-app',
+    component: mobileApp
+  },
+  {
+    path: '/error/',
+    name: 'error-page',
+    component: errorPage,
+  },
+  {
+    path: "/:catchAll(.*)",
+    component: () => {
+      store.commit('throwError', {
+        status: 404
+      })
+    }
+  },
+
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+  scrollBehavior() {
+    document.getElementById('app').scrollIntoView();
+  }
 });
 
 export default router;

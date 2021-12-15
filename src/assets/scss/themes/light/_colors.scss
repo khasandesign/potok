@@ -1,13 +1,48 @@
 // Solid colors
 $accent: #0284EB;
-$red: #DA4239;
+$red: #EE0D0D;
 $black: #000;
+$brown: #753838;
+$teal: #2BB4AB;
+$yellow: #DFCA0C;
 
-//Background colors
-$primary: #fff;
-$secondary: #FAFAFA;
+.accent {
+  color: $accent;
+}
+.red {
+  color: $red;
+}
+.black {
+  color: $black;
+}
+.brown {
+  color: $brown;
+}
+.teal {
+  color: $teal;
+}
+.yellow {
+  color: $yellow;
+}
 
-//Label colors
+
+// Background colors
+$bg-primary: #fff;
+$bg-secondary: #FAFAFA;
+
+// Gray colors
+$gray-008: rgba(#000, 0.008);
+$gray-02: rgba(#000, 0.02);
+$gray-03: rgba(#000, 0.03);
+$gray-04: rgba(#000, 0.04);
+$gray-06: rgba(#000, 0.06);
+$gray-08: rgba(#000, 0.08);
+$gray-12: rgba(#000, 0.12);
+$gray-13: rgba(#000, 0.13);
+$gray-16: rgba(#000, 0.16);
+$gray-22: rgba(#000, 0.22);
+
+// Label colors
 $label-1: rgba(#000, 1);    // 100%
 $label-2: rgba(#000, 0.6);  // 60%
 $label-3: rgba(#000, 0.5);  // 50%
@@ -15,6 +50,32 @@ $label-4: rgba(#000, 0.4);  // 40%
 $label-5: rgba(#000, 0.3);  // 30%
 $label-6: rgba(#000, 0.22); // 22%
 $label-7: rgba(#000, 0.16); // 16%
+
+.label-1 {
+  color: $label-1;
+}
+.label-2 {
+  color: $label-2;
+}
+.label-3 {
+  color: $label-3;
+}
+.label-4 {
+  color: $label-4;
+}
+.label-5 {
+  color: $label-5;
+}
+.label-6 {
+  color: $label-6;
+}
+.label-7 {
+  color: $label-7;
+}
+
+// Button
+$button-primary: #fff;
+$button-secondary: rgba(#000, 0.9);
 
 
 // Other colors

@@ -2,7 +2,6 @@
 
 // Global variables around scss files
 $unit: px;
-$border-radius: 8px;
 
 // Mixins
 @import 'mixins';
@@ -19,3 +18,7 @@ $border-radius: 8px;
 @import 'themes/light/colors';
 @import 'custom-container';
 @import 'buttons';
+@import "inputs";
+@import 'layout/navbar';
+@import 'platter';
+@import 'dropdown';

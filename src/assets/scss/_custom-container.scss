@@ -1,10 +1,13 @@
-@media (min-width: 1200px) {
-  .container{
+.medium-wrap {
+  @extend .container;
+  @extend .offset-xxl-1;
+
+  padding: 0;
+}
+
+@media (min-width: 1400px) {
+  .container {
     max-width: 1464px!important;
-    .row > * {
-      padding-left: 24px;
-      padding-right: 24px;
-    }
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="crip"><p-avatar :src="src" size="22"></p-avatar><slot></slot></div>
+  <div :class="`crip crip-${variant}`"><v-avatar :src="src" v-if="src" size="22"></v-avatar><slot></slot></div>
 </template>
 
 <script>
@@ -7,10 +7,14 @@ export default {
   props: {
     src: {
       type: String,
-      required: true
+      required: false
+    },
+    variant: {
+      type: String,
+      default: ''
     }
   },
-  name: 'p-crip',
+  name: 'v-crip',
   methods: {
     // Here we can define colorful background by using method and share image
   }
