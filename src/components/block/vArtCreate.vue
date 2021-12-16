@@ -27,31 +27,75 @@
 </template>
 
 <script>
+import canvas2svg from "../../mixins/canvas2svg";
+
 export default {
   name: "v-art-create",
-  mounted() {
-    //  Drawing logic
-    const canvas = this.$refs.artCanvas
-    const ctx = canvas.getContext('2d')
-
-    //  Vars
-    let drawing = false
-    let ratio = 2
-    let activeColor = '#0284EB'
-
-    //  Resizing
-    canvas.width = 342 * ratio
-    canvas.height = 242 * ratio
-
-    //  Clear canvas
-    function clearCanvas() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+  mixins: [canvas2svg],
+  emits: ['sendArt'],
+  data() {
+    return {
+      art: '',
+      drawing: false,
+      ratio: 2,
+      activeColor: '#0284EB',
+      canvasSize: {
+        width: 342,
+        height: 242
+      }
     }
+  },
+  methods: {
+    /**
+     * Canvas methods
+     */
+    clearCanvas(ctx, canvas) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    },
+    resizeCanvas(canvas) {
+      canvas.width = this.canvasSize.width * this.ratio
+      canvas.height = this.canvasSize.height * this.ratio
+    },
+    inCanvasViewer(e, ctx) {
+      if (e.target.tagName != 'CANVAS') {
+        this.drawing = false
+        ctx.beginPath()
+      }
+    },
+    handleEvents(ctx, canvas) {
+      let vm = this
 
-    //  Set color
-    function setColor(el) {
+      // Drawing events
+      canvas.addEventListener('mousedown', function (e) {
+        vm.startPosition(e, ctx)
+      })
+      canvas.addEventListener('mouseup', function () {
+        vm.endPosition(ctx)
+      })
+      canvas.addEventListener('mousemove', function (e) {
+        vm.draw(e, ctx)
+      })
+    },
+    drawCanvas(ctx) {
+      let vm = this
+      window.addEventListener('mousemove', function (e) {
+        vm.inCanvasViewer(e, ctx)
+      })
+    },
+    exportSvg(ctx) {
+      if (typeof ctx.getSerializedSvg === 'function') {
+        this.art = ctx.getSerializedSvg(true)
+        console.log(this.art)
+      }
+      this.sendArt()
+    },
+
+    /**
+     * Colors methods
+     */
+    setColor(el, canvas, ctx) {
       //  Get color
-      activeColor = el.getAttribute('data-color')
+      this.activeColor = el.getAttribute('data-color')
 
       //  Remove active class
       if (document.querySelector('.colors .active')) {
@@ -61,82 +105,124 @@ export default {
       //  Set active class
       el.classList.add('active')
 
-      clearCanvas()
-    }
+      this.clearCanvas(ctx, canvas, ctx)
+    },
+    setPersonalColor(val) {
+      this.activeColor = val
+    },
+    colorListener(ctx, canvas) {
+      let vm = this
+      var colors = document.getElementsByClassName("color")
+      for (var i = 0; i < colors.length; i++) {
+        colors[i].addEventListener('click', function (e) {
+          vm.setColor(e.target, canvas, ctx)
+        }, false)
+      }
+    },
+    personalColorListener(ctx, canvas) {
+      let vm = this
 
-    //  Set personal color
-    function setPersonalColor(val) {
-      activeColor = val
-    }
+      const personalColorInp = document.getElementById('personal-color')
+      personalColorInp.addEventListener('input', function () {
+        //  Remove active class from colors
+        vm.activeColor = document.querySelector('.colors .active')
+        if (vm.activeColor) {
+          vm.activeColor.classList.remove('active')
+        }
 
-    function startPosition(e) {
-      drawing = true
-      draw(e)
-    }
+        vm.clearCanvas(ctx, canvas)
 
-    function endPosition() {
-      drawing = false
+        vm.setPersonalColor(personalColorInp.value)
+      })
+    },
+
+    /**
+     * Drawing methods
+     */
+    startPosition(e, ctx) {
+      this.drawing = true
+      this.draw(e, ctx)
+    },
+    endPosition(ctx) {
+      this.drawing = false
       ctx.beginPath()
-    }
 
-    function draw(e) {
-      if (!drawing) {
+      this.exportSvg(ctx)
+    },
+    draw(e, ctx) {
+      if (!this.drawing) {
         return
       } else {
         ctx.lineWidth = 6
         ctx.lineCap = 'round'
-        ctx.strokeStyle = activeColor
+        ctx.strokeStyle = this.activeColor
 
         var rect = e.target.getBoundingClientRect();
-        var x = (e.clientX - rect.left) * ratio; //x position within the element.
-        var y = (e.clientY - rect.top) * ratio;  //y position within the element.
+        var x = (e.clientX - rect.left) * this.ratio; //x position within the element.
+        var y = (e.clientY - rect.top) * this.ratio;  //y position within the element.
 
         ctx.lineTo(x, y)
         ctx.stroke()
         ctx.beginPath()
         ctx.moveTo(x, y)
       }
+    },
+
+    /**
+     * Actually all methods which work with canvas.
+     * This wrap is done because we have two context:
+     * 1. Drawing representation
+     * 2. Svg export
+     */
+    ctxCore(ctx, canvas) {
+      //  Event listeners
+      this.handleEvents(ctx, canvas)
+
+      //  Handle color changing
+      this.colorListener(ctx, canvas)
+
+      //  Handle personal color changing
+      this.personalColorListener(ctx, canvas)
+
+      //  Check if user is drawing inside of the canvas
+      this.drawCanvas(ctx)
+    },
+
+    /**
+     * Send art to the flow object
+     */
+    sendArt() {
+      this.$emit('sendArt', this.art)
     }
+  },
+  mounted() {
+    //  Mounted variables
+    const vm = this,
+          canvas = this.$refs.artCanvas,
+          ctxDefault = canvas.getContext('2d'),
+          ctx = new canvas2svg({
+            ctx: ctxDefault,
+            width: this.canvasSize.width * this.ratio,
+            height: this.canvasSize.height * this.ratio,
+          })
 
-    function inCanvasViewer(e) {
-      if (e.target.tagName != 'CANVAS') {
-        drawing = false
-        ctx.beginPath()
-      }
-    }
+    //  Resizing
+    this.resizeCanvas(canvas)
 
-    //  Event listeners
-    canvas.addEventListener('mousedown', startPosition)
-    canvas.addEventListener('mouseup', endPosition)
-    canvas.addEventListener('mousemove', draw)
+    // Drawing representation context
+    this.ctxCore(ctxDefault, canvas)
 
-    //  Set color - listener
-    var colors = document.getElementsByClassName("color");
-    for (var i = 0; i < colors.length; i++) {
-      colors[i].addEventListener('click', function (e) {
-        setColor(e.target)
-      }, false);
-    }
+    // Svg export context
+    this.ctxCore(ctx, canvas)
 
-    //  Set personal color - listener
-    const personalColorInp = document.getElementById('personal-color')
-    personalColorInp.addEventListener('input', function () {
-      //  Remove active class from colors
-      var activeColor = document.querySelector('.colors .active')
-      if (activeColor) {
-        activeColor.classList.remove('active')
-      }
+    // Clear button handling
+    document.querySelector('#clear').addEventListener('click', function () {
+      vm.clearCanvas(ctxDefault, canvas)
+      vm.clearCanvas(ctx, canvas)
+    }, false)
 
-      clearCanvas()
-
-      setPersonalColor(personalColorInp.value)
-    })
-
-    //  Check if user is drawing inside of the canvas
-    window.addEventListener('mousemove', inCanvasViewer)
-
-    //  Clear button action
-    document.querySelector('#clear').addEventListener('click', clearCanvas)
+    // Connect SVG to Canvas script
+    // ...
   }
 }
 </script>

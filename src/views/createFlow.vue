@@ -18,7 +18,7 @@
                         class="par-1 italic text-block-input" placeholder="Описание..."></textarea>
               <span class="length-left"></span>
           </div>
-          <v-art-create></v-art-create>
+          <v-art-create @sendArt="getArt"></v-art-create>
         </div>
       </section>
       <section id="content">
@@ -46,7 +46,8 @@ export default {
         authorId: '', // Get from store
         public: true,
         content: {}
-      }
+      },
+      art: ''
     }
   },
   mixins: [autoGrow, lengthLeft],
@@ -54,6 +55,10 @@ export default {
     getContent(content) {
       this.flow.content = content
       console.log(this.flow)
+    },
+    getArt(art) {
+      this.flow.art = art
+      console.log(this.flow.art)
     }
   },
   beforeMount() {
