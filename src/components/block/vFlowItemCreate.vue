@@ -70,7 +70,7 @@ export default {
             this.urlPasted = true
             this.$refs.createName.focus()
           } else {
-            //  throw error that value is not url and add class by ref
+            // throw error that value is not url and add class by ref
           }
         }, 1)
       }
@@ -89,7 +89,7 @@ export default {
 
           this.newItemSent = true
         } else {
-          //  throw error that name is not filled
+          // throw error that name is not filled
         }
       }
     },

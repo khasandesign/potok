@@ -64,7 +64,7 @@
             <v-button size="xs" variant="dark">Дизайн</v-button>
             <v-button size="xs" variant="outline-dark">Веб разработка</v-button>
             <v-button size="xs" variant="outline-dark">Мобильная разработка</v-button>
-            <v-button size="i-md" variant="highlight">
+            <v-button size="i-md" variant="highlight" to="/search">
               <v-icon name="search" size="24"></v-icon>
             </v-button>
           </div>

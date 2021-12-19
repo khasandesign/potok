@@ -54,27 +54,27 @@ export default {
         // Vars
         var items = item.parentElement
 
-        //  Add info about prev item in general object
+        // Add info about prev item in general object
         this.content.links.push(value)
 
-        //  Insert a new flow item in DOM and check isn't it just editing an existing one
+        // Insert a new flow item in DOM and check isn't it just editing an existing one
         var firstItemUrl = items.children[0].querySelector('.item-create-url input')
 
         if (firstItemUrl.value.length != 0) {
           this.chaptersItemsQty[chapter].itemsQty++
         }
 
-        //  Order items
+        // Order items
         this.orderItems(items)
 
-        //  Assign new item-number for all items
+        // Assign new item-number for all items
         this.assignNumbers()
 
-        //  Focus on link input of a pasted item
+        // Focus on link input of a pasted item
         this.$nextTick(() => {
           items.children[0].querySelector('.item-create-url input').focus()
 
-          //  Send content variable to createFlow view
+          // Send content variable to createFlow view
           this.sendContent()
         })
       })
@@ -84,14 +84,14 @@ export default {
         // Vars
         var flow = this.$refs.flow
 
-        //  Insert new chapter item in DOM
+        // Insert new chapter item in DOM
         var firstChapterInput = flow.children[0].querySelector('input')
 
         if (firstChapterInput.value.length != 0) {
           this.chaptersItemsQty[this.chapterQty + 1] = {}
           this.chaptersItemsQty[this.chapterQty + 1].itemsQty = 1
 
-          //  Build chapter object and push it in general object
+          // Build chapter object and push it in general object
           var chapterObj = {
             id: this.chapterQty,
             name: flow.children[0].querySelector('input').value
@@ -99,23 +99,23 @@ export default {
 
           this.content.chapters.push(chapterObj)
 
-          //  Assign new item-number for all items
+          // Assign new item-number for all items
           this.assignNumbers()
 
           this.chapterQty++
 
-        //  Create a new qty var for new chapter
-        //  ...
+        // Create a new qty var for new chapter
+        // ...
         }
 
-        //  Order chapters
+        // Order chapters
         this.orderChapters()
 
-        //  Focus on the new chapter's input
+        // Focus on the new chapter's input
         this.$nextTick(() => {
           this.$refs.flow.children[0].querySelector('input').focus()
 
-          //  Send content variable to createFlow view
+          // Send content variable to createFlow view
           this.sendContent()
         })
       })
@@ -144,7 +144,7 @@ export default {
       });
     },
     assignNumbers() {
-      //  Assign new item-number for all items
+      // Assign new item-number for all items
       this.$nextTick(() => {
         var allItems = document.querySelectorAll('.flow-item-create')
         allItems = [].slice.call(allItems).reverse()

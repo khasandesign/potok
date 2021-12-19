@@ -1,8 +1,8 @@
 export default {
     // data() {
-    //     return {
-    //         mainFavicon: ''
-    //     }
+    //    return {
+    //        mainFavicon: ''
+    //    }
     // },
     methods: {
         changeFavicon(fav) {

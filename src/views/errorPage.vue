@@ -13,8 +13,8 @@
           <h4>{{ error.__name }}</h4>
           <div class="message par-4 italic">{{ error.__message }}</div>
           <div class="suggestions">
-            <v-button size="xs" variant="outline-dark" @click="$router.push('/')">Главная страница</v-button>
-            <v-button size="xs" variant="outline-dark" @click="$router.push('/profile')">Мои потоки</v-button>
+            <v-button size="xs" variant="outline-dark" to="/">Главная страница</v-button>
+            <v-button size="xs" variant="outline-dark" to="/profile">Мои потоки</v-button>
             <v-button size="xs" variant="outline-dark">Библиотека</v-button>
             <v-button size="xs" variant="outline-dark">Становление мидлом в PHP...</v-button>
           </div>

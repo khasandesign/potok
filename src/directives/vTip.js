@@ -46,12 +46,12 @@ export default {
         function callTip() {
             var coords = el.getBoundingClientRect()
 
-            //  Vars
+            // Vars
             var direction = tip.getAttribute('data-direction'),
                 posX = 0,
                 posY = 0
 
-            //  Get coords of a tip
+            // Get coords of a tip
             tip.classList.remove('closed')
             let tipCoords = tip.getBoundingClientRect()
             tip.classList.add('closed')
@@ -60,11 +60,11 @@ export default {
                 direction = 'top'
             }
 
-            //  Align top offset to page itself
+            // Align top offset to page itself
             coords.y = coords.y + window.scrollY
 
 
-            //  Calc coords to move
+            // Calc coords to move
             if (direction == 'top') {
                 posX = coords.x + coords.width / 2
                 posY = coords.y + coords.height + 16
@@ -87,11 +87,11 @@ export default {
                 tip.style.transform = 'translateX(-50%)'
             }
 
-            //  Move tip
+            // Move tip
             tip.style.left = posX + 'px'
             tip.style.top = posY + 'px'
 
-            //  Show tip
+            // Show tip
             tip.classList.remove('closed')
         }
 

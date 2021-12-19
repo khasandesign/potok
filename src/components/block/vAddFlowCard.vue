@@ -1,8 +1,10 @@
 <template>
-  <div class="col-xxl-3 col-xl-4 col-lg-5 col-md-6 add-flow-card-wrap" @click="this.$router.push('/create-flow')">
-    <div class="add-flow-card anim-click">
-      <v-icon name="filled-plus" size="44"></v-icon>
-    </div>
+  <div class="col-xxl-3 col-xl-4 col-lg-5 col-md-6 add-flow-card-wrap">
+    <router-link to="/create-flow">
+      <div class="add-flow-card anim-click">
+        <v-icon name="filled-plus" size="44"></v-icon>
+      </div>
+    </router-link>
   </div>
 </template>
 

@@ -1,14 +1,13 @@
 <template>
   <div class="art-create">
     <div class="colors">
-      <span class="color active" data-color="#0284EB" style="background: #0284EB; outline-color: #0284EB"></span>
+      <span class="color active" data-color="#0284EB" ref="firstColorItem" style="background: #0284EB; outline-color: #0284EB"></span>
       <span class="color" data-color="#E84D1C" style="background: #E84D1C; outline-color: #E84D1C"></span>
-      <span class="color" data-color="#753838" style="background: #753838; outline-color: #753838"></span>
+      <span class="color" data-color="#0E0F0F" style="background: #0E0F0F; outline-color: #0E0F0F"></span>
       <span class="color" data-color="#2BB4AB" style="background: #2BB4AB; outline-color: #2BB4AB"></span>
       <span class="color" data-color="#DFCA0C" style="background: #DFCA0C; outline-color: #DFCA0C"></span>
-      <div class="personal-color">
-        <input type="text" class="par-1 italic text-block-input" id="personal-color" placeholder="Ваш цвет...">
-      </div>
+      <canvas class="color-picker" ref="colorPicker" @click="setColorPicker()"></canvas>
+      <img src="@/assets/images/color-pallete-canvas.png" ref="palleteSource" alt="" class="visually-hidden">
     </div>
     <canvas class="art" ref="artCanvas"></canvas>
     <div class="actions">
@@ -19,6 +18,7 @@
       </div>
     </div>
   </div>
+  <div class="color-picker-indicator visually-hidden" ref="pickerIndicator"></div>
 
   <!--  Tips  -->
   <v-tip id="artTip" class="tip-left" data-direction="left" tip-id="artTip" action="Понятно">
@@ -39,29 +39,49 @@ export default {
       drawing: false,
       ratio: 2,
       activeColor: '#0284EB',
+      palleteColor: '',
       canvasSize: {
         width: 342,
         height: 242
-      }
+      },
+      pallete: false,
+      timer: null
     }
   },
   methods: {
     /**
-     * Canvas methods
+     * @param ctx
+     * @param canvas
      */
     clearCanvas(ctx, canvas) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     },
+
+    /**
+     * @param canvas
+     */
     resizeCanvas(canvas) {
       canvas.width = this.canvasSize.width * this.ratio
       canvas.height = this.canvasSize.height * this.ratio
     },
+
+    /**
+     * Check if cursor is on canvas area
+     * @param e
+     * @param ctx
+     */
     inCanvasViewer(e, ctx) {
       if (e.target.tagName != 'CANVAS') {
         this.drawing = false
         ctx.beginPath()
       }
     },
+
+    /**
+     * Check what user actually do and call necessary methods
+     * @param ctx
+     * @param canvas
+     */
     handleEvents(ctx, canvas) {
       let vm = this
 
@@ -76,33 +96,43 @@ export default {
         vm.draw(e, ctx)
       })
     },
+
+    /**
+     * Even listener for isCanvasViewer (JSDocs: Check if cursor is on canvas area)
+     * @param ctx
+     */
     drawCanvas(ctx) {
       let vm = this
       window.addEventListener('mousemove', function (e) {
         vm.inCanvasViewer(e, ctx)
       })
     },
+
+    /**
+     * Export canvas as svg and call sendArt (JSDoc: Send art to the flow object via emit event)
+     * @param ctx
+     */
     exportSvg(ctx) {
       if (typeof ctx.getSerializedSvg === 'function') {
         this.art = ctx.getSerializedSvg(true)
-        console.log(this.art)
       }
       this.sendArt()
     },
 
     /**
-     * Colors methods
+     * Set active color and change it visually in DOM
+     * @param el
+     * @param canvas
+     * @param ctx
      */
     setColor(el, canvas, ctx) {
-      //  Get color
+      // Get color
       this.activeColor = el.getAttribute('data-color')
 
-      //  Remove active class
-      if (document.querySelector('.colors .active')) {
-        document.querySelector('.colors .active').classList.remove('active')
+      // Switch active class
+      if (document.querySelector('.colors').querySelector('.active')) {
+        document.querySelector('.colors').querySelector('.active').classList.remove('active')
       }
-
-      //  Set active class
       el.classList.add('active')
 
       this.clearCanvas(ctx, canvas, ctx)
@@ -119,21 +149,65 @@ export default {
         }, false)
       }
     },
-    personalColorListener(ctx, canvas) {
-      let vm = this
+    palleteViewer(e, colorPickerCanvas, colorPickerCtx) {
+      if (this.pallete) {
+        let offset = colorPickerCanvas.getBoundingClientRect(),
+            x = e.pageX - offset.left + 12,
+            y = e.pageY - offset.top - (window.scrollY - 12)
 
-      const personalColorInp = document.getElementById('personal-color')
-      personalColorInp.addEventListener('input', function () {
-        //  Remove active class from colors
-        vm.activeColor = document.querySelector('.colors .active')
-        if (vm.activeColor) {
-          vm.activeColor.classList.remove('active')
+        // Move indicator
+        this.$refs.pickerIndicator.classList.add('visible-hidden')
+        this.$refs.pickerIndicator.style.left = e.pageX + 'px'
+        this.$refs.pickerIndicator.style.top = e.pageY + 'px'
+        this.$refs.pickerIndicator.classList.remove('visible-hidden')
+
+        let p = colorPickerCtx.getImageData(x, y, 1, 1).data,
+            hex = "#" + ("000000" + this.rgbToHex(p[0], p[1], p[2])).slice(-6)
+
+        if (hex !== '#000000') {
+          this.$refs.pickerIndicator.style.backgroundColor = hex
+          this.palleteColor = hex
         }
 
-        vm.clearCanvas(ctx, canvas)
+      }
+    },
+    rgbToHex(r, g, b) {
+      if (r > 255 || g > 255 || b > 255) {
+        throw "Invalid color component"
+      }
+      return ((r << 16) | (g << 8) | b).toString(16)
+    },
+    openColorPicker(el, colorPickerCtx) {
+      this.$refs.pickerIndicator.classList.remove('visually-hidden')
 
-        vm.setPersonalColor(personalColorInp.value)
-      })
+      el.classList.add('active')
+
+      // Draw color pallete in canvas
+      let img = this.$refs.palleteSource
+      colorPickerCtx.drawImage(img, 0, 0, 160, 160)
+
+      this.pallete = true
+    },
+    setColorPicker() {
+      this.closeColorPicker()
+
+      this.activeColor = this.palleteColor
+      let firstColorItem = this.$refs.firstColorItem
+      firstColorItem.style.background = this.activeColor
+      firstColorItem.style.outlineColor = this.activeColor
+      firstColorItem.setAttribute('data-color', this.activeColor)
+
+      firstColorItem.click()
+
+      console.log(firstColorItem)
+    },
+    closeColorPicker() {
+      if (this.pallete === true) {
+        this.pallete = false
+
+        this.$refs.pickerIndicator.classList.add('visually-hidden')
+        this.$refs.colorPicker.classList.remove('active')
+      }
     },
 
     /**
@@ -175,38 +249,55 @@ export default {
      * 2. Svg export
      */
     ctxCore(ctx, canvas) {
-      //  Event listeners
+      // Event listeners
       this.handleEvents(ctx, canvas)
 
-      //  Handle color changing
+      // Handle color changing
       this.colorListener(ctx, canvas)
 
-      //  Handle personal color changing
-      this.personalColorListener(ctx, canvas)
-
-      //  Check if user is drawing inside of the canvas
+      // Check if user is drawing inside of the canvas
       this.drawCanvas(ctx)
     },
 
     /**
-     * Send art to the flow object
+     * Send art to the flow object via emit event
      */
     sendArt() {
       this.$emit('sendArt', this.art)
     }
   },
   mounted() {
-    //  Mounted variables
-    const vm = this,
-          canvas = this.$refs.artCanvas,
-          ctxDefault = canvas.getContext('2d'),
-          ctx = new canvas2svg({
-            ctx: ctxDefault,
-            width: this.canvasSize.width * this.ratio,
-            height: this.canvasSize.height * this.ratio,
-          })
+    const vm = this
 
-    //  Resizing
+    // Art drawing canvas
+    const canvas = this.$refs.artCanvas,
+        ctxDefault = canvas.getContext('2d'),
+        ctx = new canvas2svg({
+          ctx: ctxDefault,
+          width: this.canvasSize.width * this.ratio,
+          height: this.canvasSize.height * this.ratio,
+        })
+
+    // Color pallete canvas
+    const colorPickerCanvas = this.$refs.colorPicker,
+        colorPickerCtx = colorPickerCanvas.getContext('2d')
+
+    colorPickerCtx.canvas.width = 160
+    colorPickerCtx.canvas.height = 160
+
+    colorPickerCanvas.addEventListener('mousemove', function (e) {
+      clearTimeout(this.timer)
+      vm.openColorPicker(this, colorPickerCtx)
+      vm.palleteViewer(e, colorPickerCanvas, colorPickerCtx)
+
+      this.timer = setTimeout(function () {
+        vm.closeColorPicker()
+      }, 800);
+    })
+
+
+
+    // Resizing
     this.resizeCanvas(canvas)
 
     // Drawing representation context
@@ -258,11 +349,9 @@ export default {
   .colors {
     padding-top: 8px;
     position: absolute;
-    left: -236px;
+    left: -60px;
 
     .color {
-      transition: 0.05s;
-      margin-left: auto;
       margin-bottom: 16px;
       cursor: pointer;
       display: block;
@@ -280,8 +369,32 @@ export default {
       outline-offset: 2px;
       width: 16px;
       height: 16px;
-      margin-right: 4px;
-      margin-bottom: 20px;
+      margin-left: 4px;
+      margin-bottom: 16px;
+    }
+
+    .color-picker {
+      background-image: url("~@/assets/images/color-pallete.png");
+      background-size: 100%;
+      position: relative;
+      z-index: 2;
+      transform: scale(1);
+      transition: 0.2s;
+      margin-bottom: 16px;
+      cursor: pointer;
+      display: block;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+
+      &.active {
+        transform: scale(6);
+        margin-left: auto;
+        width: 24px;
+        height: 24px;
+        outline: none;
+        cursor: none;
+      }
     }
   }
 
@@ -320,5 +433,18 @@ export default {
       }
     }
   }
+}
+
+.color-picker-indicator {
+  position: absolute !important;
+  background-color: #FAC1BD;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  outline: 2px solid #fff;
+  z-index: 3;
+  position: relative;
+  cursor: none;
+  transition: 0.08s;
 }
 </style>

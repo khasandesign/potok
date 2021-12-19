@@ -1,3 +1,11 @@
+.btn {
+  outline: none;
+  box-shadow: none;
+
+  &:focus {
+    box-shadow: none;
+  }
+}
 .btn-primary {
   background: $accent;
   color: $button-primary;
@@ -112,30 +120,35 @@
   padding: 0 16px;
   height: 48px;
   border-radius: 10px;
+  line-height: 48px;
 }
 .btn-lg {
   @extend .btn-2;
   padding: 10 16px;
   height: 44px;
   border-radius: 10px;
+  line-height: 44px;
 }
 .btn-md {
   @extend .btn-3;
   padding: 0 12px;
   height: 40px;
   border-radius: 8px;
+  line-height: 40px;
 }
 .btn-sm {
   @extend .btn-4;
   padding: 0 12px;
   height: 30px;
   border-radius: 8px;
+  line-height: 30px;
 }
 .btn-xs {
   @extend .btn-5;
   padding: 0 12px;
   height: 30px;
   border-radius: 8px;
+  line-height: 30px;
 }
 
 .btn-i-xl {
@@ -144,6 +157,7 @@
   width: 48px;
   height: 48px;
   border-radius: 8px;
+  line-height: 48px;
 }
 .btn-i-lg {
   text-align: center;
@@ -151,6 +165,7 @@
   width: 44px;
   height: 44px;
   border-radius: 8px;
+  line-height: 44px;
 }
 .btn-i-md {
   text-align: center;
@@ -158,6 +173,7 @@
   width: 40px;
   height: 40px;
   border-radius: 8px;
+  line-height: 40px;
 }
 .btn-i-sm {
   text-align: center;
@@ -165,6 +181,7 @@
   width: 30px;
   height: 30px;
   border-radius: 8px;
+  line-height: 30px;
 }
 
 .btn-highlight {

@@ -16,7 +16,9 @@ export default {
   overflow: hidden;
 
   img {
-    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
     height: 100%;
   }
 }

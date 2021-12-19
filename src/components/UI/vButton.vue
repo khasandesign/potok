@@ -1,8 +1,12 @@
 <template>
-  <button :class="`btn ${icon !== '' && !isSlot() ? 'btn-i' : ''} btn-${isSlot() == null ? 'i-' : ''}${size} btn-${variant} anim-click`">
+  <button v-if="!to" :class="`btn ${icon !== '' && !isSlot() ? 'btn-i' : ''} btn-${isSlot() == null ? 'i-' : ''}${size} btn-${variant} anim-click`">
     <v-icon :name ="icon" :size="iconSize" v-if="icon !== ''"></v-icon>
     <slot></slot>
   </button>
+  <router-link v-else :to="to" :class="`btn ${icon !== '' && !isSlot() ? 'btn-i' : ''} btn-${isSlot() == null ? 'i-' : ''}${size} btn-${variant} anim-click`">
+    <v-icon :name ="icon" :size="iconSize" v-if="icon !== ''"></v-icon>
+    <slot></slot>
+  </router-link>
 </template>
 
 <script>
@@ -27,13 +31,22 @@ export default {
     iconSize: {
       type: String,
       default: '24'
+    },
+    to: {
+      type: String,
+      default: ''
     }
   },
+  methods: {
+    alignItems(e) {
+      e.target
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-  button:active, button:focus, button:focus-visible {
+  .btn:active, button:focus, button:focus-visible {
     outline: none !important;
     box-shadow: none !important;
   }

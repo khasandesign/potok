@@ -1,12 +1,14 @@
 <template>
-  <div class="col-xxl-3 col-xl-4 col-lg-5 col-md-6 flow-wrap" @click="this.$router.push('/flow')">
-    <div class="flow-card anim-click" @contextmenu="$store.commit('contextmenu', {name: 'flow-card', routes: ['/profile'], event: $event})">
-      <v-crip :src="cripSrc">{{ cripName }}</v-crip>
-      <h6 class="title">{{ title }}</h6>
-      <p class="annotation par-3 italic">{{ annotation }}</p>
-      <v-art :art="art"></v-art>
-      <v-icon v-if="notPublic" name="filled-lock"></v-icon>
-    </div>
+  <div class="col-xxl-3 col-xl-4 col-lg-5 col-md-6 flow-wrap">
+    <router-link to="/flow">
+      <div class="flow-card anim-click" @contextmenu="$store.commit('contextmenu', {name: 'flow-card', routes: ['/profile'], event: $event})">
+        <v-crip :src="cripSrc">{{ cripName }}</v-crip>
+        <h6 class="title">{{ title }}</h6>
+        <p class="annotation par-3 italic">{{ annotation }}</p>
+        <v-art :art="art"></v-art>
+        <v-icon v-if="notPublic" name="filled-lock"></v-icon>
+      </div>
+    </router-link>
   </div>
 </template>
 
@@ -48,6 +50,10 @@ export default {
 <style lang="scss" scoped>
 .flow-wrap {
   margin-bottom: 28px;
+
+  a {
+    color: inherit
+  }
 }
 .flow-card {
   @extend .platter;

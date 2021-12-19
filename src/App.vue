@@ -56,7 +56,7 @@ export default {
 
     this.modalSignIn = new Modal(this.$refs.modalSignIn)
 
-    //  Show Mobile App page if window width is less than 768px
+    // Show Mobile App page if window width is less than 768px
     if (window.innerWidth <= 768) {
       this.$router.push('/mobile-app')
     }
