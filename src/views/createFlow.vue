@@ -7,7 +7,7 @@
     <div class="container">
       <section id="info">
         <div class="col-xl-4 col-lg-6 col-md-8 mx-auto">
-          <v-crip src="profile.jpg">Khasan Sh.</v-crip>
+          <v-crip src="user/original/profile.jpg">Khasan Sh.</v-crip>
           <div class="name form-group">
             <textarea type="text" ref="name" v-model="flow.title" @input="autoGrow($event.target)" maxlength="40"
                       class="h3 text-block-input" placeholder="Заголовок..." v-focus></textarea>
@@ -52,10 +52,19 @@ export default {
   },
   mixins: [autoGrow, lengthLeft],
   methods: {
+    /**
+     * Get content for sendContent emit from vFlowCreate
+     * @param content
+     */
     getContent(content) {
       this.flow.content = content
       console.log(this.flow)
     },
+
+    /**
+     * Get art for sendArt emit from vArtCreate
+     * @param art
+     */
     getArt(art) {
       this.flow.art = art
       console.log(this.flow.art)

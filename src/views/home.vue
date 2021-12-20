@@ -13,7 +13,7 @@
           </v-section-header>
           <div class="row">
             <v-flow-card
-                cripSrc="profile.jpg"
+                cripSrc="user/original/profile.jpg"
                 cripName="Hasan Sh."
                 title="Становление мидлом в PHP c практикой"
                 annotation="Делаю эту подборку для себя чтобы стать мидлом"
@@ -21,7 +21,7 @@
                 not-public
             ></v-flow-card>
             <v-flow-card
-                cripSrc="profile-2.jpg"
+                cripSrc="user/original/profile-2.jpg"
                 cripName="Mark T."
                 title="Безопастность сайтов от хацкеров"
                 annotation="Защитить сайт или приложение в интернете надо уметь"
@@ -37,14 +37,14 @@
           </v-section-header>
           <div class="row">
             <v-flow-card
-                cripSrc="profile.jpg"
+                cripSrc="user/original/profile.jpg"
                 cripName="Hasan Sh."
                 title="Начинаем учить Python до джуна"
                 annotation="Вот и я начал учить питончик, а шо поделать то?"
                 art="art-3.svg"
             ></v-flow-card>
             <v-flow-card
-                cripSrc="profile.jpg"
+                cripSrc="user/original/profile.jpg"
                 cripName="Hasan Sh."
                 title="Становление мидлом в PHP c практикой"
                 annotation="Делаю эту подборку для себя чтобы стать мидлом"
@@ -70,21 +70,21 @@
           </div>
           <div class="row">
             <v-flow-card
-                cripSrc="profile-3.jpg"
+                cripSrc="user/original/profile-3.jpg"
                 cripName="Komol K."
                 title="Полное изучение всех фич Figma"
                 annotation="Figma имеет очень обширный функционал для дизайна"
                 art="art-4.svg"
             ></v-flow-card>
             <v-flow-card
-                cripSrc="profile-4.jpg"
+                cripSrc="user/original/profile-4.jpg"
                 cripName="Baha T."
                 title="Создания стильных интерфейсов"
                 annotation="Минимализм – это не белый фон и текст на нём"
                 art="art-5.svg"
             ></v-flow-card>
             <v-flow-card
-                cripSrc="profile.jpg"
+                cripSrc="user/original/profile.jpg"
                 cripName="Khasan Sh."
                 title="Создание онлайн конструктора сайтов"
                 annotation="Выучив весь этот материал я сделал свой конструктор"

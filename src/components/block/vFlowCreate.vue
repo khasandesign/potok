@@ -30,7 +30,6 @@
 <script>
 export default {
   name: "v-flow-create",
-  emits: ['sendContent'],
   data() {
     return {
       content: {
@@ -47,81 +46,82 @@ export default {
       startIndex: 1
     }
   },
+  emits: ['sendContent'],
   methods: {
+    /**
+     * Save gotten item in content object and switch to a new one
+     * @param value
+     * @param item
+     * @param chapter
+     */
     newItem(value, item, chapter) {
       this.$nextTick(() => {
-
-        // Vars
-        var items = item.parentElement
+        let items = item.parentElement
 
         // Add info about prev item in general object
         this.content.links.push(value)
 
         // Insert a new flow item in DOM and check isn't it just editing an existing one
-        var firstItemUrl = items.children[0].querySelector('.item-create-url input')
-
-        if (firstItemUrl.value.length != 0) {
+        let firstItemUrl = items.children[0].querySelector('.item-create-url input')
+        if (firstItemUrl.value.length !== 0) {
           this.chaptersItemsQty[chapter].itemsQty++
         }
 
-        // Order items
         this.orderItems(items)
 
-        // Assign new item-number for all items
         this.assignNumbers()
 
         // Focus on link input of a pasted item
         this.$nextTick(() => {
           items.children[0].querySelector('.item-create-url input').focus()
 
-          // Send content variable to createFlow view
           this.sendContent()
         })
       })
     },
+
+    /**
+     * Base logic for interaction with chapters and saving them in the content object
+     */
     newChapter() {
       this.$nextTick(() => {
-        // Vars
-        var flow = this.$refs.flow
+        let flow = this.$refs.flow
 
         // Insert new chapter item in DOM
-        var firstChapterInput = flow.children[0].querySelector('input')
-
-        if (firstChapterInput.value.length != 0) {
+        let firstChapterInput = flow.children[0].querySelector('input')
+        if (firstChapterInput.value.length !== 0) {
           this.chaptersItemsQty[this.chapterQty + 1] = {}
           this.chaptersItemsQty[this.chapterQty + 1].itemsQty = 1
 
           // Build chapter object and push it in general object
-          var chapterObj = {
+          let chapterObj = {
             id: this.chapterQty,
             name: flow.children[0].querySelector('input').value
           }
-
           this.content.chapters.push(chapterObj)
 
-          // Assign new item-number for all items
           this.assignNumbers()
 
           this.chapterQty++
-
-        // Create a new qty var for new chapter
-        // ...
         }
 
-        // Order chapters
         this.orderChapters()
 
         // Focus on the new chapter's input
         this.$nextTick(() => {
           this.$refs.flow.children[0].querySelector('input').focus()
 
-          // Send content variable to createFlow view
           this.sendContent()
         })
       })
     },
+
+    /**
+     * Order items according to their chapter and chapter index
+     * @param items
+     */
     orderItems(items) {
-      var itemsChildren = [].slice.call(items.children);
+      let itemsChildren = [].slice.call(items.children);
 
       itemsChildren.sort(function (a, b) {
         return a.getAttribute("data-index").localeCompare(b.getAttribute("data-index"));
@@ -131,8 +131,12 @@ export default {
         items.appendChild(el)
       });
     },
+
+    /**
+     * Order chapters after adding a new one to go bottom to top correctly
+     */
     orderChapters() {
-      var flow = this.$refs.flow,
+      let flow = this.$refs.flow,
           chapters = [].slice.call(flow.children);
 
       chapters.sort(function (a, b) {
@@ -143,25 +147,33 @@ export default {
         flow.appendChild(el)
       });
     },
+
+    /**
+     * Assign new item-number for all items
+     */
     assignNumbers() {
       // Assign new item-number for all items
       this.$nextTick(() => {
-        var allItems = document.querySelectorAll('.flow-item-create')
+        let allItems = document.querySelectorAll('.flow-item-create')
         allItems = [].slice.call(allItems).reverse()
         this.startIndex = allItems.length + 1
         this.$nextTick(() => {
-          for (var i = 0; allItems.length > i; i++) {
+          for (let i = 0; allItems.length > i; i++) {
             allItems[i].querySelector('.item-number').innerHTML = '§ ' + (i + 1) + '.'
           }
         })
       })
     },
+
+    /**
+     * Send content object to createFlow view
+     */
     sendContent() {
       this.$emit('sendContent', this.content)
     },
   },
   mounted() {
-    var items = this.$refs.flowItems
+    let items = this.$refs.flowItems
     this.orderItems(items)
     this.orderChapters()
   }

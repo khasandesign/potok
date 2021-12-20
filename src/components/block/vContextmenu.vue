@@ -1,10 +1,11 @@
 <template>
-  <v-dropdown size="md" class="contextmenu" v-show="contextName === 'flow-card'">
+    <v-dropdown size="md" class="contextmenu" v-show="contextName === 'flow-card'">
     <v-dropdown-item icon="pencil">Изменить</v-dropdown-item>
     <v-dropdown-item icon="copy">Скопировать ссылку</v-dropdown-item>
     <v-dropdown-item icon="share">Поделиться</v-dropdown-item>
     <v-separator></v-separator>
-    <v-dropdown-item icon="lock">Приватность <span>Выкл</span></v-dropdown-item>
+    <v-dropdown-item icon="lock" v-if="contextmenu.private">Приватность <span>Вкл</span></v-dropdown-item>
+    <v-dropdown-item icon="open-lock" v-else>Приватность <span>Выкл</span></v-dropdown-item>
     <v-dropdown-item icon="delete" d-action>Удалить</v-dropdown-item>
   </v-dropdown>
 </template>
@@ -15,7 +16,8 @@ export default {
   data() {
     return {
       click: {},
-      contextName: ''
+      contextName: '',
+      contextmenu: this.context
     }
   },
   props: {
@@ -25,8 +27,13 @@ export default {
     }
   },
   methods: {
+    /**
+     *
+     * @param event
+     * @returns {boolean}
+     */
     callContext(event) {
-      // Close current contextmenu
+      this.rewriteProps()
       this.closeContext()
 
       // Check for special context menu was triggered
@@ -52,14 +59,26 @@ export default {
         }
       }
     },
+
+    /**
+     * Close current contextmenu
+     */
     closeContext() {
       this.contextName = ''
+    },
+
+    /**
+     * Rewrite props in data properties to use them reactively
+     */
+    rewriteProps() {
+      this.contextmenu = this.context
     },
 
     /**
      * Below you will only find specific methods for each of the action
      * Write down common methods above of this comment
      */
+    // ...
   },
   mounted() {
     document.addEventListener("contextmenu", this.callContext);

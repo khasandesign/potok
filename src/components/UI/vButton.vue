@@ -37,11 +37,6 @@ export default {
       default: ''
     }
   },
-  methods: {
-    alignItems(e) {
-      e.target
-    }
-  }
 }
 </script>
 

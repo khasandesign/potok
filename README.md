@@ -1,4 +1,4 @@
-![](src/assets/images/logo.svg)
+![](src/assets/images/UI/logo.svg)
 
 # Potok
 

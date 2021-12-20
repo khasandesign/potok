@@ -7,7 +7,7 @@
     <div class="container">
       <section id="info">
         <div class="col-xl-4 col-lg-6 col-md-8 mx-auto">
-          <v-crip src="profile.jpg">Khasan Sh.</v-crip>
+          <v-crip src="user/original/profile.jpg">Khasan Sh.</v-crip>
           <h3>Становление мидлом в PHP back end</h3>
           <p class="desc par-1 italic">Делаю эту подборку для себя в открытом доступе для того чтобы стать мидлом</p>
           <v-art art="art-1.svg"></v-art>
@@ -19,7 +19,7 @@
             <v-flow id="1"></v-flow>
           </div>
           <div class="col-xl-3 col-md-6 info-md">
-            <v-crip src="profile.jpg">Khasan Sh.</v-crip>
+            <v-crip src="user/original/profile.jpg">Khasan Sh.</v-crip>
             <p class="headline">Становление мидлом <br> в PHP back end</p>
             <p class="par-3 italic">Делаю эту подборку для себя в открытом доступе для того чтобы стать мидлом</p>
             <v-button size="xl" icon="highFive" icon-size="32"></v-button>

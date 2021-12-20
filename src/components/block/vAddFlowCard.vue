@@ -12,6 +12,9 @@
 export default {
   name: "v-add-flow-card",
   methods: {
+    /**
+     * Dynamically change height of add-flow-card according to flow-card
+     */
     addFlowHeight() {
       let addFlowCard = document.querySelector('.add-flow-card'),
           flowCard = document.querySelector('.flow-card')
@@ -21,10 +24,8 @@ export default {
     }
   },
   mounted() {
-    /**
-     * Dynamically change height of add-flow-card according to flow-card
-     */
     this.addFlowHeight()
+
     let vm = this
     window.addEventListener("resize", function() {
       vm.addFlowHeight()

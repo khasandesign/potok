@@ -53,6 +53,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * Check if pasted url is actually link
+     */
     validateUrl() {
       if (!this.validated) {
         var isUrl = false
@@ -75,6 +78,10 @@ export default {
         }, 1)
       }
     },
+
+    /**
+     * Apply new item to the flow's array
+     */
     newItem() {
       if (!this.newItemSent) {
         this.newItemSent = true

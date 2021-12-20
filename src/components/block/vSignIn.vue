@@ -3,19 +3,19 @@
     <div class="col-xxl-4 col-xl-6 col-lg-6 col-md-9 mx-auto">
       <div id="sign-in" class="sing-in" v-if="newAccount">
         <div class="sign-in-header">
-          <img class="logo" src="@/assets/images/logo.svg" alt="Potok">
-          <v-avatar size="32" src="profile.jpg" class="continue-in" @click="newAccount = false" v-if="switchedNewAccount"></v-avatar>
+          <img class="logo" src="@/assets/images/UI/logo.svg" alt="Potok">
+          <v-avatar size="32" src="user/original/profile.jpg" class="continue-in" @click="newAccount = false" v-if="switchedNewAccount"></v-avatar>
           <h4>Войти в поток</h4>
           <p class="par-2">Доброе утричко! Просто войдите <br>
             через любую соц. сеть ниже</p>
         </div>
         <div class="sign-in-actions">
           <div class="social-sign-in">
-            <v-button size="xl" variant="google"><img src="@/assets/images/google.svg"> Google</v-button>
-            <v-button size="xl" variant="facebook"><img src="@/assets/images/facebook.svg"> Facebook</v-button>
-            <v-button size="xl" variant="twitter"><img src="@/assets/images/twitter.svg"> Twitter</v-button>
-            <v-button size="xl" variant="github"><img src="@/assets/images/github.svg"> GitHub</v-button>
-            <v-button size="xl" variant="vk"><img src="@/assets/images/vk.svg"> ВКонтакте</v-button>
+            <v-button size="xl" variant="google"><img src="@/assets/images/UI/google.svg"> Google</v-button>
+            <v-button size="xl" variant="facebook"><img src="@/assets/images/UI/facebook.svg"> Facebook</v-button>
+            <v-button size="xl" variant="twitter"><img src="@/assets/images/UI/twitter.svg"> Twitter</v-button>
+            <v-button size="xl" variant="github"><img src="@/assets/images/UI/github.svg"> GitHub</v-button>
+            <v-button size="xl" variant="vk"><img src="@/assets/images/UI/vk.svg"> ВКонтакте</v-button>
           </div>
         </div>
         <div class="sign-in-footnote">
@@ -29,7 +29,7 @@
       </div>
       <div id="continue-in" class="sing-in" v-if="!newAccount">
         <div class="sign-in-header">
-          <v-avatar size="48" src="profile.jpg"></v-avatar>
+          <v-avatar size="48" src="user/original/profile.jpg"></v-avatar>
           <h4>Хасан Шадияров</h4>
           <p class="par-2">Доброе утричко! Просто войдите <br> через кнопку ниже</p>
         </div>

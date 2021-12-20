@@ -7,7 +7,16 @@
 <script>
 export default {
   name: 'v-avatar',
-  props: ['size', 'src'],
+  props: {
+    size: {
+      type: String,
+      default: '24'
+    },
+    src: {
+      type: String,
+      required: true
+    }
+  },
 }
 </script>
 

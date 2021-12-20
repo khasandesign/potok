@@ -1,6 +1,6 @@
 <template>
   <div class="loading-screen" v-if="loading">
-    <img src="@/assets/images/logo.svg" alt="Potok loading...">
+    <img src="@/assets/images/UI/logo.svg" alt="Potok loading...">
   </div>
 
   <navbar v-if="navbar" :view="navbar"></navbar>
@@ -44,9 +44,18 @@ export default {
   },
   mixins: [changeFavicon],
   methods: {
+    /**
+     * Get the navbar type from other pages and set it or turn it off
+     * @param view navbar type
+     */
     getNavbar(view) {
       this.navbar = view
     },
+
+    /**
+     * Get the footer type from other pages and set it or turn it off
+     * @param view footer type
+     */
     getFooter(view) {
       this.footer = view
     }
@@ -61,7 +70,7 @@ export default {
       this.$router.push('/mobile-app')
     }
 
-    this.changeFavicon('profile.jpg')
+    this.changeFavicon("user/original/profile.jpg")
   },
 }
 </script>

@@ -25,7 +25,7 @@
               <v-flow-card
                   v-skeleton
 
-                  cripSrc="profile-3.jpg"
+                  cripSrc="user/original/profile-3.jpg"
                   cripName="Komol K."
                   title="Полное изучение всех фич Figma"
                   annotation="Figma имеет очень обширный функционал для дизайна"
@@ -34,7 +34,7 @@
               <v-flow-card
                   v-skeleton
 
-                  cripSrc="profile-3.jpg"
+                  cripSrc="user/original/profile-3.jpg"
                   cripName="Komol K."
                   title="Полное изучение всех фич Figma"
                   annotation="Figma имеет очень обширный функционал для дизайна"
@@ -43,7 +43,7 @@
               <v-flow-card
                   v-skeleton
 
-                  cripSrc="profile-3.jpg"
+                  cripSrc="user/original/profile-3.jpg"
                   cripName="Komol K."
                   title="Полное изучение всех фич Figma"
                   annotation="Figma имеет очень обширный функционал для дизайна"
@@ -54,7 +54,7 @@
               <v-flow-card
                   v-skeleton
 
-                  cripSrc="profile-3.jpg"
+                  cripSrc="user/original/profile-3.jpg"
                   cripName="Komol K."
                   title="Полное изучение всех фич Figma"
                   annotation="Figma имеет очень обширный функционал для дизайна"
@@ -63,7 +63,7 @@
               <v-flow-card
                   v-skeleton
 
-                  cripSrc="profile-3.jpg"
+                  cripSrc="user/original/profile-3.jpg"
                   cripName="Komol K."
                   title="Полное изучение всех фич Figma"
                   annotation="Figma имеет очень обширный функционал для дизайна"
@@ -72,7 +72,7 @@
               <v-flow-card
                   v-skeleton
 
-                  cripSrc="profile-3.jpg"
+                  cripSrc="user/original/profile-3.jpg"
                   cripName="Komol K."
                   title="Полное изучение всех фич Figma"
                   annotation="Figma имеет очень обширный функционал для дизайна"
@@ -83,21 +83,21 @@
           <div class="results" ref="results">
             <div class="row">
               <v-flow-card
-                  cripSrc="profile-3.jpg"
+                  cripSrc="user/original/profile-3.jpg"
                   cripName="Komol K."
                   title="Полное изучение всех фич Figma"
                   annotation="Figma имеет очень обширный функционал для дизайна"
                   art="art-4.svg"
               ></v-flow-card>
               <v-flow-card
-                  cripSrc="profile-4.jpg"
+                  cripSrc="user/original/profile-4.jpg"
                   cripName="Baha T."
                   title="Создания стильных интерфейсов"
                   annotation="Минимализм – это не белый фон и текст на нём"
                   art="art-5.svg"
               ></v-flow-card>
               <v-flow-card
-                  cripSrc="profile.jpg"
+                  cripSrc="user/original/profile.jpg"
                   cripName="Khasan Sh."
                   title="Создание онлайн конструктора сайтов"
                   annotation="Выучив весь этот материал я сделал свой конструктор"
@@ -106,14 +106,14 @@
             </div>
             <div class="row">
               <v-flow-card
-                  cripSrc="profile-3.jpg"
+                  cripSrc="user/original/profile-3.jpg"
                   cripName="Komol K."
                   title="Полное изучение всех фич Figma"
                   annotation="Figma имеет очень обширный функционал для дизайна"
                   art="art-4.svg"
               ></v-flow-card>
               <v-flow-card
-                  cripSrc="profile-4.jpg"
+                  cripSrc="user/original/profile-4.jpg"
                   cripName="Baha T."
                   title="Создания стильных интерфейсов"
                   annotation="Минимализм – это не белый фон и текст на нём"
@@ -143,12 +143,19 @@ export default {
     }
   },
   methods: {
-    getParam() {
+    /**
+     * Get search query from GET and call searchTyping (JSDoc: Countdown logic for requesting the database)
+     */
+    getQuery() {
       if (this.$route.query.q) {
         this.search = this.$route.query.q
         this.searchTyping()
       }
     },
+
+    /**
+     * Countdown logic for requesting the database
+     */
     searchTyping() {
       clearTimeout(this.timer)
 
@@ -159,10 +166,14 @@ export default {
         if (this.search) {
           this.sendSearch()
         } else {
-          this.clearResults()
+          this.clearResult()
         }
       }, 400)
     },
+
+    /**
+     * Send request to search endpoint API
+     */
     sendSearch() {
       // ** -- temporary comment
       // **Do request to db here
@@ -172,17 +183,25 @@ export default {
 
       // Show results
       setTimeout(() => {
-        this.showResults()
+        this.showResult()
       }, 1000) // **Remove this timer, it just simulate loading
     },
-    showResults() {
+
+    /**
+     * Hide skeleton loading and show search results with changing the message
+     */
+    showResult() {
       this.$refs.skeleton.classList.remove('show-results')
 
       this.message_class = 'label-1'
       this.message = 'Мы нашли 5 потоков по вашему запросу, Приятных потоков!'
       this.$refs.results.classList.add('show-results')
     },
-    clearResults() {
+
+    /**
+     * Clear search result and search query parametr
+     */
+    clearResult() {
       this.message_class = 'label-5'
       this.message = 'Поиск среди потоков, имён авторов, сфер, профессий и тд.'
 
@@ -191,12 +210,20 @@ export default {
       this.$router.replace({ query });
       this.$refs.results.classList.remove('show-results')
     },
+
+    /**
+     * Start loading animation with skeleton
+     */
     loadingSearch() {
       // Show sekeleton
       this.message_class = 'label-5'
       this.message = 'Так, так, так.. <br> Ищем...'
       this.$refs.skeleton.classList.add('show-results')
     },
+
+    /**
+     * Apply not found message
+     */
     notFound() {
       this.message_class = 'label-1'
       this.message = 'Ничего не найдено...'
@@ -204,7 +231,7 @@ export default {
     }
   },
   mounted() {
-    this.getParam()
+    this.getQuery()
   }
 }
 </script>

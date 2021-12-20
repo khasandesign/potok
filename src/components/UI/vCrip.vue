@@ -15,9 +15,6 @@ export default {
     }
   },
   name: 'v-crip',
-  methods: {
-    // Here we can define colorful background by using method and share image
-  }
 }
 </script>
 

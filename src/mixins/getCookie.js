@@ -1,12 +1,14 @@
 export default {
     methods: {
+        /**
+         * Return all cookies
+         * @returns {{}}
+         */
         getCookie() {
-            var cookie = document.cookie
+            return document.cookie
                 .split(';')
                 .map(cookie => cookie.split('='))
                 .reduce((accumulator, [key, value]) => ({ ...accumulator, [key.trim()]: decodeURIComponent(value) }), {});
-
-            return cookie
         }
     }
 }

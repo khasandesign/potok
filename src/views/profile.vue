@@ -12,7 +12,7 @@
               <div class="overlay" v-show="edit">
                 <v-icon name="camera" size="44"></v-icon>
               </div>
-              <v-avatar ref="avatar" :src="profile.avatar.name" size="98"></v-avatar>
+              <v-avatar ref="avatar" :src="'user/original/' + profile.avatar.name" size="98"></v-avatar>
             </label>
             <div class="visually-hidden">
               <input type="file" name="avatar" id="avatar-upload"
@@ -71,18 +71,19 @@
           </v-section-header>
           <div class="row">
             <v-flow-card
-                cripSrc="profile.jpg"
+                cripSrc="user/original/profile.jpg"
                 cripName="Hasan Sh."
                 title="Начинаем учить Python до джуна"
                 annotation="Вот и я начал учить питончик, а шо поделать то?"
                 art="art-3.svg"
             ></v-flow-card>
             <v-flow-card
-                cripSrc="profile.jpg"
+                cripSrc="user/original/profile.jpg"
                 cripName="Hasan Sh."
                 title="Становление мидлом в PHP c практикой"
                 annotation="Делаю эту подборку для себя чтобы стать мидлом"
                 art="art-1.svg"
+                private-flow
             ></v-flow-card>
             <v-add-flow-card></v-add-flow-card>
           </div>
@@ -136,6 +137,7 @@ export default {
         this.unlockInputs()
         let vm = this
 
+        // Listen for save/cancel actions
         this.$nextTick(() => {
           document.querySelector('.save-profile').addEventListener('click', function () {
             vm.saveEdit()
@@ -152,30 +154,32 @@ export default {
         this.lockInputs()
       }
     },
-    save(newValue) {
-      if (newValue) {
-        this.$emit('navbar', 'default')
-      } else {
-        this.$emit('navbar', 'default')
-      }
+    save() {
+      this.$emit('navbar', 'default')
     }
   },
   methods: {
-    /** Save profile editing */
+    /**
+     * Save profile editing
+     */
     saveEdit() {
       // Save profile in db
       console.log(this.profile)
       this.clearSelection()
     },
 
-    /** Cancel profile editing */
+    /**
+     * Cancel profile editing
+     */
     cancelEdit() {
       this.setOldInfo()
       this.typeWidth(this.$refs.name)
       this.clearSelection()
     },
 
-    /** Clear text selection when editing is done */
+    /**
+     * Clear text selection when editing is done
+     */
     clearSelection() {
       if (window.getSelection) {
         window.getSelection().removeAllRanges();
@@ -211,7 +215,9 @@ export default {
       name.select()
     },
 
-    /** Add readonly attributes when editing is done */
+    /**
+     * Add readonly attributes when editing is done
+     */
     lockInputs() {
       let name = this.$refs.name,
           profession = this.$refs.profession,
@@ -221,7 +227,9 @@ export default {
       desc.setAttribute('readonly', true)
     },
 
-    /** Save old values of the fields to apply them back if cancel method is called  */
+    /**
+     * Save old values of the fields to apply them back if cancel method is called
+     */
     saveOldInfo() {
       this.oldInfo.avatar = this.$refs.avatar.$el.querySelector('img').getAttribute('src')
       this.oldInfo.name = this.$refs.name.value
@@ -229,7 +237,9 @@ export default {
       this.oldInfo.desc = this.$refs.desc.value
     },
 
-    /** Set saved old values of the fields */
+    /**
+     * Set saved old values of the fields
+     */
     setOldInfo() {
       this.$refs.avatar.$el.querySelector('img').setAttribute('src', this.oldInfo.avatar)
       this.profile.name = this.oldInfo.name

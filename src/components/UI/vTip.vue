@@ -40,8 +40,6 @@ export default {
   methods: {
     closeTip() {
       this.$refs[this.tipId].classList.add('closed')
-
-      // Set cookie
       this.setCookie(this.tipId, 'closed', 365)
     },
   },

@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-md-1 col-3">
             <div class="brand anim-click">
-              <router-link to="/"><img src="@/assets/images/logo.svg" alt="Potok"></router-link>
+              <router-link to="/"><img src="@/assets/images/UI/logo.svg" alt="Potok"></router-link>
             </div>
           </div>
           <div class="col-md-6 col-9 actions">
@@ -17,7 +17,7 @@
               <v-button class="d-none d-md-block" @click="$router.push('/create-flow')" size="xs" variant="secondary">В черновики</v-button>
             </div>
             <div class="profile anim-click">
-              <router-link to="/profile"><v-avatar src="profile.jpg" size="32"></v-avatar></router-link>
+              <router-link to="/profile"><v-avatar src="user/original/profile.jpg" size="32"></v-avatar></router-link>
             </div>
           </div>
         </div>

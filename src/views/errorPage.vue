@@ -46,6 +46,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * Copy meta info report in clipboard as JSON
+     */
     copyJsonReport() {
       window.navigator.clipboard.writeText(JSON.stringify(this.error))
     },

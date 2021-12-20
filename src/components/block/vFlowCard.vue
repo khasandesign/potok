@@ -1,18 +1,21 @@
 <template>
   <div class="col-xxl-3 col-xl-4 col-lg-5 col-md-6 flow-wrap">
     <router-link to="/flow">
-      <div class="flow-card anim-click" @contextmenu="$store.commit('contextmenu', {name: 'flow-card', routes: ['/profile'], event: $event})">
+      <div class="flow-card anim-click" @contextmenu="$store.commit('contextmenu', {name: 'flow-card', routes: ['/profile'], private: privateFlow})">
         <v-crip :src="cripSrc">{{ cripName }}</v-crip>
         <h6 class="title">{{ title }}</h6>
         <p class="annotation par-3 italic">{{ annotation }}</p>
         <v-art :art="art"></v-art>
-        <v-icon v-if="notPublic" name="filled-lock"></v-icon>
+        <v-icon v-if="privateFlow" name="filled-lock"></v-icon>
       </div>
     </router-link>
   </div>
 </template>
 
 <script>
+
+// Doc note: Share now privateFlow, but value from the flow's object (e.g. flow.private)
+
 export default {
   name: "v-flow-card",
   data() {
@@ -39,7 +42,7 @@ export default {
     art: {
       type: String,
     },
-    notPublic: {
+    privateFlow: {
       type: Boolean,
       default: false
     }

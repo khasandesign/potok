@@ -1,5 +1,9 @@
 export default {
     methods: {
+        /**
+         * Base logic for calculating and showing how many symbols left for specific field
+         * @param element input/textarea
+         */
         lengthLeft(element) {
             element.addEventListener('keyup', function (event) {
                 let maxlength = element.getAttribute('maxlength'),

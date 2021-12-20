@@ -2,7 +2,7 @@ export default {
     name: 'skeleton',
     mounted(el) {
         /**
-         * Remove all child elements
+         * Remove all child UI
          */
         let elHeight = el.clientHeight
 

@@ -1,7 +1,7 @@
 <template>
   <footer>
     <div class="potok-description">
-      <img class="logo" src="@/assets/images/logo.svg" alt="Potok">
+      <img class="logo" src="@/assets/images/UI/logo.svg" alt="Potok">
       <p class="par-2">Следите за нами и новыми потоками <br>
         в наших социальных сетях</p>
       <v-social-nets youtube></v-social-nets>
@@ -48,7 +48,7 @@
             <router-link to="">Сайт</router-link>
             <router-link to="">Android приложение</router-link>
             <router-link to="">IOS приложение</router-link>
-            <router-link to="" class="save-on-desktop">Сохранить <img class="mx-1" src="@/assets/images/logo-sm.svg" alt="Potok"> на рабочий
+            <router-link to="" class="save-on-desktop">Сохранить <img class="mx-1" src="@/assets/images/UI/logo-sm.svg" alt="Potok"> на рабочий
               <br> стол как приложение</router-link>
           </div>
         </div>
