@@ -1,7 +1,7 @@
 <template>
   <div class="tip closed" :ref="tipId">
     <div class="arrow">
-      <img src="@/assets/images/elements/_arrow.svg" alt="↑">
+      <img src="@/assets/images/UI/_arrow.svg" alt="↑">
     </div>
     <div class="content">
       <p class="par-4">

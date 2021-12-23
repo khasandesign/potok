@@ -22,19 +22,19 @@
           </div>
           <div class="footer-group">
             <p class="par-2 bold italic">Ресурсы</p>
-            <router-link to="">Наш блог</router-link>
+            <router-link to="" class="disabled">Наш блог</router-link>
             <router-link to="">Практики создания <br> потоков</router-link>
-            <router-link to="">Вопросы и ответы</router-link>
-            <router-link to="">Вакансии</router-link>
-            <router-link to="">Заказать печатную версию потока</router-link>
-            <router-link to="">Партнерская программа</router-link>
-            <router-link to="">Изменть действия в меню</router-link>
+            <router-link to="" class="disabled">Вопросы и ответы</router-link>
+            <router-link to="" class="disabled">Вакансии</router-link>
+            <router-link to="" class="disabled">Заказать печатную версию потока</router-link>
+            <router-link to="" class="disabled">Партнерская программа</router-link>
+            <router-link to="" class="disabled">Изменть действия в меню</router-link>
           </div>
           <div class="footer-group">
             <p class="par-2 bold italic">Формальности</p>
-            <router-link to="">Как мы используем API</router-link>
-            <router-link to="">Доступные платформы</router-link>
-            <router-link to="">Форматы для вставки</router-link>
+            <router-link to="" class="disabled">Как мы используем API</router-link>
+            <router-link to="" class="disabled">Доступные платформы</router-link>
+            <router-link to="" class="disabled">Форматы для вставки</router-link>
             <router-link to="">Что даёт вам создание своих потоков</router-link>
             <router-link to="">Правила пользования</router-link>
             <router-link to="">Копирайт</router-link>
@@ -45,10 +45,10 @@
           </div>
           <div class="footer-group" style="flex: none">
             <p class="par-2 bold italic">Платформы</p>
-            <router-link to="">Сайт</router-link>
-            <router-link to="">Android приложение</router-link>
-            <router-link to="">IOS приложение</router-link>
-            <router-link to="" class="save-on-desktop">Сохранить <img class="mx-1" src="@/assets/images/UI/logo-sm.svg" alt="Potok"> на рабочий
+            <router-link to="" class="disabled">Сайт</router-link>
+            <router-link to="" class="disabled">Android приложение</router-link>
+            <router-link to="" class="disabled">IOS приложение</router-link>
+            <router-link to="" class="save-on-desktop disabled">Сохранить <img class="mx-1" src="@/assets/images/UI/logo-sm.svg" alt="Potok"> на рабочий
               <br> стол как приложение</router-link>
           </div>
         </div>
@@ -80,6 +80,11 @@ footer {
     display: flex;
     gap: 48px;
     margin-top: 80px;
+
+    .disabled {
+      pointer-events: none;
+      color: $gray-22;
+    }
   }
   p:first-child {
     margin-bottom: 18px;

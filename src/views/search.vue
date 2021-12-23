@@ -133,7 +133,7 @@ export default {
     return {
       search: '',
       message: 'Поиск среди потоков, имён авторов, сфер, профессий и тд.',
-      message_class: 'label-5',
+      message_class: 'label-6',
       timer: undefined,
     }
   },
@@ -202,7 +202,7 @@ export default {
      * Clear search result and search query parametr
      */
     clearResult() {
-      this.message_class = 'label-5'
+      this.message_class = 'label-6'
       this.message = 'Поиск среди потоков, имён авторов, сфер, профессий и тд.'
 
       let query = Object.assign({}, this.$route.query);
@@ -216,7 +216,7 @@ export default {
      */
     loadingSearch() {
       // Show sekeleton
-      this.message_class = 'label-5'
+      this.message_class = 'label-6'
       this.message = 'Так, так, так.. <br> Ищем...'
       this.$refs.skeleton.classList.add('show-results')
     },

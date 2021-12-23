@@ -8,7 +8,7 @@
       <section id="info">
         <div class="col-xl-4 col-lg-6 col-md-8 mx-auto">
           <div class="profile">
-            <label for="avatar-upload" class="avatar-upload-label">
+            <label for="avatar-upload" class="avatar-upload-label anim-click">
               <div class="overlay" v-show="edit">
                 <v-icon name="camera" size="44"></v-icon>
               </div>
