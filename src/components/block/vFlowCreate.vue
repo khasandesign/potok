@@ -1,13 +1,16 @@
 <template>
   <div class="flow" ref="flow">
     <div class="flow-chapter" v-for="indexCh in chapterQty" :key="indexCh" :data-index="indexCh">
-      <input
-          class="chapter-title italic"
+      <textarea
+          class="chapter-title italic text-block-input"
           data-tip-id="chapterTip"
           placeholder="Название секции..."
           v-tip
           @keyup.enter="newChapter"
-      >
+          @keydown.enter="$event.preventDefault()"
+          @input="autoGrow($event.target)"
+          ref="chapterTitle"
+      ></textarea>
       <div class="flow-items" ref="flowItems">
         <v-flow-item-create
             :index="index"
@@ -28,8 +31,11 @@
 </template>
 
 <script>
+import autoGrow from "../../mixins/autoGrow";
+
 export default {
   name: "v-flow-create",
+  mixins: [autoGrow],
   data() {
     return {
       content: {
@@ -43,7 +49,8 @@ export default {
           startIndex: 0
         }
       },
-      startIndex: 1
+      startIndex: 1,
+      gIndexCount: 0
     }
   },
   emits: ['sendContent'],
@@ -59,6 +66,7 @@ export default {
         let items = item.parentElement
 
         // Add info about prev item in general object
+        this.gIndexCount += 1
         this.content.links.push(value)
 
         // Insert a new flow item in DOM and check isn't it just editing an existing one
@@ -89,7 +97,8 @@ export default {
 
         // Insert new chapter item in DOM
         let firstChapterInput = flow.children[0].querySelector('input')
-        if (firstChapterInput.value.length !== 0) {
+
+        if (firstChapterInput.value.length === 0) {
           this.chaptersItemsQty[this.chapterQty + 1] = {}
           this.chaptersItemsQty[this.chapterQty + 1].itemsQty = 1
 
@@ -109,7 +118,10 @@ export default {
 
         // Focus on the new chapter's input
         this.$nextTick(() => {
-          this.$refs.flow.children[0].querySelector('input').focus()
+          let newChapterField = this.$refs.flow.children[0].querySelector('textarea')
+
+          this.autoGrow(newChapterField)
+          newChapterField.focus()
 
           this.sendContent()
         })
@@ -117,11 +129,11 @@ export default {
     },
 
     /**
-     * Order items according to their chapter and chapter index
+     * Order items in decrement/increment
      * @param items
      */
     orderItems(items) {
-      let itemsChildren = [].slice.call(items.children);
+      let itemsChildren = [].slice.call(items.children)
 
       itemsChildren.sort(function (a, b) {
         return a.getAttribute("data-index").localeCompare(b.getAttribute("data-index"));
@@ -133,7 +145,7 @@ export default {
     },
 
     /**
-     * Order chapters after adding a new one to go bottom to top correctly
+     * Order chapters in decrement/increment
      */
     orderChapters() {
       let flow = this.$refs.flow,
@@ -152,7 +164,6 @@ export default {
      * Assign new item-number for all items
      */
     assignNumbers() {
-      // Assign new item-number for all items
       this.$nextTick(() => {
         let allItems = document.querySelectorAll('.flow-item-create')
         allItems = [].slice.call(allItems).reverse()
@@ -173,9 +184,10 @@ export default {
     },
   },
   mounted() {
-    let items = this.$refs.flowItems
-    this.orderItems(items)
+    this.orderItems(this.$refs.flowItems)
     this.orderChapters()
+
+    this.autoGrow(this.$refs.chapterTitle)
   }
 }
 </script>
@@ -184,7 +196,8 @@ export default {
 .flow {
 
   .flow-chapter {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto 1fr;
     gap: 24px;
     align-items: flex-end;
     margin-bottom: 48px;
@@ -192,6 +205,7 @@ export default {
     .chapter-title {
       @extend .par-1;
       @extend .italic;
+      font-size: 20px;
       width: 200px;
       text-align: right;
       color: $label-1;

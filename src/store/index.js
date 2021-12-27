@@ -4,6 +4,7 @@ const store = createStore({
   state: {
     error: {},
     context: {},
+    authorized: !!localStorage.getItem('token')
   },
   mutations: {
     /**
@@ -69,6 +70,15 @@ const store = createStore({
      */
     clearContextmenu(state) {
       state.context = {}
+    },
+
+    /**
+     * Update authorized property
+     * @param state
+     * @param auth
+     */
+    signIn(state, auth) {
+      state.authorized = auth
     }
   },
   actions: {},

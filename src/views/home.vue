@@ -23,9 +23,9 @@
             <v-flow-card
                 cripSrc="user/original/profile-2.jpg"
                 cripName="Mark T."
-                title="Безопастность сайтов от хацкеров"
-                annotation="Защитить сайт или приложение в интернете надо уметь"
-                art="art-2.svg"
+                title="Полная база Git и GitHub хардкор уровня"
+                annotation="Регулярно обновляемая база знаний Git и Github..."
+                art="art-7.svg"
             ></v-flow-card>
             <div class="col-md-3"></div>
           </div>

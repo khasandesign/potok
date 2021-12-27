@@ -1,6 +1,7 @@
 <template>
-  <img class="icon" :style="{ width: customSize + 'px', height: customSize + 'px' }" :src="require(`@/assets/icons/${path}`)"/>
+  <img class="icon" :style="{ width: customSize + 'px', height: customSize + 'px'}" :src="require(`@/assets/icons/${path}`)"/>
 </template>
+
 
 <script>
 export default {
@@ -16,6 +17,10 @@ export default {
     customSize: {
       type: String,
       required: false,
+    },
+    color: {
+      type: String,
+      default: '#000'
     }
   },
   name: 'v-icon',

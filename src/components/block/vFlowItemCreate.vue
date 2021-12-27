@@ -58,8 +58,8 @@ export default {
      */
     validateUrl() {
       if (!this.validated) {
-        var isUrl = false
-        var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+        let isUrl = false
+        let pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
             '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
             '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
             '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
@@ -107,8 +107,8 @@ export default {
 <style lang="scss" scoped>
 .flow-item {
   display: grid;
-  gap: 48px;
   grid-template-columns: auto 1fr;
+  gap: 48px;
 
   p {
     margin: 0;

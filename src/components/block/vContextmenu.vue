@@ -5,7 +5,7 @@
     <v-dropdown-item icon="share">Поделиться</v-dropdown-item>
     <v-separator></v-separator>
     <v-dropdown-item icon="lock" v-if="contextmenu.private">Приватность <span>Вкл</span></v-dropdown-item>
-    <v-dropdown-item icon="open-lock" v-else>Приватность <span>Выкл</span></v-dropdown-item>
+    <v-dropdown-item icon="globe" v-else>Приватность <span>Выкл</span></v-dropdown-item>
     <v-dropdown-item icon="delete" d-action>Удалить</v-dropdown-item>
   </v-dropdown>
 </template>
@@ -49,8 +49,16 @@ export default {
           let contextmenu = document.querySelector('.contextmenu')
           this.click.x = event.clientX
           this.click.y = event.clientY + window.scrollY
-          contextmenu.style.left = this.click.x + 'px'
-          contextmenu.style.top = this.click.y + 'px'
+
+          if (event.clientY + contextmenu.clientHeight < window.innerHeight) {
+            contextmenu.style.left = this.click.x + 'px'
+            contextmenu.style.top = this.click.y + 'px'
+          } else {
+            contextmenu.style.left = this.click.x + 'px'
+            contextmenu.style.top = this.click.y - contextmenu.clientHeight + 'px'
+          }
+
+          console.log(this.click.y + contextmenu.clientHeight, window.innerHeight)
 
           // Clear store's state
           this.$store.commit('clearContextmenu')

@@ -1,0 +1,38 @@
+.form-check {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+
+  input.form-check-input {
+    outline: none;
+    box-shadow: none;
+    border: 1px solid $gray-12;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+
+    &:focus {
+      background-color: $gray-06;
+    }
+
+    &:active {
+      outline: none;
+      box-shadow: none;
+      border: 1px solid $gray-12;
+    }
+
+    &:checked[type=checkbox] {
+      background-color: $primary;
+      border: none;
+      background-image: url("~@/assets/images/UI/checkbox.svg");
+    }
+  }
+
+  label {
+    @extend .par-4;
+    @extend .label-4;
+    @extend .italic;
+    cursor: pointer;
+  }
+}

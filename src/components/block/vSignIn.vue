@@ -1,45 +1,63 @@
 <template>
   <div class="container">
     <div class="col-xxl-4 col-xl-6 col-lg-6 col-md-9 mx-auto">
-      <div id="sign-in" class="sing-in" v-if="newAccount">
-        <div class="sign-in-header">
-          <img class="logo" src="@/assets/images/UI/logo.svg" alt="Potok">
-          <v-avatar size="32" src="user/original/profile.jpg" class="continue-in" @click="newAccount = false" v-if="switchedNewAccount"></v-avatar>
-          <h4>Войти в поток</h4>
-          <p class="par-2">Доброе утричко! Просто войдите <br>
-            через любую соц. сеть ниже</p>
-        </div>
-        <div class="sign-in-actions">
-          <div class="social-sign-in">
-            <v-button size="xl" variant="google"><img src="@/assets/images/UI/google.svg"> Google</v-button>
-            <v-button size="xl" variant="facebook"><img src="@/assets/images/UI/facebook.svg"> Facebook</v-button>
-            <v-button size="xl" variant="twitter"><img src="@/assets/images/UI/twitter.svg"> Twitter</v-button>
-            <v-button size="xl" variant="github"><img src="@/assets/images/UI/github.svg"> GitHub</v-button>
-            <v-button size="xl" variant="vk"><img src="@/assets/images/UI/vk.svg"> ВКонтакте</v-button>
+      <transition name="fade-left" mode="out-in">
+        <div id="sign-in" class="sign-in" v-if="!logSession">
+          <div class="sign-in-header">
+            <img class="logo" src="@/assets/images/UI/logo.svg" alt="Potok">
+            <v-avatar size="32" src="user/original/profile.jpg" class="continue-in" @click="logSession = true"
+                      v-if="switchedLogSession"></v-avatar>
+            <h4>Войти в поток</h4>
+            <p class="par-2">{{ hrMessage }} Просто войдите <br>
+              через любую соц. сеть ниже</p>
+          </div>
+          <div class="sign-in-actions">
+            <div class="social-sign-in">
+              <v-button size="xl" variant="google"><img src="@/assets/images/UI/google.svg"> Google</v-button>
+              <v-button size="xl" variant="apple"><img src="@/assets/images/UI/apple.svg"> Apple ID</v-button>
+              <v-button size="xl" variant="vk"><img src="@/assets/images/UI/vk.svg"> ВКонтакте</v-button>
+            </div>
+          </div>
+          <div class="sign-in-footnote">
+            <p class="par-5 label-5">Регистрируясь на сайте вы соглашайтесь с
+              <router-link to="/">Политикой Конфиденциальности</router-link>
+              и
+              <router-link to="/">Правиклами Пользования</router-link>
+              .
+            </p>
           </div>
         </div>
-        <div class="sign-in-footnote">
-          <p class="par-5 label-5">Регистрируясь на сайте вы соглашайтесь с
-            <router-link to="/">Политикой Конфиденциальности</router-link>
-            и
-            <router-link to="/">Правиклами Пользования</router-link>
-            .
-          </p>
+        <div id="continue-in" class="sign-in" v-else-if="!emailSent && logSession">
+          <div class="sign-in-header">
+            <v-avatar size="48" src="user/original/profile.jpg"></v-avatar>
+            <h4>{{ logSessionInfo.name }}</h4>
+            <p class="par-2">{{ hrMessage }} Просто войдите <br> через кнопку ниже</p>
+          </div>
+          <div class="sign-in-actions">
+            <v-button size="xl" variant="primary" class="btn-2" @click="logInSession">Войти</v-button>
+          </div>
+          <div class="sign-in-footnote">
+            <p class="par-5 label-5 mb-0">Войти в другой аккаунт? <span class="semibold new-account"
+                                                                        @click="logSession = false, switchedLogSession = true">Другой аккаунт</span>
+            </p>
+          </div>
         </div>
-      </div>
-      <div id="continue-in" class="sing-in" v-if="!newAccount">
-        <div class="sign-in-header">
-          <v-avatar size="48" src="user/original/profile.jpg"></v-avatar>
-          <h4>Хасан Шадияров</h4>
-          <p class="par-2">Доброе утричко! Просто войдите <br> через кнопку ниже</p>
+        <div id="email-sent" class="sign-in" v-else-if="emailSent && logSession">
+          <div class="sign-in-header">
+            <v-avatar size="48" src="user/original/profile.jpg"></v-avatar>
+            <h4>Проверьте почту</h4>
+            <p class="par-2">Мы отправили вам ссылочку для подтверждения входа.</p>
+          </div>
+          <div class="sign-in-actions">
+            <a href="https://mail.google.com" class="btn btn-2 btn-xl btn-google anim-click"><img
+                src="@/assets/images/UI/i-envelop-sign-in-24px.svg"> Открыть почту</a>
+          </div>
+          <div class="sign-in-footnote">
+            <p class="par-5 label-5 mb-0">Войти в другой аккаунт? <span class="semibold new-account" @click="logSession = false, switchedLogSession = true">Другой аккаунт</span>
+            </p>
+          </div>
         </div>
-        <div class="sign-in-actions">
-          <v-button size="xl" variant="primary" class="btn-2">Войти</v-button>
-        </div>
-        <div class="sign-in-footnote">
-          <p class="par-5 label-5 mb-0">Создать новый аккаунт. <span class="semibold new-account" @click="newAccount = true, switchedNewAccount = true">Регистрация</span></p>
-        </div>
-      </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -49,25 +67,71 @@ export default {
   name: "v-sign-in",
   data() {
     return {
-      newAccount: false,
-      switchedNewAccount: false
+      logSession: !!this.logSessionInfo,
+      switchedLogSession: false,
+      emailSent: false,
     }
   },
-  beforeMount() {
-    this.$emit('navbar', false)
-    this.$emit('footer', false)
+  props: {
+    logSessionInfo: {
+      type: Object,
+      default: null
+    },
+    hrMessage: {
+      type: String,
+    }
   },
+  methods: {
+    /**
+     * Log in to the account and send mail with confirmation link
+     */
+    logInSession() {
+      this.generateTempUrl()
+
+      // ...Send mail here
+      this.emailSent = true
+    },
+
+    /**
+     * Generate temporal url to accept the log in process
+     */
+    generateTempUrl() {
+      let location = window.location,
+          link = location.protocol + '//' + location.host + '/sign-in/confirm-email/' + this.logSessionInfo.email + '/' + this.logSessionInfo.accept_token
+
+      console.log(link)
+    },
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.sing-in {
+// Fade left
+.fade-left-enter-active,
+.fade-left-leave-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: 0.2s;
+}
+
+.fade-left-enter-from {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.fade-left-leave-to {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.sign-in {
   @extend .platter;
   margin-top: 64px;
   text-align: center;
   padding: 40px 64px 64px 64px;
   width: 100%;
   position: relative;
+
 
   .sign-in-header {
     margin-bottom: 24px;

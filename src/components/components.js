@@ -9,7 +9,6 @@ import vAddFlowCard from "./block/vAddFlowCard";
 import navbarDefault from "../layout/navbarDefault";
 import footerDefault from "../layout/footerDefault";
 import vArt from "./UI/vArt";
-import vFlow from "./block/vFlow";
 import vFlowItem from "./block/vFlowItem";
 import vSocialNets from "./block/vSocialNets";
 import navbar from "../layout/navbar";
@@ -25,6 +24,7 @@ import vDropdown from "./block/vDropdown";
 import vDropdownItem from "./block/vDropdownItem";
 import vSeparator from "./UI/vSeparator";
 import vContextmenu from "./block/vContextmenu";
+import navbarGuest from "../layout/navbarGuest";
 
 export default [
     Head,
@@ -39,9 +39,9 @@ export default [
     navbarDefault,
     navbarCreate,
     navbarProfile,
+    navbarGuest,
     footerDefault,
     vArt,
-    vFlow,
     vFlowItem,
     vSocialNets,
     vFlowCreate,
@@ -53,5 +53,5 @@ export default [
     vDropdown,
     vDropdownItem,
     vSeparator,
-    vContextmenu
+    vContextmenu,
 ]

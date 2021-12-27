@@ -1,11 +1,13 @@
 export default {
     data() {
-      return {
-          activeColor: '#0284EB',
-          paletteColor: '',
-          palette: false,
-          timer: null
-      }
+        return {
+            activeColor: '#0284EB',
+            paletteColor: '',
+            palette: false,
+            timer: null,
+            offset: {},
+            paletteClosed: false
+        }
     },
     methods: {
         /**
@@ -34,8 +36,8 @@ export default {
          */
         colorListener(ctx, canvas) {
             let vm = this
-            var colors = document.getElementsByClassName("color")
-            for (var i = 0; i < colors.length; i++) {
+            let colors = document.getElementsByClassName("color")
+            for (let i = 0; i < colors.length; i++) {
                 colors[i].addEventListener('click', function (e) {
                     vm.setColor(e.target, canvas, ctx)
                 }, false)
@@ -55,10 +57,10 @@ export default {
                     y = e.pageY - offset.top - (window.scrollY - 12)
 
                 // Move indicator
-                this.$refs.pickerIndicator.classList.add('visible-hidden')
+                this.$refs.pickerIndicator.classList.add('visually-hidden')
                 this.$refs.pickerIndicator.style.left = e.pageX + 'px'
                 this.$refs.pickerIndicator.style.top = e.pageY + 'px'
-                this.$refs.pickerIndicator.classList.remove('visible-hidden')
+                this.$refs.pickerIndicator.classList.remove('visually-hidden')
 
                 let p = colorPickerCtx.getImageData(x, y, 1, 1).data,
                     hex = "#" + ("000000" + this.rgbToHex(p[0], p[1], p[2])).slice(-6)
@@ -91,15 +93,17 @@ export default {
          * @param colorPickerCtx
          */
         openColorPicker(el, colorPickerCtx) {
-            this.$refs.pickerIndicator.classList.remove('visually-hidden')
+            if (!this.palette && !this.paletteClosed) {
+                this.$refs.pickerIndicator.classList.remove('visually-hidden')
 
-            el.classList.add('active')
+                el.classList.add('active')
 
-            // Draw color palette in canvas
-            let img = this.$refs.paletteSource
-            colorPickerCtx.drawImage(img, 0, 0, 160, 160)
+                // Draw color palette in canvas
+                let img = this.$refs.paletteSource
+                colorPickerCtx.drawImage(img, 0, 0, 160, 160)
 
-            this.palette = true
+                this.palette = true
+            }
         },
 
         /**
@@ -118,15 +122,23 @@ export default {
         },
 
         /**
-         * Close color picker
+         * Close color picker, set mouseleave true if color picker should be closed by mouseleave
+         * @param mouseleave
          */
-        closeColorPicker() {
-            if (this.palette === true) {
-                this.palette = false
-
-                this.$refs.pickerIndicator.classList.add('visually-hidden')
-                this.$refs.colorPicker.classList.remove('active')
+        closeColorPicker(mouseleave = false) {
+            if (!mouseleave) {
+                this.paletteClosed = true
+            } else {
+                clearTimeout(this.timer)
             }
+            this.palette = false
+
+            this.$refs.pickerIndicator.classList.add('visually-hidden')
+            this.$refs.colorPicker.classList.remove('active')
+
+            setTimeout(() => {
+                this.paletteClosed = false
+            }, 200)
         },
     },
     mounted() {
@@ -134,19 +146,27 @@ export default {
 
         // Color palette canvas
         const colorPickerCanvas = this.$refs.colorPicker,
-            colorPickerCtx = colorPickerCanvas.getContext('2d')
+            colorPickerCtx = colorPickerCanvas.getContext('2d'),
+            indicator = this.$refs.pickerIndicator
 
         colorPickerCtx.canvas.width = 160
         colorPickerCtx.canvas.height = 160
 
-        colorPickerCanvas.addEventListener('mousemove', function (e) {
-            clearTimeout(this.timer)
-            vm.openColorPicker(this, colorPickerCtx)
-            vm.paletteViewer(e, colorPickerCanvas, colorPickerCtx)
+        let canvasElements = [indicator, colorPickerCanvas]
+        canvasElements.forEach(function(el) {
+            el.addEventListener('mousemove', function (e) {
+                clearTimeout(vm.timer)
+                if (!this.palette) {
+                    vm.openColorPicker(this, colorPickerCtx)
+                }
+                vm.paletteViewer(e, colorPickerCanvas, colorPickerCtx)
+            })
+        });
 
-            this.timer = setTimeout(function () {
-                vm.closeColorPicker()
-            }, 800);
+        colorPickerCanvas.addEventListener('mouseleave', function () {
+            vm.timer = setTimeout(function () {
+                vm.closeColorPicker(true)
+            }, 100);
         })
     }
 }

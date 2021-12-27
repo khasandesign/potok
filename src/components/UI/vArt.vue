@@ -1,5 +1,6 @@
 <template>
   <div class="art">
+    <!--  Change img tag on svg placement when connect DB  -->
     <img :src="require(`@/assets/images/_trash/${art}`)" :alt="art">
   </div>
 </template>

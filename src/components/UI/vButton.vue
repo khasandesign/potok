@@ -41,8 +41,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .btn:active, button:focus, button:focus-visible {
-    outline: none !important;
-    box-shadow: none !important;
-  }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn:active, button:focus, button:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
 </style>

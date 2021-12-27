@@ -105,6 +105,15 @@
     color: #fff;
   }
 }
+.btn-apple {
+  @extend .btn-social;
+  color: #fff;
+  background: #000;
+
+  &:hover {
+    color: #fff;
+  }
+}
 .btn-vk {
   @extend .btn-social;
   color: #fff;

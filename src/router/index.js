@@ -9,6 +9,30 @@ import signIn from "../views/signIn";
 import mobileApp from "../views/mobileApp";
 import search from "../views/search";
 import store from '../store/'
+import redirect from "../views/redirect";
+import emailConfirm from "../views/emailConfirm";
+
+/**
+ * Guard for common users
+ * @param to
+ * @param from
+ * @param next
+ */
+const authGuard = function (to, from, next) {
+  if (!store.state.authorized) next({name: 'sign-in'})
+  else next()
+}
+
+/**
+ * Guard for pages, which can be used only by non-authorized people
+ * @param to
+ * @param from
+ * @param next
+ */
+const authPrevent = function (to, from, next) {
+  if (store.state.authorized) next({path: '/'})
+  else next()
+}
 
 const routes = [
   {
@@ -24,19 +48,28 @@ const routes = [
   },
   {
     path: '/flow',
+    name: 'flow',
     component: flow
   },
   {
     path: '/profile', // Editing profile functionality will be inside of this page
-    component: profile
+    component: profile,
+    beforeEnter: authGuard
   },
   {
     path: '/create-flow', // This page include all steps of creating a flow
-    component: createFlow
+    component: createFlow,
+    beforeEnter: authGuard
   },
   {
     path: '/sign-in',
-    component: signIn
+    name: 'sign-in',
+    component: signIn,
+    beforeEnter: authPrevent
+  },
+  {
+    path: '/sign-in/confirm-email/:email/:acceptToken',
+    component: emailConfirm
   },
   {
     path: '/search',
@@ -47,7 +80,13 @@ const routes = [
     component: mobileApp
   },
   {
-    path: '/error/',
+    path: '/redirect',
+    name: 'redirect',
+    component: redirect,
+    props: true
+  },
+  {
+    path: '/error',
     name: 'error-page',
     component: errorPage,
   },
@@ -67,7 +106,7 @@ const router = createRouter({
   routes,
   scrollBehavior() {
     document.getElementById('app').scrollIntoView();
-  }
+  },
 });
 
 export default router;
