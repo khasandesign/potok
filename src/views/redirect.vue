@@ -76,9 +76,6 @@ export default {
     },
   },
   mounted() {
-    this.$emit('navbar', false)
-    this.$emit('footer', false)
-
     // In very low possible scenario user can go to a link, when interval checking is not done, this is just an insurance
     let cookies = this.getCookie()
     if (cookies['trust_' + this.flowId]) {

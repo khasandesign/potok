@@ -25,6 +25,9 @@ import vDropdownItem from "./block/vDropdownItem";
 import vSeparator from "./UI/vSeparator";
 import vContextmenu from "./block/vContextmenu";
 import navbarGuest from "../layout/navbarGuest";
+import footbar from "../layout/footbar";
+import vNotifications from "./block/vNotifications";
+import vNotification from "./UI/vNotification";
 
 export default [
     Head,
@@ -40,6 +43,7 @@ export default [
     navbarCreate,
     navbarProfile,
     navbarGuest,
+    footbar,
     footerDefault,
     vArt,
     vFlowItem,
@@ -54,4 +58,6 @@ export default [
     vDropdownItem,
     vSeparator,
     vContextmenu,
+    vNotifications,
+    vNotification
 ]

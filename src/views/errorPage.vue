@@ -57,7 +57,7 @@ export default {
     $route() {
       this.$store.commit('refreshError', null, 404)
     }
-  }
+  },
 }
 </script>
 

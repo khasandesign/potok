@@ -323,6 +323,8 @@ section {
       text-align: right;
       color: $label-1;
       padding-bottom: 8px;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing: antialiased;
     }
   }
 

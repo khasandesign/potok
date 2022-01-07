@@ -70,21 +70,7 @@
             Кликните <kbd>ПКМ</kbd> по потоку чтобы изменить <br class="d-none d-xl-block"> его или сделать приватным.
           </v-section-header>
           <div class="row">
-            <v-flow-card
-                cripSrc="user/original/profile.jpg"
-                cripName="Hasan Sh."
-                title="Начинаем учить Python до джуна"
-                annotation="Вот и я начал учить питончик, а шо поделать то?"
-                art="art-3.svg"
-            ></v-flow-card>
-            <v-flow-card
-                cripSrc="user/original/profile.jpg"
-                cripName="Hasan Sh."
-                title="Становление мидлом в PHP c практикой"
-                annotation="Делаю эту подборку для себя чтобы стать мидлом"
-                art="art-1.svg"
-                private-flow
-            ></v-flow-card>
+            <v-flow-card v-for="flow in flows" :key="flow.id" :flow="flow"></v-flow-card>
             <v-add-flow-card></v-add-flow-card>
           </div>
         </section>
@@ -101,6 +87,7 @@
 <script>
 import autoGrow from "../mixins/autoGrow";
 import lengthLeft from "../mixins/lengthLeft";
+import setLayout from "../mixins/setLayout";
 
 export default {
   data() {
@@ -120,18 +107,41 @@ export default {
         name: '',
         profession: '',
         desc: ''
-      }
+      },
+      flows: [ // This is just mock data, btw api crops data, not vue
+        {
+          id: 1,
+          title: 'Начинаем учить Python до джуна',
+          description: 'Вот и я начал учить питончик, а шо поделать то?',
+          art: 'art-3.svg',
+          public: true,
+          user: {
+            id: 13,
+            name: 'Khasan Sh.',
+            avatar: 'user/original/profile.jpg'
+          }
+        },
+        {
+          id: 2,
+          title: 'Становление мидлом в PHP back end',
+          description: 'Делаю эту подборку для себя чтобы стать мидлом',
+          art: 'art-1.svg',
+          public: false,
+          user: {
+            id: 13,
+            name: 'Khasan Sh.',
+            avatar: 'user/original/profile.jpg'
+          }
+        },
+      ]
     }
   },
-  mixins: [autoGrow, lengthLeft],
-  beforeMount() {
-    this.$emit('navbar', 'default')
-  },
+  mixins: [autoGrow, lengthLeft, setLayout],
   watch: {
     edit(newValue) {
       if (newValue) {
         // Set new navbar
-        this.$emit('navbar', 'profile')
+        this.setNavbar('profile')
 
         this.saveOldInfo()
         this.unlockInputs()

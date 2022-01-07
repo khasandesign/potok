@@ -1,4 +1,4 @@
 <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M27.25 7L30.25 10.75H40V37.75H4V10.75H13.75L16.75 7H27.25Z" stroke="black"/>
+<path d="M27.25 7L30.25 10.75H40V37.75H4V10.75H13.75L16.75 7H27.25Z" stroke="black" stroke-linejoin="bevel"/>
 <circle cx="21.99" cy="23.4988" r="7.25" stroke="black"/>
 </svg>

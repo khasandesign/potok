@@ -12,21 +12,7 @@
             телефон в приложение.
           </v-section-header>
           <div class="row">
-            <v-flow-card
-                cripSrc="user/original/profile.jpg"
-                cripName="Hasan Sh."
-                title="Становление мидлом в PHP c практикой"
-                annotation="Делаю эту подборку для себя чтобы стать мидлом"
-                art="art-1.svg"
-                not-public
-            ></v-flow-card>
-            <v-flow-card
-                cripSrc="user/original/profile-2.jpg"
-                cripName="Mark T."
-                title="Полная база Git и GitHub хардкор уровня"
-                annotation="Регулярно обновляемая база знаний Git и Github..."
-                art="art-7.svg"
-            ></v-flow-card>
+            <v-flow-card v-for="flow in continueFlows" :key="flow.id" :flow="flow"></v-flow-card>
             <div class="col-md-3"></div>
           </div>
         </section>
@@ -36,21 +22,7 @@
             и сразу внести нужные дополнения
           </v-section-header>
           <div class="row">
-            <v-flow-card
-                cripSrc="user/original/profile.jpg"
-                cripName="Hasan Sh."
-                title="Начинаем учить Python до джуна"
-                annotation="Вот и я начал учить питончик, а шо поделать то?"
-                art="art-3.svg"
-            ></v-flow-card>
-            <v-flow-card
-                cripSrc="user/original/profile.jpg"
-                cripName="Hasan Sh."
-                title="Становление мидлом в PHP c практикой"
-                annotation="Делаю эту подборку для себя чтобы стать мидлом"
-                art="art-1.svg"
-                not-public
-            ></v-flow-card>
+            <v-flow-card v-for="flow in userFlows" :key="flow.id" :flow="flow"></v-flow-card>
             <v-add-flow-card></v-add-flow-card>
           </div>
         </section>
@@ -69,27 +41,7 @@
             </v-button>
           </div>
           <div class="row">
-            <v-flow-card
-                cripSrc="user/original/profile-3.jpg"
-                cripName="Komol K."
-                title="Полное изучение всех фич Figma"
-                annotation="Figma имеет очень обширный функционал для дизайна"
-                art="art-4.svg"
-            ></v-flow-card>
-            <v-flow-card
-                cripSrc="user/original/profile-4.jpg"
-                cripName="Baha T."
-                title="Создания стильных интерфейсов"
-                annotation="Минимализм – это не белый фон и текст на нём"
-                art="art-5.svg"
-            ></v-flow-card>
-            <v-flow-card
-                cripSrc="user/original/profile.jpg"
-                cripName="Khasan Sh."
-                title="Создание онлайн конструктора сайтов"
-                annotation="Выучив весь этот материал я сделал свой конструктор"
-                art="art-6.svg"
-            ></v-flow-card>
+            <v-flow-card v-for="flow in libraryFlows" :key="flow.id" :flow="flow"></v-flow-card>
           </div>
         </section>
       </div>
@@ -106,12 +58,99 @@ export default {
         status: 404,
         name: 'Not Found',
         message: 'Object not found: 42',
-      }
+      },
+      continueFlows: [ // This is just mock data, btw api crops data, not vue
+        {
+          id: 1,
+          title: 'Становление мидлом в PHP back end',
+          description: 'Делаю эту подборку для себя чтобы стать мидлом',
+          art: 'art-1.svg',
+          public: false,
+          user: {
+            id: 13,
+            name: 'Khasan Sh.',
+            avatar: 'user/original/profile.jpg'
+          }
+        },
+        {
+          id: 2,
+          title: 'Полная база Git и GitHub хардкор уровня',
+          description: 'Регулярно обновляемая база знаний Git и Github...',
+          art: 'art-7.svg',
+          public: true,
+          user: {
+            id: 13,
+            name: 'Mark T.',
+            avatar: 'user/original/profile-2.jpg'
+          }
+        },
+      ],
+      userFlows: [ // This is just mock data, btw api crops data, not vue
+        {
+          id: 3,
+          title: 'Начинаем учить Python до джуна',
+          description: 'Вот и я начал учить питончик, а шо поделать то?',
+          art: 'art-3.svg',
+          public: true,
+          user: {
+            id: 13,
+            name: 'Khasan Sh.',
+            avatar: 'user/original/profile.jpg'
+          }
+        },
+        {
+          id: 4,
+          title: 'Становление мидлом в PHP back end',
+          description: 'Делаю эту подборку для себя чтобы стать мидлом',
+          art: 'art-1.svg',
+          public: false,
+          user: {
+            id: 13,
+            name: 'Khasan Sh.',
+            avatar: 'user/original/profile.jpg'
+          }
+        },
+      ],
+      libraryFlows: [ // This is just mock data, btw api crops data, not vue
+        {
+          id: 5,
+          title: 'Полное изучение всех фич Figma',
+          description: 'Figma имеет очень обширный функционал для дизайна',
+          art: 'art-4.svg',
+          public: false,
+          user: {
+            id: 13,
+            name: 'Komol K.',
+            avatar: 'user/original/profile-3.jpg'
+          }
+        },
+        {
+          id: 6,
+          title: 'Создания стильных интерфейсов',
+          description: 'Минимализм – это не белый фон и текст на нём',
+          art: 'art-5.svg',
+          public: true,
+          user: {
+            id: 13,
+            name: 'Baha T.',
+            avatar: 'user/original/profile-4.jpg'
+          },
+        },
+        {
+          id: 7,
+          title: 'Создание онлайн конструктора сайтов',
+          description: 'Выучив весь этот материал я сделал свой конструктор',
+          art: 'art-6.svg',
+          public: true,
+          user: {
+            id: 13,
+            name: 'Khasan Sh.',
+            avatar: 'user/original/profile.jpg'
+          },
+        },
+      ],
     }
   },
-  beforeMount() {
-    this.$emit('navbar', 'default')
-  }
 }
 </script>
 

@@ -3,8 +3,8 @@
     <img src="@/assets/images/UI/logo.svg" alt="Potok loading...">
   </div>
 
-  <navbar v-if="navbar" :view="navbar"></navbar>
-  <router-view v-slot="slotProps" @navbar="getNavbar" @footer="getFooter">
+  <navbar :change="layout.navbar"></navbar>
+  <router-view v-slot="slotProps" @navbar="changeNavbar" @footer="changeFooter" @notification="setNotification">
     <transition name="route" mode="out-in">
       <div v-if="Object.keys($store.state.error).length">
         <error-page :error="$store.state.error"></error-page>
@@ -12,7 +12,10 @@
       <component v-else :is="slotProps.Component"></component>
     </transition>
   </router-view>
-  <footer-default v-if="footer"></footer-default>
+  <footbar :change="layout.footer"></footbar>
+
+  <!-- Notifications bar -->
+  <v-notifications :pushed="notification"></v-notifications>
 
   <!-- Modals -->
   <div class="modals">
@@ -26,7 +29,7 @@
   </div>
 
   <!-- Context menu -->
-  <v-contextmenu :context="$store.state.context"></v-contextmenu>
+  <v-contextmenu :context="$store.state.context" @notification="setNotification"></v-contextmenu>
 </template>
 
 <script>
@@ -36,33 +39,43 @@ import changeFavicon from "./mixins/changeFavicon";
 export default {
   data() {
     return {
-      navbar: "default",
-      footer: true,
       modalSignIn: null,
-      loading: true
+      loading: true,
+      notification: {},
+      layout: {
+        navbar: '',
+        footer: ''
+      }
     }
   },
   mixins: [changeFavicon],
   methods: {
     /**
-     * Get the navbar type from other pages and set it or turn it off
-     * @param view navbar type
+     * Set a new navbar
+     * @param navbar
      */
-    getNavbar(view) {
-      this.navbar = view
+    changeNavbar(navbar) {
+      this.layout.navbar = navbar
     },
 
     /**
-     * Get the footer type from other pages and set it or turn it off
-     * @param view footer type
+     * Set a new footer
+     * @param footer
      */
-    getFooter(view) {
-      this.footer = view
+    changeFooter(footer) {
+      this.layout.footer = footer
+    },
+
+    /**
+     * Push a notification form the emitted event
+     * @param notification
+     */
+    setNotification(notification) {
+      this.notification = notification
     }
   },
   mounted() {
     this.loading = false
-
     this.modalSignIn = new Modal(this.$refs.modalSignIn)
 
     // Show Mobile App page if window width is less than 768px
@@ -70,13 +83,26 @@ export default {
       this.$router.push('/mobile-app')
     }
 
-    this.changeFavicon("user/original/profile.jpg")
+    // Set favicon
+    setTimeout(() => {
+      if (this.$store.state.authorized === false) {
+        // Set default favicon
+        this.changeFavicon("UI/favicon-light-mode.svg", "UI/favicon-dark-mode.svg")
+      } else {
+        // Set avatar favicon
+        this.changeFavicon("user/original/profile.jpg")
+      }
+    }, 100)
   },
 }
 </script>
 
 <style lang="scss">
 @import "/assets/scss/themes/light/colors";
+
+body {
+  overflow-x: hidden;
+}
 
 /* route transitions */
 .route-enter-active {

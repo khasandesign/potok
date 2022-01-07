@@ -134,6 +134,8 @@ export default {
     width: 64px;
     color: $label-1;
     padding-top: 8px;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
   }
 
   .item-link {
@@ -163,6 +165,8 @@ export default {
 
     input {
       width: 100%;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing: antialiased;
     }
 
     &:first-child {

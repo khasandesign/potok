@@ -1,20 +1,32 @@
 <template>
-  <div class="col-xxl-3 col-xl-4 col-lg-5 col-md-6 flow-wrap">
+  <div class="col-xxl-3 col-xl-4 col-lg-5 col-md-6 flow-wrap" v-if="flow">
     <router-link to="/flow">
-      <div class="flow-card anim-click" @contextmenu="$store.commit('contextmenu', {name: 'flow-card', routes: ['/profile'], private: privateFlow})">
-        <v-crip :src="cripSrc">{{ cripName }}</v-crip>
-        <h6 class="title">{{ title }}</h6>
-        <p class="annotation par-3 italic">{{ annotation }}</p>
-        <v-art :art="art"></v-art>
-        <v-icon v-if="privateFlow" name="filled-lock"></v-icon>
+      <div
+          class="flow-card anim-click"
+          :data-public="flow.public"
+          @contextmenu="$store.commit('contextmenu', {name: 'flow-card', routes: ['/profile'], flow: flow, event: $event})"
+      >
+        <v-crip :src="flow.user.avatar">{{ flow.user.name }}</v-crip>
+        <h6 class="title">{{ flow.title }}</h6>
+        <p class="annotation par-3 italic">{{ flow.description }}</p>
+        <v-art :art="flow.art"></v-art>
+        <v-icon v-show="!flow.public" name="filled-lock" class="private"></v-icon>
+      </div>
+    </router-link>
+  </div>
+  <div class="col-xxl-3 col-xl-4 col-lg-5 col-md-6 flow-wrap" v-else>
+    <router-link to="/flow">
+      <div class="flow-card anim-click">
+        <v-crip>...</v-crip>
+        <h6 class="title">...</h6>
+        <p class="annotation par-3 italic">... <br> ...</p>
+        <v-art art="art-1.svg"></v-art>
       </div>
     </router-link>
   </div>
 </template>
 
 <script>
-
-// Doc note: Share now privateFlow, but value from the flow's object (e.g. flow.private)
 
 export default {
   name: "v-flow-card",
@@ -24,28 +36,9 @@ export default {
     }
   },
   props: {
-    cripSrc: {
-      type: String,
-      required: true
+    flow: {
+      type: Object,
     },
-    cripName: {
-      type: String,
-      required: true
-    },
-    title: {
-      type: String,
-      required: true
-    },
-    annotation: {
-      type: String,
-    },
-    art: {
-      type: String,
-    },
-    privateFlow: {
-      type: Boolean,
-      default: false
-    }
   }
 }
 </script>
@@ -58,6 +51,7 @@ export default {
     color: inherit
   }
 }
+
 .flow-card {
   @extend .platter;
   text-align: center;
@@ -87,6 +81,12 @@ export default {
     bottom: 12px;
     right: 10px;
     opacity: 0.13;
+  }
+}
+
+@media (min-width: 1400px) {
+  .flow-wrap {
+    margin-right: 0.1px;
   }
 }
 </style>

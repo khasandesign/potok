@@ -17,10 +17,6 @@ export default {
     customSize: {
       type: String,
       required: false,
-    },
-    color: {
-      type: String,
-      default: '#000'
     }
   },
   name: 'v-icon',

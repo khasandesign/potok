@@ -5,10 +5,6 @@ mobile app
 <script>
 export default {
   name: "mobileApp",
-  beforeMount() {
-    this.$emit('navbar', false)
-    this.$emit('footer', false)
-  },
 }
 </script>
 

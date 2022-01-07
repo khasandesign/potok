@@ -33,7 +33,7 @@ export default {
       default: '24'
     },
     to: {
-      type: String,
+      type: [String, Object],
       default: ''
     }
   },

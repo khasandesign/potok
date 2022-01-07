@@ -13,7 +13,7 @@
             </div>
             <div class="page-action">
               <v-button class="d-none d-md-block" to="/sign-in" size="xs" variant="secondary">Войти</v-button>
-              <v-button class="d-none d-md-block" to="/sign-in" size="xs" variant="primary">Регистрация</v-button>
+              <v-button class="d-none d-md-block" :to="{name: 'sign-in', params: {reqSession: false}}" size="xs" variant="primary">Регистрация</v-button>
             </div>
           </div>
         </div>

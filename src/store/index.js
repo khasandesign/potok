@@ -59,9 +59,7 @@ const store = createStore({
      * @param context
      */
     contextmenu(state, context) {
-      state.context.name = context.name
-      state.context.routes = context.routes
-      state.context.private = context.private
+      state.context = context
     },
 
     /**

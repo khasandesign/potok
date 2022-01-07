@@ -212,6 +212,8 @@ export default {
       padding-bottom: 8px;
       border: none;
       outline: none;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing: antialiased;
 
       &::placeholder {
         color: $gray-22;

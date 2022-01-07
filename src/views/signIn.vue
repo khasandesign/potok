@@ -18,6 +18,12 @@ export default {
       logSessionInfo: null,
     }
   },
+  props: {
+    reqSession: {
+      type: [String, Boolean],
+      default: true
+    }
+  },
   mixins: [getCookie, isGuest],
   methods: {
     /**
@@ -35,7 +41,12 @@ export default {
           expires_at: '1641176218',
           accept_token: 'Yq7wUUOQL90cchuuuiUakz7ArHGvlvGHuyiYQecYCKbOGpV7TEWvyrUYBx5o'
         }
-        this.logSession = true
+      }
+
+      // If user click on registration instead of log in button
+      let reqSession = (this.reqSession !== 'false')
+      if (!reqSession) {
+        this.logSessionInfo = null
       }
     },
 
@@ -57,9 +68,6 @@ export default {
     },
   },
   beforeMount() {
-    this.$emit('navbar', false)
-    this.$emit('footer', false)
-
     this.getSession()
   },
 }

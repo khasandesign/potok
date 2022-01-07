@@ -1,11 +1,11 @@
 <template>
-    <v-dropdown size="md" class="contextmenu" v-show="contextName === 'flow-card'">
+  <v-dropdown size="md" class="contextmenu" v-show="contextName === 'flow-card'">
     <v-dropdown-item icon="pencil">Изменить</v-dropdown-item>
     <v-dropdown-item icon="copy">Скопировать ссылку</v-dropdown-item>
     <v-dropdown-item icon="share">Поделиться</v-dropdown-item>
     <v-separator></v-separator>
-    <v-dropdown-item icon="lock" v-if="contextmenu.private">Приватность <span>Вкл</span></v-dropdown-item>
-    <v-dropdown-item icon="globe" v-else>Приватность <span>Выкл</span></v-dropdown-item>
+    <v-dropdown-item icon="globe" v-if="publicFlow" @click="setPrivate">Приватность <span>Выкл</span></v-dropdown-item>
+    <v-dropdown-item icon="lock" v-else @click="setPublic">Приватность <span>Вкл</span></v-dropdown-item>
     <v-dropdown-item icon="delete" d-action>Удалить</v-dropdown-item>
   </v-dropdown>
 </template>
@@ -17,7 +17,9 @@ export default {
     return {
       click: {},
       contextName: '',
-      contextmenu: this.context
+      contextmenu: this.context,
+      publicFlow: false,
+      flowCard: ''
     }
   },
   props: {
@@ -50,15 +52,16 @@ export default {
           this.click.x = event.clientX
           this.click.y = event.clientY + window.scrollY
 
-          if (event.clientY + contextmenu.clientHeight < window.innerHeight) {
+          contextmenu.style.display = 'block'
+
+          // Check if there's enough space to collapse it down
+          if (event.clientY + contextmenu.clientHeight < window.innerHeight) { // yes
             contextmenu.style.left = this.click.x + 'px'
             contextmenu.style.top = this.click.y + 'px'
-          } else {
+          } else { // no
             contextmenu.style.left = this.click.x + 'px'
             contextmenu.style.top = this.click.y - contextmenu.clientHeight + 'px'
           }
-
-          console.log(this.click.y + contextmenu.clientHeight, window.innerHeight)
 
           // Clear store's state
           this.$store.commit('clearContextmenu')
@@ -80,17 +83,44 @@ export default {
      */
     rewriteProps() {
       this.contextmenu = this.context
+      this.flowCard = this.contextmenu.event.target.closest('.flow-card')
+      this.publicFlow = (this.flowCard.getAttribute('data-public') === 'true')
     },
 
     /**
      * Below you will only find specific methods for each of the action
      * Write down common methods above of this comment
      */
-    // ...
+
+
+    setPublic() {
+      // ...Do query to db to set privacy public and then do following code
+
+      this.flowCard.querySelector('.private').style.display = 'none'
+      this.flowCard.setAttribute('data-public', true)
+
+      this.pushNotification({
+        title: 'Публичный поток',
+        description: '“' + this.contextmenu.flow.title.substring(0, 22) + '...” теперь публичный',
+        icon: 'globe',
+      })
+    },
+    setPrivate() {
+      // ...Do query to db to set privacy public and then do following code
+
+      this.flowCard.querySelector('.private').style.display = 'block'
+      this.flowCard.setAttribute('data-public', false)
+
+      this.pushNotification({
+        title: 'Приватный поток',
+        description: '“' + this.contextmenu.flow.title.substring(0, 22) + '...” теперь публичный',
+        icon: 'lock'
+      })
+    }
   },
   mounted() {
-    document.addEventListener("contextmenu", this.callContext);
-    document.addEventListener("click", this.closeContext);
+    document.addEventListener("contextmenu", this.callContext)
+    document.addEventListener("click", this.closeContext)
   }
 }
 </script>

@@ -37,43 +37,68 @@ const authPrevent = function (to, from, next) {
 const routes = [
   {
     path: '/typography',
+    name: 'typography',
     component: typography
   },
   {
     path: '/',
     component: home,
+    name: 'home',
     meta: {
-      permission: 'user'
+      navbar: 'default',
+      footer: 'default'
     }
   },
   {
     path: '/flow',
     name: 'flow',
-    component: flow
+    component: flow,
+    meta: {
+      navbar: 'default',
+      footer: 'default'
+    }
   },
   {
     path: '/profile', // Editing profile functionality will be inside of this page
     component: profile,
-    beforeEnter: authGuard
+    name: 'profile',
+    beforeEnter: authGuard,
+    meta: {
+      navbar: 'default',
+      footer: 'default'
+    }
   },
   {
     path: '/create-flow', // This page include all steps of creating a flow
+    name: 'create-flow',
     component: createFlow,
-    beforeEnter: authGuard
+    props: true,
+    beforeEnter: authGuard,
+    meta: {
+      navbar: 'create',
+      footer: 'default'
+    }
   },
   {
     path: '/sign-in',
     name: 'sign-in',
+    props: true,
     component: signIn,
-    beforeEnter: authPrevent
+    beforeEnter: authPrevent,
   },
   {
     path: '/sign-in/confirm-email/:email/:acceptToken',
+    name: 'confirm-email',
     component: emailConfirm
   },
   {
     path: '/search',
-    component: search
+    component: search,
+    name: 'search',
+    meta: {
+      navbar: 'default',
+      footer: 'default'
+    }
   },
   {
     path: '/mobile-app',
@@ -89,6 +114,10 @@ const routes = [
     path: '/error',
     name: 'error-page',
     component: errorPage,
+    meta: {
+      navbar: 'default',
+      footer: 'default'
+    }
   },
   {
     path: "/:catchAll(.*)",
@@ -96,6 +125,10 @@ const routes = [
       store.commit('throwError', {
         status: 404
       })
+    },
+    meta: {
+      navbar: 'default',
+      footer: 'default'
     }
   },
 

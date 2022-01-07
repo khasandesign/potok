@@ -14,9 +14,10 @@
             <span class="length-left"></span>
           </div>
           <div class="desc form-group">
-              <textarea type="text" ref="desc" v-model="flow.description" @input="autoGrow($event.target)" maxlength="80"
+              <textarea type="text" ref="desc" v-model="flow.description" @input="autoGrow($event.target)"
+                        maxlength="80"
                         class="par-1 italic text-block-input" placeholder="Описание..."></textarea>
-              <span class="length-left"></span>
+            <span class="length-left"></span>
           </div>
           <v-art-create @sendArt="getArt"></v-art-create>
         </div>
@@ -51,6 +52,44 @@ export default {
     }
   },
   mixins: [autoGrow, lengthLeft],
+  props: {
+    save: {
+      default: false
+    }
+  },
+  watch: {
+    save: function (save) {
+      if (save === 'publish') {
+        // ...Publish flow
+        // 1. Check validation
+        // 2. Save to db
+        // 3. Set notification
+        // 4. Redirect to this flow
+
+        this.pushNotification({
+          title: 'Поток опубликован!',
+          description: 'Поток “' + this.flow.title.substring(0, 22) + '...” успешно опубликован',
+          url: '/flow',
+          icon: 'flow-success'
+        })
+
+        this.$router.push('/flow')
+      }
+      if (save === 'draft') {
+        // ...Save to drafts
+        // same steps as above, just publish it as type of draft
+
+        this.pushNotification({
+          title: 'Поток в черновиках',
+          description: 'Поток “' + this.flow.title.substring(0, 22) + '...” добавлен в черновики',
+          url: '/flow',
+          icon: 'flow-draft'
+        })
+
+        this.$router.push('/flow')
+      }
+    }
+  },
   methods: {
     /**
      * Get content for sendContent emit from vFlowCreate
@@ -70,15 +109,14 @@ export default {
       console.log(this.flow.art)
     }
   },
-  beforeMount() {
-    this.$emit('navbar', 'create')
-  },
   mounted() {
     this.autoGrow(this.$refs.name)
     this.autoGrow(this.$refs.desc)
 
     this.lengthLeft(this.$refs.name)
     this.lengthLeft(this.$refs.desc)
+
+
   }
 }
 </script>
@@ -87,9 +125,11 @@ export default {
 section {
   margin: 0;
 }
+
 .text-block-input {
   text-align: center;
 }
+
 .text-block-input.h3 {
   &:focus {
     margin-right: 0;
