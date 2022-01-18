@@ -1,9 +1,9 @@
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M12 6.93548L10 5H3V18.5484H10L12 20M12 6.93548L14 5H21V18.5484H14L12 20M12 6.93548V20" stroke="black" stroke-linejoin="bevel"/>
-<line x1="15" y1="9.5" x2="18" y2="9.5" stroke="black"/>
-<line x1="6" y1="9.5" x2="9" y2="9.5" stroke="black"/>
-<line x1="15" y1="12" x2="18" y2="12" stroke="black"/>
-<line x1="6" y1="12" x2="9" y2="12" stroke="black"/>
-<line x1="15" y1="14.5" x2="18" y2="14.5" stroke="black"/>
-<line x1="6" y1="14.5" x2="9" y2="14.5" stroke="black"/>
+<path d="M12 5.5L10 4.5H2.5V18.5H10L12 19.5M12 5.5L14 4.5H21.5V18.5H14L12 19.5M12 5.5V19.5" stroke="black" stroke-linejoin="round"/>
+<line x1="15" y1="8.5" x2="18.5" y2="8.5" stroke="black" stroke-linejoin="round"/>
+<line x1="5.5" y1="8.5" x2="9" y2="8.5" stroke="black" stroke-linejoin="round"/>
+<line x1="15" y1="11.5" x2="18.5" y2="11.5" stroke="black" stroke-linejoin="round"/>
+<line x1="5.5" y1="11.5" x2="9" y2="11.5" stroke="black" stroke-linejoin="round"/>
+<line x1="15" y1="14.5" x2="18.5" y2="14.5" stroke="black" stroke-linejoin="round"/>
+<line x1="5.5" y1="14.5" x2="9" y2="14.5" stroke="black" stroke-linejoin="round"/>
 </svg>

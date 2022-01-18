@@ -1,7 +1,7 @@
 <template>
   <div>
     <Head>
-      <title>Хасан Шадияров</title>
+      <title>{{ profile.name }}</title>
     </Head>
 
     <div class="container">
@@ -44,13 +44,7 @@
                   readonly>
               <span class="length-left" v-show="edit"></span>
             </div>
-            <div class="pattern">
-              <svg width="25" height="9" viewBox="0 0 25 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M23.6497 2C23.6497 5.31371 20.9634 8 17.6497 8C10.9912 8 12.272 1 6.49127 1C1.99127 1 1.00006 5 1.00006 7.97833"
-                    stroke="black"/>
-              </svg>
-            </div>
+            <v-pattern></v-pattern>
             <textarea
                 type="text"
                 class="par-3 desc px-md-4 text-block-input mx-auto w-100"
@@ -96,7 +90,7 @@ export default {
       profile: {
         avatar: {
           name: 'profile.jpg',
-          file: Blob
+          file: false
         },
         name: 'Хасан Шадияров',
         profession: 'Full Stack Developer',
@@ -176,6 +170,14 @@ export default {
       // Save profile in db
       console.log(this.profile)
       this.clearSelection()
+
+      let image = this.profile.avatar.file ? this.profile.avatar.file : 'user/original/' + this.profile.avatar.name
+
+      this.pushNotification({
+        title: 'Профиль изменён',
+        description: 'Ваш профиль был успешно изменён :D',
+        image: image
+      })
     },
 
     /**
@@ -356,10 +358,6 @@ export default {
     button {
       margin-top: -12px;
     }
-  }
-
-  .pattern {
-    margin: 16px 0 16px 0;
   }
 
   .desc {

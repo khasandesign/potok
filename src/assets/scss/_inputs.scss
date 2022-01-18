@@ -4,6 +4,8 @@
   border: none;
   outline: none;
   resize: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
 
   &::placeholder {
     color: $gray-22;

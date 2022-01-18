@@ -3,46 +3,38 @@ import getCookie from "../mixins/getCookie";
 export default {
     name: 'tip',
     mounted(el) {
-        /**
-         * Vars
-         */
+        // Vars
         var cookie = getCookie.methods.getCookie(),
             id = el.getAttribute('data-tip-id'),
             tip = document.getElementById(id),
             interacted = false
 
-        /**
-         * Check if trigger element was clicked to call tip again
-         */
+        // Check if trigger element was clicked to call tip again
         el.addEventListener('click', function () {
             if (interacted) {
                 closeTip()
                 interacted = false
             }
             if (el.getAttribute('data-tip-interactive') && !interacted) {
+                tip.style.display = 'block'
                 callTip()
                 interacted = true
             }
         })
 
-        /**
-         * Check if tip was closed
-         */
+        // Check if tip was closed
         if (cookie[id] == 'closed') {
+            tip.style.display = 'none'
             return
         } else {
-            /**
-             * Dynamically move tip aligned to the page
-             */
+            // Dynamically move tip aligned to the page
             const resizeObserver = new ResizeObserver(() => {
                 callTip()
             })
             resizeObserver.observe(document.body)
         }
 
-        /**
-         * Calculate tip's position to it's trigger element and show tip
-         */
+        // Calculate tip's position to it's trigger element and show tip
         function callTip() {
             var coords = el.getBoundingClientRect()
 
@@ -95,9 +87,7 @@ export default {
             tip.classList.remove('closed')
         }
 
-        /**
-         * Close tip
-         */
+        // Close tip
         function closeTip() {
             tip.classList.add('closed')
         }

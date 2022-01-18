@@ -1,10 +1,27 @@
-@mixin anim-click() {
-  transform: scale(0.98);
-}
 .anim-click {
   transition: 0.2s !important;
 
   &:active {
-    @include anim-click;
+    transform: scale(0.98);
+  }
+}
+
+.anim-click-sm {
+  transition: 0.2s !important;
+
+  &:active {
+    transform: scale(0.94);
+  }
+}
+
+.anim-pop {
+  animation: anim-pop 0.2s forwards;
+}
+@keyframes anim-pop {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
   }
 }

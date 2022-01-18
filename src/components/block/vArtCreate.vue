@@ -12,7 +12,7 @@
     <canvas class="art" ref="artCanvas"></canvas>
     <div class="actions">
       <v-button icon="eraser" iconSize="24" id="clear"></v-button>
-      <div class="info" id="info" v-tip data-tip-id="artTip" data-tip-interactive="true">
+      <div class="info unselectable" id="info" v-tip data-tip-id="artTip" data-tip-interactive="true">
         <v-icon name="info" size="16"></v-icon>
         <span class="par-5 label-7 medium">Рисунок</span>
       </div>

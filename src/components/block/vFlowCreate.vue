@@ -1,25 +1,55 @@
 <template>
   <div class="flow" ref="flow">
-    <div class="flow-chapter" v-for="indexCh in chapterQty" :key="indexCh" :data-index="indexCh">
-      <textarea
-          class="chapter-title italic text-block-input"
-          data-tip-id="chapterTip"
-          placeholder="Название секции..."
-          v-tip
-          @keyup.enter="newChapter"
-          @keydown.enter="$event.preventDefault()"
-          @input="autoGrow($event.target)"
-          ref="chapterTitle"
+    <!--  Chapters  -->
+    <div class="flow-chapter"
+         v-for="(chapter, chi) in content.chapters"
+         :key="chi">
+      <textarea class="chapter-title italic text-block-input" placeholder="Название секции..."
+                v-tip
+                data-tip-id="chapterTip"
+                v-model="chapter.name"
+                @input="autoGrow($event.target)"
+                @keydown.enter="newChapter"
       ></textarea>
-      <div class="flow-items" ref="flowItems">
-        <v-flow-item-create
-            :index="index"
-            :startIndex="startIndex"
-            :data-index="index"
-            :chapterIndex="indexCh"
-            @newItem="newItem"
-            v-for="index in chaptersItemsQty[indexCh].itemsQty"
-            :key="index"></v-flow-item-create>
+      <!--   Items   -->
+      <div class="flow-items" :id="'chapter-items-' + chi">
+        <draggable v-model="chapter.links" handle=".drag" :key="dragKey">
+          <div class="flow-item flow-item-create" :class="!link.url ? 'empty' : ''" ref="item"
+               v-for="(link, li) in chapter.links"
+               :key="li"
+               @contextmenu="$store.commit('contextmenu', {
+                name: 'flow-item-create',
+                routes: ['/create-flow'],
+                link: link,
+                li: li,
+                chi: chi,
+                event: $event
+              })">
+            <p class="item-number">§ 1.</p>
+            <div class="item-create-url" v-show="!link.url || link.error">
+              <v-icon size=32 name="link"></v-icon>
+              <input type="text" class="par-1" placeholder="Вставьте ссылку..."
+                     v-model="link.url"
+                     @input="link.error = true"
+                     @paste="validateUrl($event, link)"
+                     @keydown.enter="validateUrl($event, link, true)"
+                     @blur="focusName">
+            </div>
+            <div class="item-create-name" v-show="link.url && !link.error">
+              <v-icon size=32 name="link" @click="link.error = true; link.link_updated = +new Date()"></v-icon>
+              <input type="text" class="par-1" placeholder="Введите название..." v-model="link.name"
+                     @keydown.enter="link.name ? newItem(chi) : link.name"
+              >
+            </div>
+            <v-error v-show="link.error" :message="link.error !== true ? link.error : ''"></v-error>
+            <div class="item-actions" v-show="!link.error && link.url && link.name && link.link_created">
+              <v-button @click="insertItem(chi, li)" icon="plus"></v-button>
+              <v-button @click="deleteItem(chi, li)" icon="delete"></v-button>
+              <v-button @click="openUrl(link.url)" icon="launch"></v-button>
+              <v-button icon="drag" class="drag"></v-button>
+            </div>
+          </div>
+        </draggable>
       </div>
     </div>
   </div>
@@ -31,164 +61,302 @@
 </template>
 
 <script>
-import autoGrow from "../../mixins/autoGrow";
+import {VueDraggableNext} from 'vue-draggable-next'
+import autoGrow from "../../mixins/autoGrow"
 
 export default {
   name: "v-flow-create",
   mixins: [autoGrow],
+  emits: ['sendContent'],
+  components: {
+    draggable: VueDraggableNext
+  },
   data() {
     return {
-      content: {
-        links: [],
-        chapters: []
-      },
-      chapterQty: 1,
-      chaptersItemsQty: {
-        1: {
-          itemsQty: 1,
-          startIndex: 0
-        }
-      },
-      startIndex: 1,
-      gIndexCount: 0
+      content: {},
+      undoChanges: [],
+      redoChanges: [],
+      meta: false,
+      dragKey: false
     }
   },
-  emits: ['sendContent'],
   methods: {
     /**
-     * Save gotten item in content object and switch to a new one
-     * @param value
-     * @param item
-     * @param chapter
+     * Application of all validation steps abt URL
      */
-    newItem(value, item, chapter) {
+    validateUrl(e, link, submit) {
+      // Check if @paste
+      if (e.clipboardData) {
+        e.preventDefault() // Prevent to avoid dublicated url
+        link.url = e.clipboardData.getData('text/plain')
+      }
+
+      // Type
+      if (this.validateType(link, submit)) { // When optimize this.validateExist(link), add it
+        return true
+      } else {
+        return false
+      }
+    },
+
+    /**
+     * Validate URL structure and check if it's forbidden source
+     * @param url - link obj from its chapter
+     * @returns {boolean}
+     */
+    validateType(link, submit) {
+      let urlObj
+
+      try {
+        urlObj = new URL(link.url)
+      } catch (_) {
+        link.error = '*Это не ссылка, проверьте её написание'
+        return false // not URL
+      }
+      if (urlObj.origin === null) {
+        link.error = '*Это не ссылка, проверьте её написание'
+        return false // incorrect URL
+      }
+      if (urlObj.protocol === 'http:') {
+        // not secure URL
+      }
+      if (urlObj.hostname === 'localhost' || urlObj.hostname === '127.0.0.1') {
+        link.error = '*Эта ссылка недоступна остальным'
+        return false // localhost URL
+      }
+      let forbidden = ['github'] // Grab this from DB via API, filtered by user's country
+      if (forbidden.some(word => urlObj.host.includes(word))) {
+        link.error = '*Этот сайт нарушает <a target="_blank" href="">Правила пользования</a>'
+        return false // forbidden website
+      }
+
+      // Check if this is just regular creating or editing
+      if (link.link_updated && !submit) {
+        link.error = true
+      } else {
+        link.error = false
+      }
+
+      return true
+    },
+
+    /**
+     * Send GET query to know does a link work or not
+     * @param link
+     * @returns {boolean}
+     */
+    validateExist(link) {
+      let http = new XMLHttpRequest()
+      http.open('HEAD', link.url, false)
+      http.send()
+      if (http.status == 404 || http.status == 204 || http.status == 500) {
+        link.error = '*Эта <a target="_blank" href="' + link.url + '">ссылка</a> не работает, либо она пуста'
+        return false
+      } else {
+        return true
+      }
+    },
+
+    /**
+     * Insert a new chapter in the content obj
+     * @param e
+     */
+    newChapter(e) {
+      e.preventDefault()
+
+      // Vars
+      let lastChapter = this.content.chapters.at(-1),
+          lastChapterEl = document.querySelector('.flow .flow-chapter')
+
+      // Check if first chapter is still empty
+      if (!lastChapter.name) {
+        lastChapterEl.querySelector('textarea').focus()
+      } else {
+        this.content.chapters.unshift({
+          name: '',
+          links: [
+            {
+              name: '',
+              url: '',
+              type: 1,
+              link_created: 0,
+              link_updated: 0,
+              error: 0,
+              user: {
+                name: 'Хасан Шадияров' // Just get user name from store
+              }
+            }
+          ]
+        })
+
+        // Increment chapters count
+        this.content.chapter_count++
+
+        this.indexItems()
+        this.sendContent()
+      }
+    },
+
+    /**
+     * Insert a new item in specific chapter of the content obj
+     * @param chi chapter index
+     */
+    newItem(chi) {
+      // Re-render draggable component
+      this.dragKey = !this.dragKey
+
+      // Inser a new item
       this.$nextTick(() => {
-        let items = item.parentElement
+        // Vars
+        let chapters = this.content.chapters,
+            currentChapter = chapters[chi],
+            lastLink = currentChapter.links.at(0),
+            lastLinkEl = document.querySelector('#chapter-items-' + chi + ' .flow-item')
 
-        // Add info about prev item in general object
-        this.gIndexCount += 1
-        this.content.links.push(value)
+        // Insert an empty item
+        if (lastLink.url || lastLink.name) {
+          currentChapter.links.unshift({
+            name: '',
+            url: '',
+            type: 1,
+            link_created: +new Date(),
+            link_updated: 0,
+            error: 0,
+            user: {
+              name: 'Хасан Шадияров' // Just get user name from store
+            }
+          })
 
-        // Insert a new flow item in DOM and check isn't it just editing an existing one
-        let firstItemUrl = items.children[0].querySelector('.item-create-url input')
-        if (firstItemUrl.value.length !== 0) {
-          this.chaptersItemsQty[chapter].itemsQty++
+          // Increment links count
+          this.content.link_count++
         }
-
-        this.orderItems(items)
-
-        this.assignNumbers()
-
-        // Focus on link input of a pasted item
+        // Focus next item
         this.$nextTick(() => {
-          items.children[0].querySelector('.item-create-url input').focus()
-
-          this.sendContent()
+          lastLinkEl.querySelector('.item-create-url input').focus()
         })
+
+        this.indexItems()
+        this.sendContent()
       })
     },
 
     /**
-     * Base logic for interaction with chapters and saving them in the content object
+     * Reindex items when adding a new one or adding a new chapter
      */
-    newChapter() {
+    indexItems() {
       this.$nextTick(() => {
-        let flow = this.$refs.flow
+        let listNode = document.querySelectorAll('.flow-item'),
+            items = [].slice.call(listNode, 0).reverse()
 
-        // Insert new chapter item in DOM
-        let firstChapterInput = flow.children[0].querySelector('input')
-
-        if (firstChapterInput.value.length === 0) {
-          this.chaptersItemsQty[this.chapterQty + 1] = {}
-          this.chaptersItemsQty[this.chapterQty + 1].itemsQty = 1
-
-          // Build chapter object and push it in general object
-          let chapterObj = {
-            id: this.chapterQty,
-            name: flow.children[0].querySelector('input').value
-          }
-          this.content.chapters.push(chapterObj)
-
-          this.assignNumbers()
-
-          this.chapterQty++
-        }
-
-        this.orderChapters()
-
-        // Focus on the new chapter's input
-        this.$nextTick(() => {
-          let newChapterField = this.$refs.flow.children[0].querySelector('textarea')
-
-          this.autoGrow(newChapterField)
-          newChapterField.focus()
-
-          this.sendContent()
+        items.forEach(function (item, i) {
+          item.querySelector('.item-number').innerHTML = '§ ' + (i + 1) + '.'
         })
       })
     },
 
     /**
-     * Order items in decrement/increment
-     * @param items
-     */
-    orderItems(items) {
-      let itemsChildren = [].slice.call(items.children)
-
-      itemsChildren.sort(function (a, b) {
-        return a.getAttribute("data-index").localeCompare(b.getAttribute("data-index"));
-      }).reverse()
-
-      itemsChildren.forEach(function (el) {
-        items.appendChild(el)
-      });
-    },
-
-    /**
-     * Order chapters in decrement/increment
-     */
-    orderChapters() {
-      let flow = this.$refs.flow,
-          chapters = [].slice.call(flow.children);
-
-      chapters.sort(function (a, b) {
-        return a.getAttribute("data-index").localeCompare(b.getAttribute("data-index"));
-      }).reverse()
-
-      chapters.forEach(function (el) {
-        flow.appendChild(el)
-      });
-    },
-
-    /**
-     * Assign new item-number for all items
-     */
-    assignNumbers() {
-      this.$nextTick(() => {
-        let allItems = document.querySelectorAll('.flow-item-create')
-        allItems = [].slice.call(allItems).reverse()
-        this.startIndex = allItems.length + 1
-        this.$nextTick(() => {
-          for (let i = 0; allItems.length > i; i++) {
-            allItems[i].querySelector('.item-number').innerHTML = '§ ' + (i + 1) + '.'
-          }
-        })
-      })
-    },
-
-    /**
-     * Send content object to createFlow view
+     * Send content to the flow obj
      */
     sendContent() {
-      this.$emit('sendContent', this.content)
+      this.$nextTick(() => {
+        this.$emit('sendContent', this.content)
+      })
     },
+
+    /**
+     * Inser a new empty item below
+     * @param chi
+     * @param li
+     * @returns {boolean}
+     */
+    insertItem(chi, li) {
+      // Vars
+      let chapters = this.content.chapters,
+          currentChapter = chapters[chi],
+          links = currentChapter.links
+
+      // Insert before action
+      if (li) {
+        links.splice(li, 1, links[li], {
+          name: '',
+          url: '',
+          type: 1,
+          link_created: +new Date(),
+          link_updated: 0,
+          error: 0,
+          user: {
+            name: 'Хасан Шадияров' // Just get user name from store
+          }
+        })
+
+        this.indexItems()
+      }
+    },
+
+    /**
+     * Delete flow item from content obj
+     */
+    deleteItem(chi, li) {
+      let links = this.content.chapters[chi].links
+
+      // Save to undo changes
+      this.undoChanges.unshift({
+        action: 'deleteItem',
+        data: {
+          chi: chi,
+          li: li,
+          item: links[li]
+        },
+        instruction: 'Insert deleted item to content obj on it\'s old position'
+      })
+
+      // Decrement links count
+      this.content.link_count--
+
+      // Delete item
+      links.splice(li, 1)
+
+      this.indexItems()
+    },
+
+    /**
+     * Open link of flow item during editing/creating
+     */
+    openUrl(url) {
+      window.open(url, '_blank').focus();
+    },
+
+    focusName(e) {
+      e.target.parentElement.nextSibling.querySelector('input').focus()
+    }
   },
   mounted() {
-    this.orderItems(this.$refs.flowItems)
-    this.orderChapters()
-
-    this.autoGrow(this.$refs.chapterTitle)
-  }
+    // Insert first empty item to display the interface
+    if (Object.keys(this.content).length === 0) {
+      this.content = {
+        link_count: 0,
+        chapter_count: 0,
+        chapters: [
+          {
+            name: '',
+            links: [
+              {
+                name: '',
+                url: '',
+                type: 1,
+                link_created: +new Date(),
+                link_updated: 0,
+                error: 0,
+                user: {
+                  name: 'Хасан Шадияров' // Just get user name from store
+                }
+              },
+            ]
+          }
+        ]
+      }
+    }
+  },
 }
 </script>
 
@@ -207,6 +375,7 @@ export default {
       @extend .italic;
       font-size: 20px;
       width: 200px;
+      height: 40px;
       text-align: right;
       color: $label-1;
       padding-bottom: 8px;
@@ -236,6 +405,154 @@ export default {
         width: auto;
         text-align: left;
       }
+    }
+  }
+}
+
+// **
+// flow-item styles
+// **
+
+.flow-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 48px;
+  position: relative;
+  align-items: center;
+  background: $bg-primary;
+
+  &:hover {
+    .item-actions::v-deep {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  p {
+    margin: 0;
+  }
+
+  input {
+    @extend .par-1;
+    color: $label-1;
+    padding-bottom: 8px;
+    border: none;
+    outline: none;
+    display: block;
+
+    &::placeholder {
+      color: $gray-22;
+    }
+  }
+
+  .item-number {
+    display: flex;
+    align-self: flex-start;
+    justify-content: flex-end;
+    width: 64px;
+    color: $label-1;
+    padding-top: 8px;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .item-link {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    text-decoration: none;
+    color: $accent;
+    padding: 8px 0 8px 0;
+
+    &:first-child {
+      padding-top: 0;
+    }
+
+    img {
+      filter: invert(0.5) sepia(0.47) saturate(97) hue-rotate(207deg);
+    }
+  }
+
+  .item-create-url, .item-create-name {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    text-decoration: none;
+    color: $accent;
+    padding: 8px 0 0px 0;
+
+    input {
+      width: 100%;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    &:first-child {
+      padding-top: 0;
+    }
+
+  }
+
+  .item-create-url {
+
+    img {
+      filter: invert(0.78);
+    }
+  }
+
+  .item-create-name {
+
+    input {
+      color: $accent;
+    }
+
+    img {
+      filter: invert(0.5) sepia(0.47) saturate(97) hue-rotate(207deg);
+    }
+
+    > .icon {
+      cursor: pointer;
+    }
+  }
+
+  .item-actions::v-deep {
+    position: absolute;
+    right: 0%;
+    display: flex;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+    background: $bg-primary;
+    transition: 0.05s;
+
+    .btn {
+      opacity: 0.2;
+
+      &:hover {
+        opacity: 0.36;
+      }
+    }
+
+    .btn:first-child {
+      opacity: 0.24;
+
+      &:hover {
+        opacity: 0.36;
+      }
+    }
+
+    .btn.drag {
+      cursor: grab;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .flow-item {
+    gap: 16px;
+
+    .item-number {
+      justify-content: flex-start;
     }
   }
 }

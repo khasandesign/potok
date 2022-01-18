@@ -23,7 +23,7 @@
     }
 
     &:checked[type=checkbox] {
-      background-color: $primary;
+      background-color: $accent;
       border: none;
       background-image: url("~@/assets/images/UI/checkbox.svg");
     }

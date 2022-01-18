@@ -1,4 +1,3 @@
 <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M18 4V32" stroke="black" stroke-linejoin="bevel"/>
-<path d="M32 18L4 18" stroke="black" stroke-linejoin="bevel"/>
+<path d="M18 4V31H19V4H18ZM32 17L5 17L5 18L32 18L32 17Z" fill="black"/>
 </svg>

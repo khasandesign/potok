@@ -1,7 +1,7 @@
 <template>
   <div class="flow-item">
-    <p class="item-number">§ {{ index }}.</p>
-    <router-link :to="{path: '/redirect', query: {name: name, url: item.url, flowId: flowId}}" target="_blank"
+    <p class="item-number">§ 1.</p>
+    <router-link :to="{path: '/redirect', query: {name: item.name, url: item.url, flowId: flowId}}" target="_blank"
                  class="item-link" v-if="warn" @click="setHistory">
       <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -9,7 +9,7 @@
         <path
             d="M17.3333 13.333V13.333C14.3878 13.333 12 15.7208 12 18.6663V18.6663C12 21.6119 14.3878 23.9997 17.3333 23.9997H22.6667C25.6122 23.9997 28 21.6119 28 18.6663V18.6663C28 15.7208 25.6122 13.333 22.6667 13.333V13.333"/>
       </svg>
-      <p>{{ name }}</p>
+      <p>{{ item.name }}</p>
     </router-link>
     <a :href="item.url" target="_blank" class="item-link" @click="setRedirectHistory" v-else>
       <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -20,7 +20,7 @@
             d="M17.3333 13.333V13.333C14.3878 13.333 12 15.7208 12 18.6663V18.6663C12 21.6119 14.3878 23.9997 17.3333 23.9997H22.6667C25.6122 23.9997 28 21.6119 28 18.6663V18.6663C28 15.7208 25.6122 13.333 22.6667 13.333V13.333"
             stroke="black"/>
       </svg>
-      <p>{{ name }}</p>
+      <p>{{ item.name }}</p>
     </a>
   </div>
 </template>
@@ -31,10 +31,6 @@ export default {
   props: {
     index: {
       type: Number,
-    },
-    name: {
-      type: String,
-      required: true
     },
     item: {
       type: Object
@@ -68,7 +64,7 @@ export default {
     setRedirectHistory() {
       // store the current URL
       let current_url = window.location.href,
-          redirect_url = encodeURI(window.location.protocol + '//' + window.location.host + '/redirect?name=' + this.name.split(' ').join('+') + '&url=' + this.item.url.split(' ').join('') + '&flowId=' + this.flowId)
+          redirect_url = encodeURI(window.location.protocol + '//' + window.location.host + '/redirect?name=' + this.item.name.split(' ').join('+') + '&url=' + this.item.url.split(' ').join('') + '&flowId=' + this.flowId)
 
       // use replaceState to push a new entry into the browser's history
       history.replaceState({}, "", redirect_url)

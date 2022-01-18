@@ -1,11 +1,3 @@
 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_1023_4502)">
-<path d="M24.4854 7.51489L7.51479 24.4855" stroke="black" stroke-linejoin="bevel"/>
-<path d="M24.4854 24.4854L7.51479 7.51479" stroke="black" stroke-linejoin="bevel"/>
-</g>
-<defs>
-<clipPath id="clip0_1023_4502">
-<rect width="32" height="32" fill="white"/>
-</clipPath>
-</defs>
+<path d="M24.6467 6.6468L6.64669 24.6468L7.3538 25.3539L25.3538 7.3539L24.6467 6.6468ZM25.3536 24.6464L7.35355 6.64645L6.64645 7.35355L24.6464 25.3536L25.3536 24.6464Z" fill="black"/>
 </svg>

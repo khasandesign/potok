@@ -22,6 +22,7 @@ export default {
          * @param canvas
          */
         clearCanvas(ctx, canvas) {
+            this.art = ''
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         },
 
@@ -63,6 +64,18 @@ export default {
             canvas.addEventListener('mousemove', function (e) {
                 vm.draw(e, ctx)
             })
+
+            // Saving events
+            document.querySelector('.save-flow').addEventListener('click', function () {
+                if (vm.art) {
+                    vm.exportSvg(ctx)
+                }
+            })
+            document.querySelector('.draft-flow').addEventListener('click', function () {
+                if (vm.art) {
+                    vm.exportSvg(ctx)
+                }
+            })
         },
 
         /**
@@ -93,6 +106,9 @@ export default {
          * @param ctx
          */
         startPosition(e, ctx) {
+            if (!this.art) {
+                this.exportSvg(ctx)
+            }
             this.drawing = true
             this.draw(e, ctx)
         },
@@ -185,6 +201,7 @@ export default {
         document.querySelector('#clear').addEventListener('click', function () {
             vm.clearCanvas(ctxDefault, canvas)
             vm.clearCanvas(ctx, canvas)
+            vm.sendArt()
         }, false)
 
         // SVG to Canvas script in edit mode

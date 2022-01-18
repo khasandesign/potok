@@ -30,6 +30,7 @@ const store = createStore({
           })
           .then(function (payload) {
             error.__country = payload.location.country.name
+            console.log(payload.location.country)
           });
 
       // Check if error is 40*
@@ -70,6 +71,10 @@ const store = createStore({
       state.context = {}
     },
 
+    contextAction(state, action) {
+      state.contextAction = action
+    },
+
     /**
      * Update authorized property
      * @param state
@@ -77,7 +82,7 @@ const store = createStore({
      */
     signIn(state, auth) {
       state.authorized = auth
-    }
+    },
   },
   actions: {},
   modules: {},

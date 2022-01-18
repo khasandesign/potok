@@ -11,7 +11,7 @@
             #{{ error.status }}
           </v-crip>
           <h4>{{ error.__name }}</h4>
-          <div class="message par-4 italic">{{ error.__message }}</div>
+          <div class="message par-4 italic mx-auto">{{ error.__message }}</div>
           <div class="suggestions">
             <v-button size="xs" variant="outline-dark" to="/">Главная страница</v-button>
             <v-button size="xs" variant="outline-dark" to="/profile">Мои потоки</v-button>
@@ -71,7 +71,6 @@ export default {
   }
 
   .message {
-    @extend .mx-auto;
     width: 60%;
   }
 

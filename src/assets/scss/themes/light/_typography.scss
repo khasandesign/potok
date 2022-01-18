@@ -29,6 +29,11 @@ h1, h2, h3, h4, h5, h6, .h-1, .h-2, .h-3, .h-4, .h-5, .h-6, p.headline {
   -webkit-font-smoothing: antialiased;
 }
 
+p {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
 //p:not(.headline), input:not(.h1):not(.h2):not(.h3):not(.h4):not(.h5):not(.h6), textarea:not(.h1):not(.h2):not(.h3):not(.h4):not(.h5):not(.h6) {
 //  -moz-osx-font-smoothing: grayscale;
 //  -webkit-font-smoothing: antialiased;

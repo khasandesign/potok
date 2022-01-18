@@ -13,7 +13,6 @@ import vFlowItem from "./block/vFlowItem";
 import vSocialNets from "./block/vSocialNets";
 import navbar from "../layout/navbar";
 import vFlowCreate from "./block/vFlowCreate";
-import vFlowItemCreate from "./block/vFlowItemCreate";
 import vArtCreate from "./block/vArtCreate";
 import vTip from "./UI/vTip";
 import navbarCreate from "../layout/navbarCreate";
@@ -28,6 +27,9 @@ import navbarGuest from "../layout/navbarGuest";
 import footbar from "../layout/footbar";
 import vNotifications from "./block/vNotifications";
 import vNotification from "./UI/vNotification";
+import vDropdownNote from "./block/vDropdownNote";
+import vError from "./UI/vError";
+import vPattern from "./UI/vPattern";
 
 export default [
     Head,
@@ -49,15 +51,17 @@ export default [
     vFlowItem,
     vSocialNets,
     vFlowCreate,
-    vFlowItemCreate,
     vArtCreate,
     vTip,
     errorPage,
     vSignIn,
     vDropdown,
     vDropdownItem,
+    vDropdownNote,
     vSeparator,
     vContextmenu,
     vNotifications,
-    vNotification
+    vNotification,
+    vError,
+    vPattern
 ]

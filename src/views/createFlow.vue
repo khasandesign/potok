@@ -6,20 +6,25 @@
 
     <div class="container">
       <section id="info">
-        <div class="col-xl-4 col-lg-6 col-md-8 mx-auto">
+        <div class="col-xl-6 col-lg-6 col-md-8 mx-auto">
           <v-crip src="user/original/profile.jpg">Khasan Sh.</v-crip>
           <div class="name form-group">
             <textarea type="text" ref="name" v-model="flow.title" @input="autoGrow($event.target)" maxlength="40"
                       class="h3 text-block-input" placeholder="Заголовок..." v-focus></textarea>
             <span class="length-left"></span>
+            <v-error :message="errors.title"></v-error>
           </div>
           <div class="desc form-group">
               <textarea type="text" ref="desc" v-model="flow.description" @input="autoGrow($event.target)"
                         maxlength="80"
                         class="par-1 italic text-block-input" placeholder="Описание..."></textarea>
             <span class="length-left"></span>
+            <v-error :message="errors.description"></v-error>
+            <v-error class="art-error" :message="errors.art"></v-error>
           </div>
-          <v-art-create @sendArt="getArt"></v-art-create>
+          <div class="art-create-group">
+            <v-art-create @sendArt="getArt"></v-art-create>
+          </div>
         </div>
       </section>
       <section id="content">
@@ -46,56 +51,26 @@ export default {
         art: '',
         authorId: '', // Get from store
         public: true,
-        content: {}
+        content: {},
+        fives: 0,
+        saves: 0,
       },
-      art: ''
+      art: '',
+      errors: {
+        title: '',
+        description: '',
+        art: ''
+      },
     }
   },
   mixins: [autoGrow, lengthLeft],
-  props: {
-    save: {
-      default: false
-    }
-  },
-  watch: {
-    save: function (save) {
-      if (save === 'publish') {
-        // ...Publish flow
-        // 1. Check validation
-        // 2. Save to db
-        // 3. Set notification
-        // 4. Redirect to this flow
-
-        this.pushNotification({
-          title: 'Поток опубликован!',
-          description: 'Поток “' + this.flow.title.substring(0, 22) + '...” успешно опубликован',
-          url: '/flow',
-          icon: 'flow-success'
-        })
-
-        this.$router.push('/flow')
-      }
-      if (save === 'draft') {
-        // ...Save to drafts
-        // same steps as above, just publish it as type of draft
-
-        this.pushNotification({
-          title: 'Поток в черновиках',
-          description: 'Поток “' + this.flow.title.substring(0, 22) + '...” добавлен в черновики',
-          url: '/flow',
-          icon: 'flow-draft'
-        })
-
-        this.$router.push('/flow')
-      }
-    }
-  },
   methods: {
     /**
      * Get content for sendContent emit from vFlowCreate
      * @param content
      */
     getContent(content) {
+      // ... Remove chapters without links and empty links
       this.flow.content = content
       console.log(this.flow)
     },
@@ -107,6 +82,81 @@ export default {
     getArt(art) {
       this.flow.art = art
       console.log(this.flow.art)
+    },
+
+    validateFlow() {
+      if (!this.flow.title) {
+        this.errors.title = '*Впишите название потока'
+      } else {
+        this.errors.title = ''
+      }
+
+      if (!this.flow.description) {
+        this.errors.description = '*Дайте описание потоку'
+      } else {
+        this.errors.description = ''
+      }
+
+      if (!this.flow.art) {
+        this.errors.art = '*Сделайте рисунок'
+      } else {
+        this.errors.art = ''
+      }
+
+      if (!Object.values(this.errors).some(err => err !== null && err !== '')) {
+        return true
+      }
+    },
+
+    /**
+     * Save flow and publish it
+     */
+    saveFlow(e) {
+      // 1. Check validation
+      // 2. Save to db
+      // 3. Set notification
+      // 4. Redirect to this flow
+      if (this.validateFlow()) {
+
+        // Start loading
+        this.addClass(e.target, 'allow-loading', 'btn')
+
+          setTimeout(() => {
+            this.pushNotification({
+              title: 'Поток опубликован!',
+              description: 'Поток “' + this.flow.title.substring(0, 22) + '...” успешно опубликован',
+              url: '/flow',
+              icon: 'flow-success'
+            })
+
+            this.$router.push('/flow')
+          }, 1000) // Simulate saving to db
+      }
+
+    },
+
+    /**
+     * Save flow to drafts
+     */
+    draftFlow(e) {
+      // same steps as save, just publish it as type of draft
+
+      if (this.validateFlow()) {
+
+        // Start loading
+        this.addClass(e.target, 'allow-loading', 'btn')
+
+          setTimeout(() => {
+            this.pushNotification({
+              title: 'Поток в черновиках',
+              description: 'Поток “' + this.flow.title.substring(0, 22) + '...” добавлен в черновики',
+              url: '/flow',
+              icon: 'flow-draft'
+            })
+
+            this.$router.push('/flow')
+          }, 1000) // Simulate saving to db
+        }
     }
   },
   mounted() {
@@ -116,7 +166,13 @@ export default {
     this.lengthLeft(this.$refs.name)
     this.lengthLeft(this.$refs.desc)
 
-
+    let vm = this
+    document.querySelector('.save-flow').addEventListener('click', function (e) {
+      vm.saveFlow(e)
+    })
+    document.querySelector('.draft-flow').addEventListener('click', function (e) {
+      vm.draftFlow(e)
+    })
   }
 }
 </script>
@@ -152,6 +208,16 @@ section {
     textarea {
       margin-bottom: 8px;
       margin-bottom: 28px;
+    }
+  }
+
+  .art-error {
+    top: 60px;
+  }
+
+  .art-create-group {
+    .error-message {
+      top: 0;
     }
   }
 }

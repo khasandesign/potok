@@ -212,7 +212,7 @@ export default {
      * @param topGap Gap to leave after el is stick
      * @param top Default top property of the el
      */
-    stickToTop(el, topGap, top = topGap) {
+    stickToTop(el, topGap = 0, top = topGap) {
       let offset = el.getBoundingClientRect()
       if (offset.top <= topGap) {
         el.style.position = 'fixed'
@@ -234,10 +234,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.list-enter-active,
-.list-leave-active {
+.list-enter-active {
   transition: all 0.2s ease;
   transition-delay: 0.2s;
+}
+
+.list-leave-active {
+  transition: all 0.2s ease;
+  transition-delay: 0s;
 }
 
 .list-enter-from,

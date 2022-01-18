@@ -1,4 +1,5 @@
 export default {
+    // emits: ['notification'], // When set emit here, some notifications doesn't work
     methods: {
         /**
          * Emit push event to show a notification

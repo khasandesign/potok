@@ -1,4 +1,6 @@
 // Assign necessary typography styles
+$unit: px;
+
 @mixin typoStyle($font-size, $line-height, $letter-spacing) {
   font-size: $font-size + $unit;
   line-height: $line-height + $unit;

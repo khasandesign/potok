@@ -3,23 +3,30 @@
     <Head>
       <title>{{!search ? 'Поиск...' : search}}</title>
     </Head>
-    <div class="container">
-      <div class="medium-wrap">
-        <section id="search">
-          <div class="search form-group">
+    <section id="search">
+      <div class="container">
+        <div class="col-md-9 offset-md-1 search-wrap">
+          <div class="search-field">
             <input
                 type="search"
-                ref="search"
                 v-model="search"
                 maxlength="1000"
                 class="h3 text-block-input"
                 placeholder="Поиск..."
+                ref="search"
                 v-focus
             >
+            <v-button class="clear-search" size="lg" icon="close" iconSize="36" v-show="search" @click="clearResult"></v-button>
           </div>
-          <div class="col-lg-3 col-md-6">
+          <div class="col-lg-4 col-md-6">
             <p class="result-info par-2 italic" :class="message_class" v-html="message"></p>
           </div>
+        </div>
+      </div>
+    </section>
+    <section id="result">
+      <div class="container">
+        <div class="medium-wrap">
           <div class="skeleton" ref="skeleton">
             <div class="row">
               <v-flow-card v-skeleton></v-flow-card>
@@ -37,9 +44,9 @@
               <v-flow-card v-for="flow in flows" :key="flow.id" :flow="flow"></v-flow-card>
             </div>
           </div>
-        </section>
+        </div>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 
@@ -51,6 +58,7 @@ export default {
       message: 'Поиск среди потоков, имён авторов, сфер, профессий и тд.',
       message_class: 'label-6',
       timer: undefined,
+      loading: false,
       flows: [ // This is just mock data, btw api crops data, not vue
         {
           id: 3,
@@ -116,8 +124,13 @@ export default {
     }
   },
   watch: {
-    search: function () {
-      this.searchTyping()
+    search: function (val) {
+      if (val) {
+        this.searchTyping()
+      } else {
+        clearTimeout(this.loading)
+        this.clearResult()
+      }
     }
   },
   methods: {
@@ -160,7 +173,7 @@ export default {
       this.loadingSearch()
 
       // Show results
-      setTimeout(() => {
+      this.loading = setTimeout(() => {
         this.showResult()
       }, 1000) // **Remove this timer, it just simulate loading
     },
@@ -170,6 +183,7 @@ export default {
      */
     showResult() {
       this.$refs.skeleton.classList.remove('show-results')
+      this.$refs.skeleton.classList.add('hide-results')
 
       this.message_class = 'label-1'
       this.message = 'Мы нашли 5 потоков по вашему запросу, Приятных потоков!'
@@ -180,6 +194,7 @@ export default {
      * Clear search result and search query parametr
      */
     clearResult() {
+      this.search = ''
       this.message_class = 'label-6'
       this.message = 'Поиск среди потоков, имён авторов, сфер, профессий и тд.'
 
@@ -187,6 +202,11 @@ export default {
       delete query.q
       this.$router.replace({query});
       this.$refs.results.classList.remove('show-results')
+
+      this.$refs.skeleton.classList.remove('show-results')
+      this.$refs.skeleton.classList.add('hide-results')
+
+      this.$refs.search.focus()
     },
 
     /**
@@ -196,6 +216,7 @@ export default {
       // Show sekeleton
       this.message_class = 'label-6'
       this.message = 'Так, так, так.. <br> Ищем...'
+      this.$refs.skeleton.classList.remove('hide-results')
       this.$refs.skeleton.classList.add('show-results')
     },
 
@@ -206,6 +227,7 @@ export default {
       this.message_class = 'label-1'
       this.message = 'Ничего не найдено...'
       this.$refs.skeleton.classList.remove('show-results')
+      this.$refs.skeleton.classList.add('hide-results')
     }
   },
   mounted() {
@@ -216,22 +238,34 @@ export default {
 
 <style lang="scss" scoped>
 #search {
-  min-height: 100vh;
 
-  .search {
+  .search-wrap {
     margin-top: 48px;
     margin-bottom: 32px;
 
-    input {
-      height: 64px;
+    .search-field {
+      position: relative;
+
+      input {
+        height: 64px;
+      }
+
+      .clear-search {
+        position: absolute;
+        right: 0;
+        top: 10px;
+      }
     }
   }
 
   .result-info {
     margin-bottom: 36px;
     transition: 0.5s;
+    -webkit-font-smoothing: antialiased;
   }
+}
 
+#result {
   .skeleton {
     transition: 0.5s;
     opacity: 0;
@@ -258,6 +292,24 @@ export default {
     100% {
       opacity: 1;
       height: auto;
+    }
+  }
+
+  .hide-results {
+    height: 0;
+    animation-name: hide-results;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes hide-results {
+    0% {
+      opacity: 1;
+      height: auto;
+    }
+    100% {
+      opacity: 0;
+      height: 0;
     }
   }
 }

@@ -1,3 +1,3 @@
 <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M4 7.44446H11M31.9999 7.44446H11M11 7.44446V14.5641M27.3333 29.2222H11V21.6837M11 21.6837H27.3333M11 21.6837V14.5641M11 14.5641H27.3333" stroke="black" stroke-linejoin="bevel"/>
+<path d="M3 7.5L10.5 7.5M33 7.5L10.5 7.5M10.5 7.5L10.4999 15.5M27.3333 29.5H10.5L10.4999 22.5M10.4999 22.5H27.3332M10.4999 22.5V15.5M10.4999 15.5H27.3332" stroke="black" stroke-linejoin="round"/>
 </svg>

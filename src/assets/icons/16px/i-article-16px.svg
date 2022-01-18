@@ -1,9 +1,7 @@
 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M8 4.29032L6.66667 3H2V12.0323H6.66667L8 13M8 4.29032L9.33333 3H14V12.0323H9.33333L8 13M8 4.29032V13" stroke="black" stroke-linejoin="bevel"/>
-<line x1="10" y1="5.83325" x2="12" y2="5.83325" stroke="black"/>
-<line x1="4" y1="5.83325" x2="6" y2="5.83325" stroke="black"/>
-<line x1="10" y1="7.5" x2="12" y2="7.5" stroke="black"/>
-<line x1="4" y1="7.5" x2="6" y2="7.5" stroke="black"/>
-<line x1="10" y1="9.16675" x2="12" y2="9.16675" stroke="black"/>
-<line x1="4" y1="9.16675" x2="6" y2="9.16675" stroke="black"/>
+<path d="M8 3.5L6.5 2.5H1.5V12.5H6.5L8 13.5M8 3.5L9.5 2.5H14.5V12.5H9.5L8 13.5M8 3.5V8.5V13.5" stroke="black" stroke-linejoin="round"/>
+<line x1="10" y1="5.5" x2="12.5" y2="5.5" stroke="black" stroke-linejoin="round"/>
+<line x1="10" y1="8.5" x2="12.5" y2="8.5" stroke="black" stroke-linejoin="round"/>
+<line x1="3.5" y1="5.5" x2="6" y2="5.5" stroke="black" stroke-linejoin="round"/>
+<line x1="3.5" y1="8.5" x2="6" y2="8.5" stroke="black" stroke-linejoin="round"/>
 </svg>

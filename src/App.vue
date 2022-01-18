@@ -29,7 +29,10 @@
   </div>
 
   <!-- Context menu -->
-  <v-contextmenu :context="$store.state.context" @notification="setNotification"></v-contextmenu>
+  <v-contextmenu
+      :context="$store.state.context"
+      @notification="setNotification"
+  ></v-contextmenu>
 </template>
 
 <script>
@@ -45,7 +48,7 @@ export default {
       layout: {
         navbar: '',
         footer: ''
-      }
+      },
     }
   },
   mixins: [changeFavicon],
@@ -72,7 +75,7 @@ export default {
      */
     setNotification(notification) {
       this.notification = notification
-    }
+    },
   },
   mounted() {
     this.loading = false
@@ -98,8 +101,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "/assets/scss/themes/light/colors";
-
 body {
   overflow-x: hidden;
 }

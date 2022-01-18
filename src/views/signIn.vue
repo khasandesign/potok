@@ -11,6 +11,7 @@
 <script>
 import getCookie from "../mixins/getCookie";
 import isGuest from "../mixins/isGuest";
+import setCookie from "../mixins/setCookie";
 
 export default {
   data() {
@@ -24,7 +25,7 @@ export default {
       default: true
     }
   },
-  mixins: [getCookie, isGuest],
+  mixins: [getCookie, isGuest, setCookie],
   methods: {
     /**
      * Check cookies about existing log session
@@ -69,6 +70,16 @@ export default {
   },
   beforeMount() {
     this.getSession()
+
+    // Set session to sign in from different hosts during dev, delete it later
+    this.setCookie('logSessionId', { // Instead of comparing dates, just query session by id with where condition on expires_at > now
+      id: 232,
+      name: 'Хасан Шадияров',
+      email: 'hasan.shadiyarov@gmail.com',
+      created_at: '1640571418',
+      expires_at: '1641176218',
+      accept_token: 'Yq7wUUOQL90cchuuuiUakz7ArHGvlvGHuyiYQecYCKbOGpV7TEWvyrUYBx5o'
+    })
   },
 }
 </script>

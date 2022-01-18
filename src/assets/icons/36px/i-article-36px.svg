@@ -1,9 +1,9 @@
 <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M18 9.83871L14.8889 7H4V26.871H14.8889L18 29M18 9.83871L21.1111 7H32V26.871H21.1111L18 29M18 9.83871V29" stroke="black" stroke-linejoin="bevel"/>
-<line x1="22.667" y1="13.8335" x2="27.3337" y2="13.8335" stroke="black"/>
-<line x1="8.66699" y1="13.8335" x2="13.3337" y2="13.8335" stroke="black"/>
-<line x1="22.667" y1="17.5" x2="27.3337" y2="17.5" stroke="black"/>
-<line x1="8.66699" y1="17.5" x2="13.3337" y2="17.5" stroke="black"/>
-<line x1="22.667" y1="21.1665" x2="27.3337" y2="21.1665" stroke="black"/>
-<line x1="8.66699" y1="21.1665" x2="13.3337" y2="21.1665" stroke="black"/>
+<path d="M18 8.5L14.8889 6.5H3.5V26.5H14.8889L18 28.5M18 8.5L21.1111 6.5H32.5V26.5H21.1111L18 28.5M18 8.5V28.5" stroke="black" stroke-linejoin="round"/>
+<line x1="7.5" y1="16.5" x2="13" y2="16.5" stroke="black" stroke-linejoin="round"/>
+<line x1="23" y1="16.5" x2="28.5" y2="16.5" stroke="black" stroke-linejoin="round"/>
+<line x1="7.5" y1="12.5" x2="13" y2="12.5" stroke="black" stroke-linejoin="round"/>
+<line x1="23" y1="12.5" x2="28.5" y2="12.5" stroke="black" stroke-linejoin="round"/>
+<line x1="7.5" y1="20.5" x2="13" y2="20.5" stroke="black" stroke-linejoin="round"/>
+<line x1="23" y1="20.5" x2="28.5" y2="20.5" stroke="black" stroke-linejoin="round"/>
 </svg>
