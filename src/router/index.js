@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import typography from "../views/typography";
 import home from "../views/home";
-import flow from "../views/flow";
 import profile from "../views/profile";
 import createFlow from "../views/createFlow";
 import errorPage from "../views/errorPage";
@@ -11,6 +10,9 @@ import search from "../views/search";
 import store from '../store/'
 import redirect from "../views/redirect";
 import emailConfirm from "../views/emailConfirm";
+import underConstraction from "../views/underConstraction";
+import browserSupport from "../views/browserSupport";
+import flow from "../views/flow";
 
 /**
  * Guard for common users
@@ -24,15 +26,26 @@ const authGuard = function (to, from, next) {
 }
 
 /**
- * Guard for pages, which can be used only by non-authorized people
+ * Guard for pages, which can be visited only by non-authorized people
  * @param to
  * @param from
  * @param next
  */
-const authPrevent = function (to, from, next) {
-  if (store.state.authorized) next({path: '/'})
-  else next()
-}
+// const authPrevent = function (to, from, next) {
+//   if (store.state.authorized) next({path: '/'})
+//   else next()
+// }
+
+/**
+ * Guard for pages, which can not be visited optional, only in specific <br>
+ * cases, otherwise go home
+ * @param to
+ * @param from
+ * @param next
+ */
+// const goHome = function (to, from, next) {
+//   next({name: 'home'})
+// }
 
 const routes = [
   {
@@ -52,6 +65,7 @@ const routes = [
   {
     path: '/flow',
     name: 'flow',
+    // component: flow,
     component: flow,
     meta: {
       navbar: 'default',
@@ -84,7 +98,7 @@ const routes = [
     name: 'sign-in',
     props: true,
     component: signIn,
-    beforeEnter: authPrevent,
+    // beforeEnter: authPrevent,
   },
   {
     path: '/sign-in/confirm-email/:email/:acceptToken',
@@ -114,17 +128,32 @@ const routes = [
     path: '/error',
     name: 'error-page',
     component: errorPage,
+    // beforeEnter: goHome,
     meta: {
       navbar: 'default',
       footer: 'default'
     }
   },
   {
+    path: '/under-construction',
+    name: 'under-construction',
+    component: underConstraction,
+    // beforeEnter: goHome,
+  },
+  {
+    path: '/browser-support',
+    name: 'browser-support',
+    component: browserSupport,
+    // beforeEnter: goHome
+  },
+  {
     path: "/:catchAll(.*)",
     component: () => {
-      store.commit('throwError', {
-        status: 404
-      })
+      if (!store.state.browser.underConstruction && store.state.browser.browserSupport) {
+        store.commit('throwError', {
+          status: 404
+        })
+      }
     },
     meta: {
       navbar: 'default',

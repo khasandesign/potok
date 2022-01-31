@@ -26,7 +26,7 @@ export default {
             }
             el.classList.add('active')
 
-            this.clearCanvas(ctx, canvas, ctx)
+            this.clearCanvas(ctx, canvas)
         },
 
         /**

@@ -5,30 +5,33 @@
     </Head>
 
     <div class="container">
-      <div class="error">
-        <div class="col-lg-4 col-md-8 mx-auto">
-          <v-crip :variant="error.__group === 500 ? 'red' : 'yellow'" @click="error_report_visible = !error_report_visible">
-            #{{ error.status }}
-          </v-crip>
-          <h4>{{ error.__name }}</h4>
-          <div class="message par-4 italic mx-auto">{{ error.__message }}</div>
-          <div class="suggestions">
-            <v-button size="xs" variant="outline-dark" to="/">Главная страница</v-button>
-            <v-button size="xs" variant="outline-dark" to="/profile">Мои потоки</v-button>
-            <v-button size="xs" variant="outline-dark">Библиотека</v-button>
-            <v-button size="xs" variant="outline-dark">Становление мидлом в PHP...</v-button>
+      <section id="error">
+        <div class="error-info">
+          <div class="col-xxl-4 col-xl-5 col-md-6 mx-auto">
+            <v-crip :variant="error.__group === 500 ? 'red' : 'yellow'"
+                    @click="error_report_visible = !error_report_visible">
+              #{{ error.status }}
+            </v-crip>
+            <h4>{{ error.__name }}</h4>
+            <div class="message par-4 italic mx-auto">{{ error.__message }}</div>
+            <div class="suggestions">
+              <v-button size="xs" variant="secondary" to="/">Главная страница</v-button>
+              <v-button size="xs" variant="secondary" to="/profile">Мои потоки</v-button>
+              <v-button size="xs" variant="secondary">Библиотека</v-button>
+              <v-button size="xs" variant="secondary">Становление мидлом в PHP...</v-button>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-lg-2 col-md-4 mx-auto" v-show="error_report_visible">
-        <div class="error-report">
-          <div class="report-items">
-            <span class="report-item" v-for="(value, name) in error_report" :key="value"><span class="italic">{{ name }}</span>: {{ value }}</span>
-            <span class="report-item action" @click="copyJsonReport()">Copy JSON</span>
-            <span class="report-item action" @click="error_report_visible = false">Close</span>
+        <div class="col-xxl-2 col-xl-3 col-md-4 mx-auto" v-show="error_report_visible">
+          <div class="error-report">
+            <div class="report-items">
+              <span class="report-item" v-for="(value, name) in error_report" :key="value"><span class="italic">{{ name }}</span>: {{ value }}</span>
+              <span class="report-item action" @click="copyJsonReport()">Copy JSON</span>
+              <span class="report-item action" @click="error_report_visible = false">Close</span>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   </div>
 </template>
@@ -62,69 +65,73 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.error {
-  text-align: center;
-  margin-top: 48px;
+#error {
+  margin: 0;
+  padding: 80px 0;
 
-  .crip {
-    margin-bottom: 16px;
-  }
+  .error-info {
+    text-align: center;
 
-  .message {
-    width: 60%;
-  }
-
-  h4 {
-    margin-bottom: 4px;
-  }
-
-  .suggestions {
-    margin-top: 32px;
-
-    > * {
-      margin-bottom: 8px;
-      margin-right: 8px;
+    .crip {
+      margin-bottom: 16px;
     }
-  }
-}
 
-.error-report {
-  margin-top: 64px;
-}
+    .message {
+      width: 60%;
+    }
 
-.error-report {
-  outline: 1px solid $gray-08;
-  border-radius: 8px;
-  overflow: hidden;
+    h4 {
+      margin-bottom: 4px;
+    }
 
-  * {
-    @extend .mono;
-    @extend .regular;
-    font-size: 13px;
-  }
+    .suggestions {
+      margin-top: 32px;
 
-  .report-item {
-    background-color: $bg-primary;
-    padding: 6px;
-    display: block;
-
-    &:not(:last-child) {
-      border-bottom: 1px solid $gray-08;
+      > * {
+        margin-bottom: 8px;
+        margin-right: 8px;
+      }
     }
   }
 
-  .report-item.action {
-    background-color: $gray-03;
-    text-decoration: underline;
-    cursor: pointer;
-    transition: 0.1s;
+  .error-report {
+    margin-top: 64px;
+  }
 
-    &:hover {
-      background-color: $gray-06;
+  .error-report {
+    outline: 1px solid $gray-08;
+    border-radius: 8px;
+    overflow: hidden;
+
+    * {
+      @extend .mono;
+      @extend .regular;
+      font-size: 13px;
     }
 
-    &:active, &:focus {
-      background-color: $gray-08;
+    .report-item {
+      background-color: $bg-primary;
+      padding: 6px;
+      display: block;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid $gray-08;
+      }
+    }
+
+    .report-item.action {
+      background-color: $gray-03;
+      text-decoration: underline;
+      cursor: pointer;
+      transition: 0.1s;
+
+      &:hover {
+        background-color: $gray-06;
+      }
+
+      &:active, &:focus {
+        background-color: $gray-08;
+      }
     }
   }
 }

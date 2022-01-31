@@ -14,6 +14,7 @@
         <v-avatar :src="notification.image" size="32" v-if="notification.image"></v-avatar>
         <v-icon :name="notification.icon" size="32" v-else-if="notification.icon"></v-icon>
       </div>
+      <span class="bg"></span>
     </div>
   </div>
 </template>
@@ -59,8 +60,23 @@ export default {
   background-color: $bg-primary;
 
   &:hover {
-    background-color: $gray-008;
+    .bg {
+      background-color: $gray-008;
+    }
   }
+
+  .bg {
+    background-color: transparent;
+    display: inline-block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 8px;
+    pointer-events: none;
+  }
+
 
   .close-area {
     position: absolute;

@@ -3,9 +3,9 @@
     <Head>
       <title>{{!search ? 'Поиск...' : search}}</title>
     </Head>
-    <section id="search">
-      <div class="container">
-        <div class="col-md-9 offset-md-1 search-wrap">
+    <div class="container">
+      <section id="search">
+        <div class="search-wrap">
           <div class="search-field">
             <input
                 type="search"
@@ -18,35 +18,30 @@
             >
             <v-button class="clear-search" size="lg" icon="close" iconSize="36" v-show="search" @click="clearResult"></v-button>
           </div>
-          <div class="col-lg-4 col-md-6">
-            <p class="result-info par-2 italic" :class="message_class" v-html="message"></p>
+          <div class="suggestions">
+            <v-button href="/profile" size="xs" variant="secondary" to="/profile">Мои потоки</v-button>
+            <v-button size="xs" variant="secondary" icon="search" @click="setSearch" v-for="(suggestion, si) in suggestions" :key="si">
+              {{ suggestion }}</v-button>
           </div>
         </div>
-      </div>
-    </section>
-    <section id="result">
-      <div class="container">
-        <div class="medium-wrap">
-          <div class="skeleton" ref="skeleton">
-            <div class="row">
-              <v-flow-card v-skeleton></v-flow-card>
-              <v-flow-card v-skeleton></v-flow-card>
-              <v-flow-card v-skeleton></v-flow-card>
-            </div>
-            <div class="row">
-              <v-flow-card v-skeleton></v-flow-card>
-              <v-flow-card v-skeleton></v-flow-card>
-              <v-flow-card v-skeleton></v-flow-card>
-            </div>
-          </div>
-          <div class="results" ref="results">
-            <div class="row">
-              <v-flow-card v-for="flow in flows" :key="flow.id" :flow="flow"></v-flow-card>
-            </div>
+        <div class="skeleton" ref="skeleton">
+          <div class="row" :class="this.flows.length <= 3 ? 'justify-content-center' : ''">
+            <v-flow-card v-skeleton></v-flow-card>
+            <v-flow-card v-skeleton></v-flow-card>
+            <v-flow-card v-skeleton></v-flow-card>
+            <v-flow-card v-skeleton></v-flow-card>
           </div>
         </div>
-      </div>
-    </section>
+        <div class="results" ref="results" v-show="flows">
+          <div class="row" :class="this.flows.length <= 3 ? 'justify-content-center' : ''">
+            <v-flow-card v-for="flow in flows" :key="flow.id" :flow="flow"></v-flow-card>
+          </div>
+        </div>
+        <div class="not-found" ref="notFound" v-show="notFound">
+          <p class="par-2 italic">Ничего не найдено...</p>
+        </div>
+      </section>
+    </div>
   </div>
 </template>
 
@@ -55,10 +50,10 @@ export default {
   data() {
     return {
       search: '',
-      message: 'Поиск среди потоков, имён авторов, сфер, профессий и тд.',
-      message_class: 'label-6',
       timer: undefined,
       loading: false,
+      notFound: false,
+      suggestions: ['Интерфейсы', 'Front-end'],
       flows: [ // This is just mock data, btw api crops data, not vue
         {
           id: 3,
@@ -108,23 +103,13 @@ export default {
             avatar: 'user/original/profile-4.jpg'
           },
         },
-        {
-          id: 7,
-          title: 'Создание онлайн конструктора сайтов',
-          description: 'Выучив весь этот материал я сделал свой конструктор',
-          art: 'art-6.svg',
-          public: true,
-          user: {
-            id: 13,
-            name: 'Khasan Sh.',
-            avatar: 'user/original/profile.jpg'
-          },
-        },
       ],
     }
   },
   watch: {
     search: function (val) {
+      this.notFound = false
+
       if (val) {
         this.searchTyping()
       } else {
@@ -142,6 +127,14 @@ export default {
         this.search = this.$route.query.q
         this.searchTyping()
       }
+    },
+
+    /**
+     * Automatically fill the search query
+     */
+    setSearch(e) {
+      this.search = e.target.closest('.btn').innerText
+      this.$refs.search.focus()
     },
 
     /**
@@ -168,7 +161,7 @@ export default {
     sendSearch() {
       // ** -- temporary comment
       // **Do request to db here
-      // **Do if/else on respond and display results, change message
+      // **Do if/else on respond and display results, change msg
 
       this.loadingSearch()
 
@@ -179,15 +172,23 @@ export default {
     },
 
     /**
-     * Hide skeleton loading and show search results with changing the message
+     * Hide skeleton loading and show search results with changing the msg
      */
     showResult() {
-      this.$refs.skeleton.classList.remove('show-results')
-      this.$refs.skeleton.classList.add('hide-results')
+      if (this.flows.length) {
+        this.$refs.skeleton.classList.remove('show-results')
+        this.$refs.skeleton.classList.add('hide-results')
+        this.$refs.results.classList.add('show-results')
 
-      this.message_class = 'label-1'
-      this.message = 'Мы нашли 5 потоков по вашему запросу, Приятных потоков!'
-      this.$refs.results.classList.add('show-results')
+        /*
+        Imitate suggestions change, grab them from the db in user's interest column
+        Interest will be all over collected according to user's profession and saved flows
+        You can add this functionality later, now just keep going with regular suggestions
+         */
+        this.suggestions = ['UI/UX', 'Веб-дизайн']
+      } else {
+        this.setNotFound()
+      }
     },
 
     /**
@@ -195,8 +196,6 @@ export default {
      */
     clearResult() {
       this.search = ''
-      this.message_class = 'label-6'
-      this.message = 'Поиск среди потоков, имён авторов, сфер, профессий и тд.'
 
       let query = Object.assign({}, this.$route.query);
       delete query.q
@@ -214,20 +213,27 @@ export default {
      */
     loadingSearch() {
       // Show sekeleton
-      this.message_class = 'label-6'
-      this.message = 'Так, так, так.. <br> Ищем...'
+      this.$refs.results.classList.remove('show-results')
       this.$refs.skeleton.classList.remove('hide-results')
       this.$refs.skeleton.classList.add('show-results')
     },
 
     /**
-     * Apply not found message
+     * Apply not found msg
      */
-    notFound() {
-      this.message_class = 'label-1'
-      this.message = 'Ничего не найдено...'
+    setNotFound() {
       this.$refs.skeleton.classList.remove('show-results')
       this.$refs.skeleton.classList.add('hide-results')
+
+      this.notFound = true
+    },
+
+    /**
+     * Get random message from funny success messages
+     */
+    getSuccessMsg() {
+      let random = Math.floor(Math.random() * this.successMsg.length)
+      return this.successMsg[random]
     }
   },
   mounted() {
@@ -238,15 +244,18 @@ export default {
 
 <style lang="scss" scoped>
 #search {
+  text-align: center;
+  margin-top: 48px;
+  min-height: 80vh;
 
   .search-wrap {
-    margin-top: 48px;
     margin-bottom: 32px;
 
     .search-field {
       position: relative;
 
       input {
+        text-align: center;
         height: 64px;
       }
 
@@ -256,61 +265,71 @@ export default {
         top: 10px;
       }
     }
-  }
 
-  .result-info {
-    margin-bottom: 36px;
-    transition: 0.5s;
-    -webkit-font-smoothing: antialiased;
+    .suggestions {
+      >* {
+        margin-bottom: 8px;
+        margin-right: 8px;
+      }
+    }
   }
 }
 
-#result {
-  .skeleton {
-    transition: 0.5s;
+.skeleton {
+  transition: 0.5s;
+  opacity: 0;
+  height: 0;
+}
+
+.show-results {
+  height: 0;
+  animation-name: show-results;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes show-results {
+  0% {
     opacity: 0;
     height: 0;
   }
+  100% {
+    opacity: 1;
+    height: auto;
+  }
+}
 
-  .results {
-    transition: 0.5s;
+.hide-results {
+  height: 0;
+  animation-name: hide-results;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes hide-results {
+  0% {
+    opacity: 1;
+    height: auto;
+  }
+  100% {
     opacity: 0;
-  }
-
-  .show-results {
     height: 0;
-    animation-name: show-results;
-    animation-duration: 0.5s;
-    animation-fill-mode: forwards;
   }
+}
 
-  @keyframes show-results {
-    0% {
-      opacity: 0;
-      height: 0;
-    }
-    100% {
-      opacity: 1;
-      height: auto;
-    }
-  }
+.results {
+  transition: 0.5s;
+  opacity: 0;
+}
 
-  .hide-results {
-    height: 0;
-    animation-name: hide-results;
-    animation-duration: 0.5s;
-    animation-fill-mode: forwards;
-  }
+.not-found {
+  text-align: center;
+  padding: 200px 0;
+  position: relative;
+  z-index: 2;
 
-  @keyframes hide-results {
-    0% {
-      opacity: 1;
-      height: auto;
-    }
-    100% {
-      opacity: 0;
-      height: 0;
-    }
+  p {
+    opacity: 0.4;
   }
 }
 </style>

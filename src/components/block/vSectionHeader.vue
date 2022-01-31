@@ -1,7 +1,7 @@
 <template>
   <div class="section-header">
     <h4>{{ headline }}</h4>
-    <p class="col-lg-5 col-md-8 par-2"><slot></slot></p>
+    <p class="col-lg-5 col-md-6 par-2"><slot></slot></p>
   </div>
 </template>
 

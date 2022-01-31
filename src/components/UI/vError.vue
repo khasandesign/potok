@@ -22,13 +22,21 @@ export default {
   color: $red;
   background: $bg-primary;
   z-index: 2;
-  height: 40px;
+  min-height: 40px;
   padding-bottom: 8px;
+  text-align: left;
 
   a {
     color: $red;
     text-decoration: none;
     border-bottom: 1px solid rgba($red, 0.2);
+  }
+}
+
+@media (max-width: 992px) {
+  .error-message::v-deep {
+    white-space: normal;
+    width: 150px;
   }
 }
 </style>

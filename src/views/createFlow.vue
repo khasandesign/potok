@@ -9,13 +9,13 @@
         <div class="col-xl-6 col-lg-6 col-md-8 mx-auto">
           <v-crip src="user/original/profile.jpg">Khasan Sh.</v-crip>
           <div class="name form-group">
-            <textarea type="text" ref="name" v-model="flow.title" @input="autoGrow($event.target)" maxlength="40"
+            <textarea type="text" ref="name" v-model="flow.title" @input="autoGrow($event.target); setRestore()" maxlength="40"
                       class="h3 text-block-input" placeholder="Заголовок..." v-focus></textarea>
             <span class="length-left"></span>
             <v-error :message="errors.title"></v-error>
           </div>
           <div class="desc form-group">
-              <textarea type="text" ref="desc" v-model="flow.description" @input="autoGrow($event.target)"
+              <textarea type="text" ref="desc" v-model="flow.description" @input="autoGrow($event.target); setRestore()"
                         maxlength="80"
                         class="par-1 italic text-block-input" placeholder="Описание..."></textarea>
             <span class="length-left"></span>
@@ -29,8 +29,8 @@
       </section>
       <section id="content">
         <div class="row">
-          <div class="col-xl-8 col-lg-12 offset-xl-1">
-            <v-flow-create @sendContent="getContent"></v-flow-create>
+          <div class="col-xxl-8 col-xl-9 offset-xxl-1">
+            <v-flow-create @sendContent="getContent" :contentRestore="flowRestore.content" :setRestore="setRestore"></v-flow-create>
           </div>
         </div>
       </section>
@@ -55,16 +55,39 @@ export default {
         fives: 0,
         saves: 0,
       },
-      art: '',
       errors: {
         title: '',
         description: '',
         art: ''
       },
+      flowRestore: null
     }
   },
   mixins: [autoGrow, lengthLeft],
   methods: {
+    /**
+     * Get unfinished flow form localStorage
+     */
+    getRestore() {
+      let flowRestore = JSON.parse(localStorage.getItem('flowRestore'))
+      if (flowRestore) {
+        flowRestore.art = ''
+        return flowRestore
+      }
+    },
+
+    /**
+     * Set unfinished flow to localStorage to restore it later
+     */
+    setRestore() {
+      this.$nextTick(() => {
+        let flow = {...this.flow}
+        flow.art = ''
+
+        localStorage.setItem('flowRestore', JSON.stringify(flow))
+      })
+    },
+
     /**
      * Get content for sendContent emit from vFlowCreate
      * @param content
@@ -72,6 +95,7 @@ export default {
     getContent(content) {
       // ... Remove chapters without links and empty links
       this.flow.content = content
+      this.setRestore()
       console.log(this.flow)
     },
 
@@ -104,6 +128,8 @@ export default {
       }
 
       if (!Object.values(this.errors).some(err => err !== null && err !== '')) {
+        // Clear all restore cookies
+        localStorage.removeItem('flowRestore')
         return true
       }
     },
@@ -121,16 +147,16 @@ export default {
         // Start loading
         this.addClass(e.target, 'allow-loading', 'btn')
 
-          setTimeout(() => {
-            this.pushNotification({
-              title: 'Поток опубликован!',
-              description: 'Поток “' + this.flow.title.substring(0, 22) + '...” успешно опубликован',
-              url: '/flow',
-              icon: 'flow-success'
-            })
+        setTimeout(() => {
+          this.pushNotification({
+            title: 'Поток опубликован!',
+            description: 'Поток “' + this.flow.title.substring(0, 22) + '...” успешно опубликован',
+            url: '/flow',
+            icon: 'flow-success'
+          })
 
-            this.$router.push('/flow')
-          }, 1000) // Simulate saving to db
+          this.$router.push('/flow')
+        }, 1000) // Simulate saving to db
       }
 
     },
@@ -140,23 +166,29 @@ export default {
      */
     draftFlow(e) {
       // same steps as save, just publish it as type of draft
-
       if (this.validateFlow()) {
-
         // Start loading
         this.addClass(e.target, 'allow-loading', 'btn')
 
-          setTimeout(() => {
-            this.pushNotification({
-              title: 'Поток в черновиках',
-              description: 'Поток “' + this.flow.title.substring(0, 22) + '...” добавлен в черновики',
-              url: '/flow',
-              icon: 'flow-draft'
-            })
+        setTimeout(() => {
+          this.pushNotification({
+            title: 'Поток в черновиках',
+            description: 'Поток “' + this.flow.title.substring(0, 22) + '...” добавлен в черновики',
+            url: '/flow',
+            icon: 'flow-draft'
+          })
 
-            this.$router.push('/flow')
-          }, 1000) // Simulate saving to db
-        }
+          this.$router.push('/flow')
+        }, 1000) // Simulate saving to db
+      }
+    }
+  },
+  beforeMount() {
+    this.flowRestore = this.getRestore()
+    if (this.flowRestore) {
+      this.flow = this.flowRestore
+    } else {
+      this.flowRestore = this.flow
     }
   },
   mounted() {
@@ -193,7 +225,7 @@ section {
 }
 
 #info {
-  margin-top: 48px;
+  margin-top: 36px;
   margin-bottom: 80px;
 
   > div {
@@ -211,8 +243,16 @@ section {
     }
   }
 
+  .form-group {
+    textarea {
+      max-width: 70%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
   .art-error {
-    top: 60px;
+    top: 80px;
   }
 
   .art-create-group {

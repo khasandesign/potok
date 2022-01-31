@@ -8,12 +8,12 @@
                 v-tip
                 data-tip-id="chapterTip"
                 v-model="chapter.name"
-                @input="autoGrow($event.target)"
+                @input="autoGrow($event.target); setRestore()"
                 @keydown.enter="newChapter"
       ></textarea>
       <!--   Items   -->
       <div class="flow-items" :id="'chapter-items-' + chi">
-        <draggable v-model="chapter.links" handle=".drag" :key="dragKey">
+        <draggable v-model="chapter.links" handle=".drag" :key="dragKey" @change="setRestore()">
           <div class="flow-item flow-item-create" :class="!link.url ? 'empty' : ''" ref="item"
                v-for="(link, li) in chapter.links"
                :key="li"
@@ -80,6 +80,14 @@ export default {
       dragKey: false
     }
   },
+  props: {
+    contentRestore: {
+      type: Object
+    },
+    setRestore: {
+      type: Function
+    }
+  },
   methods: {
     /**
      * Application of all validation steps abt URL
@@ -87,8 +95,10 @@ export default {
     validateUrl(e, link, submit) {
       // Check if @paste
       if (e.clipboardData) {
-        e.preventDefault() // Prevent to avoid dublicated url
-        link.url = e.clipboardData.getData('text/plain')
+        if (!link.url) {
+          e.preventDefault() // Prevent to avoid dublicated url
+          link.url = e.clipboardData.getData('text/plain')
+        }
       }
 
       // Type
@@ -179,7 +189,7 @@ export default {
               name: '',
               url: '',
               type: 1,
-              link_created: 0,
+              link_created: +new Date(),
               link_updated: 0,
               error: 0,
               user: {
@@ -316,6 +326,7 @@ export default {
       // Delete item
       links.splice(li, 1)
 
+      this.setRestore()
       this.indexItems()
     },
 
@@ -328,6 +339,12 @@ export default {
 
     focusName(e) {
       e.target.parentElement.nextSibling.querySelector('input').focus()
+    }
+  },
+  beforeMount() {
+    if (this.contentRestore) {
+      this.content = this.contentRestore
+      this.indexItems()
     }
   },
   mounted() {
@@ -375,6 +392,7 @@ export default {
       @extend .italic;
       font-size: 20px;
       width: 200px;
+      min-height: 40px;
       height: 40px;
       text-align: right;
       color: $label-1;
@@ -395,15 +413,28 @@ export default {
   }
 }
 
+@media (max-width: 1200px) {
+  .flow {
+    .error-message {
+      display: none;
+    }
+  }
+}
+
 @media (max-width: 992px) {
   .flow {
     .flow-chapter {
       display: grid;
       gap: 12px;
+      grid-template-columns: 1fr;
 
       .chapter-title {
         width: auto;
         text-align: left;
+      }
+
+      .flow-items {
+        margin-left: 50px;
       }
     }
   }

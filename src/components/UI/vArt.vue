@@ -32,4 +32,16 @@ export default {
     height: 100%;
   }
 }
+
+@media (max-width: 1200px) {
+  .art {
+    height: 200px;
+  }
+}
+
+@media (max-width: 992px) {
+  .art {
+    height: 232px;
+  }
+}
 </style>

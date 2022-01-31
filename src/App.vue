@@ -3,16 +3,22 @@
     <img src="@/assets/images/UI/logo.svg" alt="Potok loading...">
   </div>
 
-  <navbar :change="layout.navbar"></navbar>
+  <navbar :change="layout.navbar" v-if="showLayout()"></navbar>
   <router-view v-slot="slotProps" @navbar="changeNavbar" @footer="changeFooter" @notification="setNotification">
     <transition name="route" mode="out-in">
-      <div v-if="Object.keys($store.state.error).length">
+      <div v-if="$store.state.browser.underConstruction">
+        <under-construction></under-construction>
+      </div>
+      <div v-else-if="!$store.state.browser.browserSupport">
+        <browser-support></browser-support>
+      </div>
+      <div v-else-if="Object.keys($store.state.error).length">
         <error-page :error="$store.state.error"></error-page>
       </div>
       <component v-else :is="slotProps.Component"></component>
     </transition>
   </router-view>
-  <footbar :change="layout.footer"></footbar>
+  <footbar :change="layout.footer" v-if="showLayout()"></footbar>
 
   <!-- Notifications bar -->
   <v-notifications :pushed="notification"></v-notifications>
@@ -38,8 +44,11 @@
 <script>
 import {Modal} from 'bootstrap';
 import changeFavicon from "./mixins/changeFavicon";
+import BrowserSupport from "./views/browserSupport";
+import browserDetect from "./mixins/browserDetect";
 
 export default {
+  components: {BrowserSupport},
   data() {
     return {
       modalSignIn: null,
@@ -51,7 +60,7 @@ export default {
       },
     }
   },
-  mixins: [changeFavicon],
+  mixins: [changeFavicon, browserDetect],
   methods: {
     /**
      * Set a new navbar
@@ -76,15 +85,29 @@ export default {
     setNotification(notification) {
       this.notification = notification
     },
+
+    /**
+     * Check all env factors and decide does it need to show navbar/footer layout
+     */
+    showLayout() {
+      return !this.$store.state.browser.underConstruction && this.$store.state.browser.browserSupport;
+    }
+  },
+  beforeMount() {
+    let browser = this.browserDetect()
+    this.$store.commit('checkBrowser', browser)
   },
   mounted() {
     this.loading = false
     this.modalSignIn = new Modal(this.$refs.modalSignIn)
 
     // Show Mobile App page if window width is less than 768px
-    if (window.innerWidth <= 768) {
-      this.$router.push('/mobile-app')
-    }
+    let vm = this
+    window.addEventListener('resize', function () {
+      if (window.innerWidth <= 768) {
+        vm.$router.push('/mobile-app')
+      }
+    })
 
     // Set favicon
     setTimeout(() => {

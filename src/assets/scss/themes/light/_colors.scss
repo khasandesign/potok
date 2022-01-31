@@ -6,11 +6,15 @@ $brown: #753838;
 $teal: #2BB4AB;
 $yellow: #DFCA0C;
 
-.accent {
+.primary, .accent {
   color: $accent;
+
+  &:hover {
+    color: $accent;
+  }
 }
 .red {
-  color: $red;
+  color: $red !important;
 }
 .black {
   color: $black;

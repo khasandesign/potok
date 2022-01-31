@@ -1,14 +1,13 @@
 <template>
   <footer>
+    <div class="container">
     <div class="potok-description">
       <img class="logo" src="@/assets/images/UI/logo.svg" alt="Potok">
       <p class="par-2">Следите за нами и новыми потоками <br>
         в наших социальных сетях</p>
       <v-social-nets youtube></v-social-nets>
     </div>
-    <div class="container">
-      <div class="col-xl-10 mx-auto">
-        <div class="footer-links">
+      <div class="footer-links">
           <div class="footer-group">
             <p class="par-2 medium italic">Применения</p>
             <router-link to="">О нас</router-link>
@@ -51,7 +50,6 @@
             <router-link to="" class="save-on-desktop disabled">Сохранить <img class="mx-1" src="@/assets/images/UI/logo-sm.svg" alt="Potok"> на рабочий
               <br> стол как приложение</router-link>
           </div>
-        </div>
       </div>
     </div>
   </footer>
@@ -64,5 +62,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+//.disabled {
+//  display: none;
+//}
 </style>

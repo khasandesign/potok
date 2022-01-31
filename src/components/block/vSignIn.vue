@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="col-xxl-4 col-xl-6 col-lg-6 col-md-9 mx-auto">
+    <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-9 mx-auto">
       <transition name="fade-left" mode="out-in">
         <div id="sign-in" class="sign-in" v-if="!logSession">
           <div class="sign-in-header">
@@ -37,7 +37,7 @@
             <v-button size="xl" variant="primary" class="btn-2" @click="logInSession">Войти</v-button>
           </div>
           <div class="sign-in-footnote">
-            <p class="par-5 label-5 mb-0">Войти в другой аккаунт? <span class="semibold new-account"
+            <p class="par-5 label-5 mb-0">Войти в другой аккаунт? <span class="medium new-account"
                                                                         @click="logSession = false, switchedLogSession = true">Другой аккаунт</span>
             </p>
           </div>
@@ -53,7 +53,7 @@
                 src="@/assets/images/UI/i-envelop-sign-in-24px.svg"> Открыть почту</a>
           </div>
           <div class="sign-in-footnote">
-            <p class="par-5 label-5 mb-0">Войти в другой аккаунт? <span class="semibold new-account" @click="logSession = false, switchedLogSession = true">Другой аккаунт</span>
+            <p class="par-5 label-5 mb-0">Войти в другой аккаунт? <span class="medium new-account" @click="logSession = false, switchedLogSession = true">Другой аккаунт</span>
             </p>
           </div>
         </div>
@@ -126,7 +126,7 @@ export default {
 
 .sign-in {
   @extend .platter;
-  margin-top: 64px;
+  margin-top: 48px;
   text-align: center;
   padding: 40px 64px 64px 64px;
   width: 100%;
@@ -159,7 +159,7 @@ export default {
     }
 
     .social-sign-in {
-      > button {
+      > button:not(:last-child) {
         margin-bottom: 16px;
       }
     }
@@ -183,6 +183,23 @@ export default {
     right: 8px;
     top: 8px;
     cursor: pointer;
+  }
+}
+
+@media (max-width: 1366px) {
+  .sign-in {
+    padding: 32px 56px 56px 56px;
+
+    .sign-in-header {
+
+      .logo {
+        margin-bottom: 24px;
+      }
+    }
+
+    .sign-in-footnote {
+      padding: 0 16px;
+    }
   }
 }
 </style>

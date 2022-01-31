@@ -6,7 +6,7 @@
 
     <div class="container">
       <section id="info">
-        <div class="col-xl-4 col-lg-6 col-md-8 mx-auto">
+        <div class="col-xxl-4 col-xl-6 col-md-8 mx-auto">
           <div class="profile">
             <label for="avatar-upload" class="avatar-upload-label anim-click">
               <div class="overlay" v-show="edit">
@@ -45,30 +45,31 @@
               <span class="length-left" v-show="edit"></span>
             </div>
             <v-pattern></v-pattern>
-            <textarea
-                type="text"
-                class="par-3 desc px-md-4 text-block-input mx-auto w-100"
-                v-model="profile.desc"
-                placeholder="Расскажите о себе..."
-                ref="desc"
-                readonly
-                maxlength="100"
-                @input="autoGrow($event.target)"></textarea>
+            <div class="desc form-group">
+              <textarea
+                  type="text"
+                  class="par-3 desc px-md-4 text-block-input mx-auto w-100"
+                  v-model="profile.desc"
+                  placeholder="Расскажите о себе..."
+                  ref="desc"
+                  maxlength="100"
+                  readonly
+                  @input="autoGrow($event.target)"></textarea>
+              <span class="length-left" v-show="edit"></span>
+            </div>
             <v-social-nets all></v-social-nets>
           </div>
         </div>
       </section>
-      <div class="medium-wrap">
-        <section id="your-flows">
-          <v-section-header headline="Ваши потоки">
-            Кликните <kbd>ПКМ</kbd> по потоку чтобы изменить <br class="d-none d-xl-block"> его или сделать приватным.
-          </v-section-header>
-          <div class="row">
-            <v-flow-card v-for="flow in flows" :key="flow.id" :flow="flow"></v-flow-card>
-            <v-add-flow-card></v-add-flow-card>
-          </div>
-        </section>
-      </div>
+      <section id="your-flows">
+        <v-section-header headline="Ваши потоки">
+          Кликните <kbd>ПКМ</kbd> по потоку чтобы изменить <br class="d-none d-xl-block"> его или сделать приватным.
+        </v-section-header>
+        <div class="row">
+          <v-flow-card v-for="flow in flows" :key="flow.id" :flow="flow"></v-flow-card>
+          <v-add-flow-card></v-add-flow-card>
+        </div>
+      </section>
     </div>
 
     <!--  Tips  -->
@@ -307,6 +308,7 @@ export default {
     this.autoGrow(this.$refs.desc)
     this.lengthLeft(this.$refs.name)
     this.lengthLeft(this.$refs.profession)
+    this.lengthLeft(this.$refs.desc)
   }
 }
 </script>
@@ -314,7 +316,7 @@ export default {
 <style lang="scss" scoped>
 #info {
   text-align: center;
-  margin-bottom: 88px;
+  margin-bottom: 56px;
   margin-top: 48px;
 
   .avatar-upload-label {
@@ -376,9 +378,20 @@ export default {
 
   .form-group.name {
     max-width: 100%;
+
     button {
       position: absolute;
       left: 100%;
+    }
+  }
+}
+
+@media (max-width: 1280px) {
+  #info {
+    margin-top: 36px;
+
+    .desc {
+      width: 80%;
     }
   }
 }

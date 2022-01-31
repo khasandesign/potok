@@ -3,48 +3,42 @@
     <Head>
       <title>Главная – Поток</title>
     </Head>
-
     <div class="container">
-      <div class="medium-wrap">
-        <section id="continue">
-          <v-section-header headline="Продолжить">
-            Нажмите <kbd>⌘</kbd>+<kbd>ЛКМ</kbd> по карточке чтобы отправить <br class="d-none d-xl-block"> его на ваш
-            телефон в приложение.
-          </v-section-header>
-          <div class="row">
-            <v-flow-card v-for="flow in continueFlows" :key="flow.id" :flow="flow"></v-flow-card>
-            <div class="col-md-3"></div>
-          </div>
-        </section>
-        <section id="your-flows">
-          <v-section-header headline="Ваши потоки">
-            Вы можете изменить ваши потоки зайдя в него <br class="d-none d-xl-block">
-            и сразу внести нужные дополнения
-          </v-section-header>
-          <div class="row">
-            <v-flow-card v-for="flow in userFlows" :key="flow.id" :flow="flow"></v-flow-card>
-            <v-add-flow-card></v-add-flow-card>
-          </div>
-        </section>
-        <section id="library">
-          <v-section-header headline="Библиотека" class="mb-3">
-            Потоки сохранятся только если вы пройдёте <br>
-            параграф или сохраните его сами
-          </v-section-header>
-          <div class="filters">
-            <v-button size="xs" variant="outline-dark">IT</v-button>
-            <v-button size="xs" variant="dark">Дизайн</v-button>
-            <v-button size="xs" variant="outline-dark">Веб разработка</v-button>
-            <v-button size="xs" variant="outline-dark">Мобильная разработка</v-button>
-            <v-button size="i-md" variant="highlight" to="/search">
-              <v-icon name="search" size="24"></v-icon>
-            </v-button>
-          </div>
-          <div class="row">
-            <v-flow-card v-for="flow in libraryFlows" :key="flow.id" :flow="flow"></v-flow-card>
-          </div>
-        </section>
-      </div>
+      <section id="continue">
+        <v-section-header headline="Продолжить">
+          Нажмите <kbd>⌘</kbd>+<kbd>ЛКМ</kbd> по карточке чтобы отправить <br class="d-none d-xl-block"> его на ваш
+          телефон<span class="d-none d-xl-inline"> в приложение</span>.
+        </v-section-header>
+        <div class="row">
+          <v-flow-card v-for="flow in continueFlows" :key="flow.id" :flow="flow"></v-flow-card>
+        </div>
+      </section>
+      <section id="your-flows">
+        <v-section-header headline="Ваши потоки">
+          Вы можете изменить ваши потоки зайдя в них <br class="d-none d-xl-block">
+          и внеся нужные дополнения
+        </v-section-header>
+        <div class="row">
+          <v-flow-card v-for="flow in userFlows" :key="flow.id" :flow="flow"></v-flow-card>
+          <v-add-flow-card></v-add-flow-card>
+        </div>
+      </section>
+      <section id="library">
+        <v-section-header headline="Библиотека" class="mb-3">
+          Потоки сохранятся только если вы пройдёте <br>
+          параграф или сохраните его сами
+        </v-section-header>
+        <div class="filters">
+          <v-button size="xs" variant="outline-dark">IT</v-button>
+          <v-button size="xs" variant="dark">Дизайн</v-button>
+          <v-button size="xs" variant="outline-dark">Веб разработка</v-button>
+          <v-button size="xs" variant="outline-dark">Мобильная разработка</v-button>
+          <v-button size="md" variant="highlight" to="/search" icon="search"></v-button>
+        </div>
+        <div class="row">
+          <v-flow-card v-for="flow in libraryFlows" :key="flow.id" :flow="flow"></v-flow-card>
+        </div>
+      </section>
     </div>
   </div>
 </template>

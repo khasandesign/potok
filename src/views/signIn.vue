@@ -9,9 +9,7 @@
 </template>
 
 <script>
-import getCookie from "../mixins/getCookie";
 import isGuest from "../mixins/isGuest";
-import setCookie from "../mixins/setCookie";
 
 export default {
   data() {
@@ -25,13 +23,13 @@ export default {
       default: true
     }
   },
-  mixins: [getCookie, isGuest, setCookie],
+  mixins: [isGuest],
   methods: {
     /**
      * Check cookies about existing log session
      */
     getSession() {
-      let cookies = this.getCookie()
+      let cookies = this.getCookies()
       if (cookies.logSessionId) {
         // Do query to API /log-session endpoint instead of mock data
         this.logSessionInfo = { // Instead of comparing dates, just query session by id with where condition on expires_at > now

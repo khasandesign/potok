@@ -4,7 +4,7 @@ export default {
     name: 'tip',
     mounted(el) {
         // Vars
-        var cookie = getCookie.methods.getCookie(),
+        var cookies = getCookie.methods.getCookies(),
             id = el.getAttribute('data-tip-id'),
             tip = document.getElementById(id),
             interacted = false
@@ -23,7 +23,7 @@ export default {
         })
 
         // Check if tip was closed
-        if (cookie[id] == 'closed') {
+        if (cookies[id] == 'closed') {
             tip.style.display = 'none'
             return
         } else {

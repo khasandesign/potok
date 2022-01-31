@@ -30,6 +30,9 @@ import vNotification from "./UI/vNotification";
 import vDropdownNote from "./block/vDropdownNote";
 import vError from "./UI/vError";
 import vPattern from "./UI/vPattern";
+import underConstraction from "../views/underConstraction";
+import browserSupport from "../views/browserSupport";
+import vLogo from "./UI/vLogo";
 
 export default [
     Head,
@@ -54,6 +57,8 @@ export default [
     vArtCreate,
     vTip,
     errorPage,
+    underConstraction,
+    browserSupport,
     vSignIn,
     vDropdown,
     vDropdownItem,
@@ -63,5 +68,6 @@ export default [
     vNotifications,
     vNotification,
     vError,
-    vPattern
+    vPattern,
+    vLogo
 ]

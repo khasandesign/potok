@@ -1,13 +1,13 @@
 .medium-wrap {
   @extend .container;
   @extend .offset-xxl-1;
-
   padding: 0;
 }
 
-@media (min-width: 1400px) {
+@media (min-width: 1444px) {
   .container {
-    max-width: 1464px!important;
+    max-width: 1440px!important;
+    padding: 0;
   }
 }
 

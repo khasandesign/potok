@@ -1,17 +1,13 @@
 <template>
   <div class="art-create">
     <div class="colors">
-      <span class="color active" data-color="#0284EB" ref="firstColorItem" style="background: #0284EB; outline-color: #0284EB"></span>
-      <span class="color" data-color="#E84D1C" style="background: #E84D1C; outline-color: #E84D1C"></span>
-      <span class="color" data-color="#0E0F0F" style="background: #0E0F0F; outline-color: #0E0F0F"></span>
-      <span class="color" data-color="#2BB4AB" style="background: #2BB4AB; outline-color: #2BB4AB"></span>
-      <span class="color" data-color="#DFCA0C" style="background: #DFCA0C; outline-color: #DFCA0C"></span>
+      <span v-for="(color, ci) in baseColors" :key="ci" class="color" :class="!ci ? 'active' : ''" :ref="!ci ? 'firstColorItem' : ''" :data-color="color" :style="{background: color, outlineColor: color}"></span>
       <canvas class="color-picker" ref="colorPicker" @click="setColorPicker()"></canvas>
       <img src="@/assets/images/UI/color-palette-canvas.png" ref="paletteSource" alt="pallete" class="visually-hidden">
     </div>
     <canvas class="art" ref="artCanvas"></canvas>
     <div class="actions">
-      <v-button icon="eraser" iconSize="24" id="clear"></v-button>
+      <v-button icon="eraser" id="clear"></v-button>
       <div class="info unselectable" id="info" v-tip data-tip-id="artTip" data-tip-interactive="true">
         <v-icon name="info" size="16"></v-icon>
         <span class="par-5 label-7 medium">Рисунок</span>
@@ -33,6 +29,11 @@ import colorPicker from "../../mixins/colorPicker";
 export default {
   name: "v-art-create",
   mixins: [artCreation, colorPicker],
+  data() {
+    return {
+      baseColors: ['#0284EB','#E84D1C','#0E0F0F','#2BB4AB','#DFCA0C']
+    }
+  }
 }
 </script>
 

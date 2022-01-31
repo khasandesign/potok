@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import setCookie from "../mixins/setCookie";
 import changeFavicon from "../mixins/changeFavicon";
 
 export default {
@@ -13,7 +12,7 @@ export default {
       params: this.$route.params
     }
   },
-  mixins: [setCookie, changeFavicon],
+  mixins: [changeFavicon],
   methods: {
     /**
      * Get row from db and check if acceptToken is match and user's STATUS is 9 (waiting confirmation)

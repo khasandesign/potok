@@ -1,5 +1,5 @@
 <template>
-  <img class="icon undraggable" @click="!area ? switchIcon : ''" :style="{ width: customSize + 'px', height: customSize + 'px'}" :src="require(`@/assets/icons/${path}`)" :data-click="pathClick ? require(`@/assets/icons/${pathClick}`) : ''"/>
+  <img class="icon undraggable" @click="!area ? switchIcon : ''" :style="{ width: customSize + 'px', height: customSize + 'px'}" :src="require(`@/assets/icons/${path}`)" :data-click="pathClick ? require(`@/assets/icons/${pathClick}`) : ''" :alt="name"/>
 </template>
 
 
@@ -14,8 +14,8 @@ export default {
       type: String,
     },
     size: {
-      type: String,
-      default: '24'
+      type: [String, Number],
+      default: 24
     },
     customSize: {
       type: String,

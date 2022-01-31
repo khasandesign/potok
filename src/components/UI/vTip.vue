@@ -16,11 +16,8 @@
 </template>
 
 <script>
-import setCookie from "../../mixins/setCookie";
-
 export default {
   name: "vTip",
-  mixins: [setCookie],
   data() {
     return {}
   },

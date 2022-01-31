@@ -6,7 +6,7 @@
 
     <div class="redirect-warn">
       <div class="warn" v-if="!validData">
-        <img class="logo" src="@/assets/images/UI/logo.svg" alt="Potok">
+        <v-logo></v-logo>
         <p class="par-4 italic">Вы переходите на чужой сайт. Кликните ниже для продолжения.</p>
         <a class="par-4 italic" :href="url">{{ name }}</a>
         <div class="form-check">
@@ -26,12 +26,8 @@
 </template>
 
 <script>
-import setCookie from "../mixins/setCookie";
-import deleteCookie from "../mixins/deleteCookie";
-
 export default {
   name: 'redirect',
-  mixins: [setCookie, deleteCookie],
   data() {
     return {
       name: this.$route.query.name,
@@ -48,11 +44,7 @@ export default {
       }
     },
     trustFlow: function (newVal) {
-      if (newVal) {
-        this.setCookie('trust_' + this.flowId, 1, 365)
-      } else {
-        this.deleteCookie('trust_' + this.flowId)
-      }
+      this.setConfig(this.flowId, 'trust_links', newVal)
 
       window.location.href = this.url
     }
@@ -77,10 +69,13 @@ export default {
   },
   mounted() {
     // In very low possible scenario user can go to a link, when interval checking is not done, this is just an insurance
-    let cookies = this.getCookie()
-    if (cookies['trust_' + this.flowId]) {
-      window.location.href = this.url
-    }
+    // if (this.hasProperty(this.config, 'trust_links')) {
+    //   this.warn = !this.config['trust_links']
+    // }
+    //
+    // if (this.getCookie('trust_' + this.flowId)) {
+    //   window.location.href = this.url
+    // }
   }
 }
 </script>

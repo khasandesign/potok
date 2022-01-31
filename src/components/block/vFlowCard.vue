@@ -1,5 +1,5 @@
 <template>
-  <div class="col-xxl-3 col-xl-4 col-lg-5 col-md-6 flow-wrap" v-if="flow">
+  <div class="col-xxl-3 col-xl-4 col-lg-4 col-md-6 flow-wrap" v-if="flow">
     <router-link to="/flow">
       <div
           class="flow-card anim-click"
@@ -14,7 +14,7 @@
       </div>
     </router-link>
   </div>
-  <div class="col-xxl-3 col-xl-4 col-lg-5 col-md-6 flow-wrap" v-else>
+  <div class="col-xxl-3 col-xl-4 col-lg-4 col-md-6 flow-wrap" v-else>
     <router-link to="/flow">
       <div class="flow-card anim-click">
         <v-crip>...</v-crip>
@@ -84,9 +84,24 @@ export default {
   }
 }
 
-@media (min-width: 1400px) {
-  .flow-wrap {
-    margin-right: 0.1px;
+@media (max-width: 1200px) {
+  .flow-card {
+    padding: 24px 18px 0 18px;
+
+    .crip {
+      margin-bottom: 12px;
+    }
+
+    .title {
+      max-height: 60px;
+      overflow: hidden;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .flow-card {
+    padding: 26px 24px 0 24px;
   }
 }
 </style>

@@ -29,7 +29,7 @@ h1, h2, h3, h4, h5, h6, .h-1, .h-2, .h-3, .h-4, .h-5, .h-6, p.headline {
   -webkit-font-smoothing: antialiased;
 }
 
-p {
+p:not(.par-5) {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
 }
@@ -117,4 +117,66 @@ p.headline {
 .btn-1, .btn-2, btn-3, .btn-4, .btn-5 {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
+}
+
+
+@media (max-width: 1366px) {
+  .par-1, p {
+    @include typoStyle(20, 30, -0.1);
+    font-family: 'Lora', serif;
+  }
+
+  p.headline {
+    @include typoStyle(19, 24, 0.2);
+    margin-bottom: 12px;
+  }
+}
+
+@media (max-width: 1280px) {
+  h1, .h-1 {
+    @include typoStyle(64, 64, 0);
+  }
+
+  h2, .h-2 {
+    @include typoStyle(56, 56, 0);
+  }
+
+  h3, .h-3 {
+    @include typoStyle(36, 44, 0.5);
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 1200px) {
+  h4, .h-4 {
+    @include typoStyle(28, 32, 0.3);
+  }
+
+  h5, .h-5 {
+    @include typoStyle(26, 30, 0.3);
+  }
+
+  h6, .h-6 {
+    @include typoStyle(23, 30, 0.3);
+  }
+
+  .par-1, p {
+    @include typoStyle(19, 28, -0.1);
+    font-family: 'Lora', serif;
+  }
+
+  .par-2 {
+    @include typoStyle(17, 24, 0);
+    font-family: 'Lora', serif;
+  }
+
+  .par-3 {
+    @include typoStyle(16, 22, 0);
+    font-family: 'Lora', serif;
+  }
+
+  .par-4 {
+    @include typoStyle(15, 20, 0);
+    font-family: 'Lora', serif;
+  }
 }
