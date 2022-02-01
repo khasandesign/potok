@@ -141,8 +141,16 @@ export default {
 
             // Save art in localStorage to restore later
             let flowRestore = JSON.parse(localStorage.getItem('flowRestore'))
-            flowRestore.art = this.optimizedArt
-            localStorage.setItem('flowRestore', JSON.stringify(flowRestore))
+
+            if (this.hasProperty(flowRestore, 'art')) {
+                flowRestore.art = this.optimizedArt
+                localStorage.setItem('flowRestore', JSON.stringify(flowRestore))
+            } else {
+                flowRestore = {
+                    art: this.optimizedArt
+                }
+                localStorage.setItem('flowRestore', JSON.stringify(flowRestore))
+            }
         },
 
         /**

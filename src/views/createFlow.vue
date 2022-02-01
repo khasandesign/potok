@@ -71,7 +71,6 @@ export default {
     getRestore() {
       let flowRestore = JSON.parse(localStorage.getItem('flowRestore'))
       if (flowRestore) {
-        flowRestore.art = ''
         return flowRestore
       }
     },
@@ -82,7 +81,6 @@ export default {
     setRestore() {
       this.$nextTick(() => {
         let flow = {...this.flow}
-        flow.art = ''
 
         localStorage.setItem('flowRestore', JSON.stringify(flow))
       })

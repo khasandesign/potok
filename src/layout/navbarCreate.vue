@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-1 col-3">
-          <div class="brand anim-click">
+          <div class="brand anim-click-sm">
             <router-link to="/"><v-logo></v-logo></router-link>
           </div>
         </div>
@@ -15,7 +15,7 @@
             <v-button class="d-none d-md-block save-flow" size="xs" v-loading variant="primary">Сохранить</v-button>
             <v-button class="d-none d-md-block draft-flow" size="xs" v-loading variant="secondary">В черновики</v-button>
           </div>
-          <div class="profile anim-click">
+          <div class="profile anim-click-sm">
             <router-link to="/profile"><v-avatar src="user/original/profile.jpg" size="32"></v-avatar></router-link>
           </div>
         </div>

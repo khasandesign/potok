@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-1 col-3">
-          <div class="brand anim-click">
+          <div class="brand anim-click-sm">
             <router-link to="/"><v-logo></v-logo></router-link>
           </div>
         </div>

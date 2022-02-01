@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-1 col-3">
-          <div class="brand anim-click">
+          <div class="brand anim-click-sm">
             <router-link to="/"><v-logo></v-logo></router-link>
           </div>
         </div>
@@ -16,7 +16,7 @@
           <div class="page-action">
             <v-button class="d-none d-md-block" to="/create-flow" size="xs" variant="outline-dark">Создать поток</v-button>
           </div>
-          <div class="profile anim-click">
+          <div class="profile anim-click-sm">
             <router-link to="/profile"><v-avatar src="user/original/profile.jpg" size="32"></v-avatar></router-link>
           </div>
         </div>

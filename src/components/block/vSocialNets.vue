@@ -1,9 +1,9 @@
 <template>
   <div class="social-nets">
-    <router-link to="" v-if="all || instagram"><img src="@/assets/images/UI/instagram.svg" alt="Instagram"></router-link>
-    <router-link to="" v-if="all || tiktok"><img src="@/assets/images/UI/tiktok.svg" alt="TikTok"></router-link>
-    <router-link to="" v-if="all || youtube"><img src="@/assets/images/UI/youtube.svg" alt="YouTube"></router-link>
-    <router-link to="" v-if="all || telegram"><img src="@/assets/images/UI/telegram.svg" alt="Telegram"></router-link>
+    <router-link class="anim-click-sm" to="" v-if="all || instagram"><img src="@/assets/images/UI/instagram.svg" alt="Instagram"></router-link>
+    <router-link class="anim-click-sm" to="" v-if="all || tiktok"><img src="@/assets/images/UI/tiktok.svg" alt="TikTok"></router-link>
+    <router-link class="anim-click-sm" to="" v-if="all || youtube"><img src="@/assets/images/UI/youtube.svg" alt="YouTube"></router-link>
+    <router-link class="anim-click-sm" to="" v-if="all || telegram"><img src="@/assets/images/UI/telegram.svg" alt="Telegram"></router-link>
   </div>
 </template>
 

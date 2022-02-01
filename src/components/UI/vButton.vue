@@ -1,9 +1,9 @@
 <template>
-  <button v-if="!to" :class="`btn ${icon !== '' && !isSlot() ? 'btn-i' : ''} btn-${isSlot() == null ? 'i-' : ''}${size} btn-${variant} ${color} anim-click`">
+  <button v-if="!to" :class="`btn ${icon !== '' && !isSlot() ? 'btn-i' : ''} btn-${isSlot() == null ? 'i-' : ''}${size} btn-${variant} ${color} anim-click-sm`">
     <v-icon :name ="icon" :size="iconTextSize" v-if="icon !== ''" :class="isSlot() ? 'icon-text' : ''"></v-icon>
     <slot></slot>
   </button>
-  <router-link v-else :to="to" :class="`btn ${icon !== '' && !isSlot() ? 'btn-i' : ''} btn-${isSlot() == null ? 'i-' : ''}${size} btn-${variant} ${color} anim-click`">
+  <router-link v-else :to="to" :class="`btn ${icon !== '' && !isSlot() ? 'btn-i' : ''} btn-${isSlot() == null ? 'i-' : ''}${size} btn-${variant} ${color} anim-click-sm`">
     <v-icon :name ="icon" :size="iconTextSize" v-if="icon !== ''"></v-icon>
     <slot></slot>
   </router-link>

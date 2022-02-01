@@ -29,8 +29,7 @@
                   maxlength="100"
                   readonly
                   @input="typeWidth($event.target)">
-              <v-button size="xl" icon="pencil" @click="edit = true" v-show="!edit" v-tip
-                        data-tip-id="editProfile"></v-button>
+              <v-button size="xl" icon="pencil" @click="edit = true" v-show="!edit" v-tip data-tip-id="editProfile"></v-button>
               <span class="length-left" v-show="edit"></span>
             </div>
             <div class="profession form-group">
@@ -371,7 +370,7 @@ export default {
     width: auto;
   }
 
-  .form-group {
+  .form-group:not(.desc) {
     width: fit-content;
     margin: auto;
   }

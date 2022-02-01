@@ -1,5 +1,5 @@
 <template>
-  <div :class="`crip crip-${variant}`"><v-avatar :src="src" v-if="src" size="22"></v-avatar><slot></slot></div>
+  <div :class="`crip crip-${variant} anim-click-sm`"><v-avatar :src="src" v-if="src" size="22"></v-avatar><slot></slot></div>
 </template>
 
 <script>
